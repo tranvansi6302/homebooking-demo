@@ -391,7 +391,14 @@ function App() {
 
             <div className="services-grid">
               {featuredServices.map((service, idx) => (
-                <article key={service.name} className="service-card" data-aos="fade-up" data-aos-delay={idx * 100}>
+                <a
+                  key={service.name}
+                  className="service-card"
+                  href="#cta-banner"
+                  aria-label={`Tải app đặt dịch vụ ${service.name}`}
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 100}
+                >
                   <div className="card-image-wrapper">
                     <img src={service.img} alt={service.name} className="card-cover-img" />
                     <div className="card-category-badge-circle" style={{ backgroundColor: service.iconBg, color: service.iconColor }}>
@@ -401,14 +408,14 @@ function App() {
                   <div className="card-body">
                     <span className="card-category">{service.name}</span>
                     <h3>{service.desc}</h3>
-                    <a className="card-arrow-btn" href="#cta-banner" aria-label={`Tải app đặt dịch vụ ${service.name}`}>
+                    <span className="card-arrow-btn" aria-hidden="true">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                       </svg>
-                    </a>
+                    </span>
                   </div>
-                </article>
+                </a>
               ))}
 
               {/* The 8th Card: Xem tất cả */}
