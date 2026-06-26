@@ -23,6 +23,7 @@ import canthoImg from './assets/cantho.jpg'
 import haiphongImg from './assets/haiphong.jpg'
 import aboutImg from './assets/about.png'
 import qrCodeImg from './assets/qr_code.png'
+import phoneImg from './assets/phone.png'
 
 
 // ecosystemCategories definition removed to prevent unused variable compiler warning
@@ -599,9 +600,7 @@ function App() {
               </div>
 
               <div className="cta-phone-mockup-wrapper" data-aos="zoom-in" data-aos-delay="300">
-                <div className="cta-mockup-phone">
-                  <div className="screen-logo-center">HB</div>
-                </div>
+                <img src={phoneImg} alt="Ứng dụng HomeBooking trên điện thoại" className="cta-mockup-phone" />
               </div>
 
               <div className="cta-download-actions" data-aos="fade-left" data-aos-delay="250">
