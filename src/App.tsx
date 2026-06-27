@@ -388,10 +388,10 @@ function NewsListingPage({ onSelectArticle }: NewsPageProps) {
       <section className="py-8 pb-14">
         <div className={ui.container}>
           <div className="mb-5 flex items-center justify-between gap-4 max-[900px]:flex-col max-[900px]:items-stretch">
-            <div className="flex flex-wrap items-center gap-2.5" aria-label="Danh mục tin tức">
+            <div className="flex flex-wrap items-center gap-2.5 max-[520px]:grid max-[520px]:grid-cols-2 max-[520px]:gap-2" aria-label="Danh mục tin tức">
               {newsCategories.map((category, index) => (
-                <button key={category} className={cn('min-h-10 rounded-lg border px-5 text-sm font-bold transition', index === 0 ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white')} type="button">
-                  {category}
+                <button key={category} className={cn('min-h-10 rounded-lg border px-5 text-sm font-bold transition max-[520px]:min-w-0 max-[520px]:px-3 max-[520px]:text-xs', index === 0 ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white')} type="button">
+                  <span className="block truncate">{category}</span>
                 </button>
               ))}
             </div>
@@ -411,13 +411,12 @@ function NewsListingPage({ onSelectArticle }: NewsPageProps) {
                 <article className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 max-[768px]:grid-cols-1" key={article.title}>
                   <div className="relative aspect-video overflow-hidden rounded-lg">
                     <img className="h-full w-full object-cover" src={article.img} alt={article.title} />
-                    <span className="absolute left-3 top-3 rounded-lg bg-[#003F3C] px-2.5 py-1 text-[0.68rem] font-extrabold text-white">{article.tag}</span>
                   </div>
                   <div className="flex min-w-0 flex-col justify-center">
-                    <h2 className="mb-3 font-heading text-xl font-extrabold leading-snug text-slate-800">{article.title}</h2>
+                    <h2 className="mb-3 line-clamp-2 font-heading text-xl font-extrabold leading-snug text-slate-800">{article.title}</h2>
                     <p className="mb-5 text-sm leading-7 text-slate-500">{article.excerpt}</p>
                     <div className="flex items-center justify-between gap-4 max-[640px]:flex-col max-[640px]:items-start">
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
                         <span className="flex items-center gap-2">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M8 2v4" />
@@ -427,13 +426,7 @@ function NewsListingPage({ onSelectArticle }: NewsPageProps) {
                           </svg>
                           {article.date}
                         </span>
-                        <span className="flex items-center gap-2">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 6v6l4 2" />
-                          </svg>
-                          homebooking admin
-                        </span>
+                        <span className="inline-flex rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.68rem] font-extrabold uppercase tracking-wide text-emerald-700">{article.tag}</span>
                       </div>
                       <a
                         href="#news-detail"
@@ -527,7 +520,7 @@ function NewsDetailPage({
                 <span className="grid size-11 place-items-center rounded-full bg-[#003F3C] text-sm font-extrabold text-white">HB</span>
                 <div>
                   <strong className="block text-sm font-extrabold text-slate-800">HomeBooking Team</strong>
-                  <small className="text-xs text-slate-500">{article.date} • homebooking admin</small>
+                  <small className="text-xs text-slate-500">{article.date}</small>
                 </div>
               </div>
               <ShareLinks />
@@ -832,31 +825,31 @@ function App() {
               <p className="mt-2 text-slate-500">Những dịch vụ được yêu thích nhất trên HomeBooking</p>
             </div>
 
-            <div className="grid grid-cols-4 gap-5 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:grid-cols-1">
+            <div className="grid grid-cols-4 gap-5 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:gap-3">
               {featuredServices.map((service, idx) => (
                 <a
                   key={service.name}
-                  className={cn(ui.card, 'group flex min-h-[245px] flex-col overflow-hidden')}
+                  className={cn(ui.card, 'group flex min-h-[245px] flex-col overflow-hidden max-[520px]:min-h-[220px]')}
                   href="#about"
                   aria-label={`Tải app đặt dịch vụ ${service.name}`}
                   data-aos="fade-up"
                   data-aos-delay={idx * 100}
                 >
-                  <div className="relative h-[120px] overflow-hidden">
+                  <div className="relative h-[120px] overflow-hidden max-[520px]:h-[96px]">
                     <img src={service.img} alt={service.name} className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" />
                   </div>
-                  <div className="flex grow flex-col p-4">
-                    <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold" style={{ backgroundColor: service.iconBg, color: service.iconColor }}>
-                      <span className="[&_svg]:size-3">{getEcosystemIcon(service.iconKey)}</span>
-                      <span>{service.name}</span>
+                  <div className="flex grow flex-col p-4 max-[520px]:p-3">
+                    <div className="mb-3 inline-flex max-w-full items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold max-[520px]:mb-2 max-[520px]:px-2 max-[520px]:text-[0.66rem]" style={{ backgroundColor: service.iconBg, color: service.iconColor }}>
+                      <span className="shrink-0 [&_svg]:size-3 max-[520px]:[&_svg]:size-2.5">{getEcosystemIcon(service.iconKey)}</span>
+                      <span className="truncate">{service.name}</span>
                     </div>
-                    <p className="line-clamp-2 min-h-[2.8rem] text-sm font-medium leading-relaxed text-slate-800">{service.desc}</p>
+                    <p className="line-clamp-2 min-h-[2.8rem] text-sm font-medium leading-relaxed text-slate-800 max-[520px]:min-h-[2.35rem] max-[520px]:text-xs max-[520px]:leading-5">{service.desc}</p>
                     <div className="mt-auto flex items-end justify-between border-t border-emerald-950/5 pt-3">
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-[0.7rem] font-medium uppercase text-slate-500">Giá chỉ từ</span>
-                        <span className="text-sm font-bold text-[#F3A365]">Đang cập nhật</span>
+                        <span className="text-[0.7rem] font-medium uppercase text-slate-500 max-[520px]:text-[0.6rem]">Giá chỉ từ</span>
+                        <span className="text-sm font-bold text-[#F3A365] max-[520px]:text-xs">Đang cập nhật</span>
                       </div>
-                      <span className="grid size-8 place-items-center rounded-full bg-emerald-50 text-[#003F3C] transition-colors duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[#003F3C] group-hover:text-white" aria-hidden="true">
+                      <span className="grid size-8 place-items-center rounded-full bg-emerald-50 text-[#003F3C] transition-colors duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[#003F3C] group-hover:text-white max-[520px]:size-7" aria-hidden="true">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="5" y1="12" x2="19" y2="12" />
                           <polyline points="12 5 19 12 12 19" />
@@ -912,19 +905,19 @@ function App() {
               </a>
             </div>
 
-            <div className="grid grid-cols-4 gap-6 max-[1024px]:grid-cols-2 max-[520px]:grid-cols-1">
+            <div className="grid grid-cols-4 gap-6 max-[1024px]:grid-cols-2 max-[520px]:gap-3">
               {articles.map((article, index) => (
                 <a key={index} href="#about" className={cn(ui.card, 'group flex flex-col overflow-hidden rounded-lg border border-emerald-950/5')} data-aos="fade-up" data-aos-delay={index * 150}>
                   <div className="relative h-40 overflow-hidden">
                     <img className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" src={article.img} alt={article.title} />
-                    <span className="absolute left-3 top-3 rounded-lg bg-emerald-500 px-2.5 py-1 text-[0.65rem] font-extrabold tracking-wide text-white">{article.tag}</span>
                   </div>
-                  <div className="flex grow flex-col p-5">
-                    <p className="line-clamp-3 text-sm font-medium leading-relaxed text-slate-800">{article.title}</p>
-                    <div className="mt-auto flex items-center gap-2 pt-5 text-xs text-slate-500">
-                      <span>{article.date}</span>
-                      <span>·</span>
-                      <span>homebooking admin</span>
+                  <div className="flex grow flex-col p-5 max-[520px]:p-3">
+                    <p className="line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-relaxed text-slate-800 max-[520px]:min-h-[2.35rem] max-[520px]:text-xs max-[520px]:leading-5">{article.title}</p>
+                    <div className="mt-auto flex items-center justify-between gap-2 pt-5 text-xs text-slate-500 max-[520px]:pt-3 max-[520px]:text-[0.65rem]">
+                      <span className="shrink-0">{article.date}</span>
+                      <span className="inline-flex min-w-0 max-w-[86px] shrink rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-emerald-700 max-[520px]:max-w-[66px] max-[520px]:px-2 max-[520px]:text-[0.56rem]">
+                        <span className="truncate">{article.tag}</span>
+                      </span>
                     </div>
                   </div>
                 </a>
@@ -940,7 +933,7 @@ function App() {
             <div className={cn(ui.container, 'relative grid min-h-[240px] grid-cols-[minmax(0,1fr)_390px] items-center gap-7 py-7 max-[1024px]:grid-cols-[minmax(0,1fr)_340px] max-[900px]:grid-cols-1 max-[900px]:py-7 max-[900px]:text-center max-[768px]:min-h-0 max-[768px]:py-3')}>
               <div className="max-w-[680px]" data-aos="fade-right">
                 <h2 className="font-heading text-[clamp(1.4rem,2.5vw,2rem)] font-extrabold leading-tight text-white">Tất cả nhu cầu, một ứng dụng duy nhất.</h2>
-                <p className="mt-3 max-w-[650px] text-[0.84rem] font-medium leading-6 text-emerald-50/75 max-[900px]:mx-auto">
+                <p className="mt-3 max-w-[610px] text-xs font-normal leading-6 text-emerald-50/72 max-[900px]:mx-auto max-[520px]:leading-5">
                   HomeBooking là siêu app đa dịch vụ giúp bạn đặt mọi nhu cầu trong một ứng dụng - từ ăn uống, cà phê, lưu trú, tour, dịch vụ địa phương đến thanh toán, quản lý đặt chỗ và ưu đãi, mang lại trải nghiệm nhanh, tiện, đồng bộ cho người dùng và đối tác.
                 </p>
 
