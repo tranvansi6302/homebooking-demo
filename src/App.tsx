@@ -28,7 +28,7 @@ const ui = {
   btn: 'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5',
   btnPrimary: 'bg-[#003F3C] text-white shadow-[0_6px_16px_rgba(0,63,60,0.15)] hover:bg-[#002a28]',
   btnOutline: 'border border-[#003F3C]/18 bg-white/85 text-[#003F3C] hover:border-[#003F3C] hover:bg-[#003F3C] hover:text-white',
-  sectionTitle: 'font-heading text-[clamp(1.2rem,2.8vw,1.55rem)] font-extrabold leading-tight text-[#003F3C]',
+  sectionTitle: 'font-heading text-[clamp(1.35rem,3vw,1.75rem)] font-extrabold leading-tight text-[#003F3C]',
   sectionKicker: 'inline-flex w-fit rounded-lg bg-emerald-50 px-3 py-1 text-[0.68rem] font-extrabold uppercase tracking-[0.08em] text-emerald-700',
   card: 'rounded-lg bg-white shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-[transform,box-shadow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(0,63,60,0.09)]',
 }
@@ -708,9 +708,9 @@ function App() {
       <div className={cn('min-h-screen bg-white opacity-0 transition-opacity duration-700', isLoaded && 'opacity-100')}>
         {/* 1. Header (Navbar) */}
         <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/30 bg-white/70 shadow-[0_8px_24px_rgba(0,63,60,0.04)] backdrop-blur-xl" data-aos="fade-down" data-aos-duration="600">
-          <nav className={cn(ui.container, 'flex h-14 items-center justify-between gap-4')}>
+          <nav className={cn(ui.container, 'flex h-14 items-center justify-between gap-4 max-[520px]:h-12 max-[520px]:gap-2')}>
             <a className="flex items-center" href="#top" onClick={goToHomeSection('top')}>
-              <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-6 w-auto max-[520px]:h-5" alt="HomeBooking Logo" />
+              <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-6 w-auto max-[520px]:h-[18px]" alt="HomeBooking Logo" />
             </a>
 
             <div className="flex items-center gap-5 text-sm font-semibold text-slate-700 max-[900px]:hidden">
@@ -721,9 +721,12 @@ function App() {
               <a className="transition hover:text-[#003F3C]" href="#footer" onClick={goToHomeSection('footer')}>Liên hệ</a>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-[520px]:gap-1.5">
               <a className={cn(ui.btn, ui.btnOutline, 'px-3 py-1.5 max-[520px]:hidden')} href="#about" onClick={goToHomeSection('about')}>Tải ứng dụng</a>
-              <a className={cn(ui.btn, ui.btnPrimary, 'px-3 py-1.5 max-[520px]:px-3 max-[520px]:text-xs')} href="#partner-banners" onClick={goToHomeSection('partner-banners')}>Trở thành đối tác</a>
+              <a className={cn(ui.btn, ui.btnPrimary, 'px-3 py-1.5 max-[520px]:px-2.5 max-[520px]:py-1.5 max-[520px]:text-[0.7rem]')} href="#partner-banners" onClick={goToHomeSection('partner-banners')}>
+                <span className="max-[520px]:hidden">Trở thành đối tác</span>
+                <span className="hidden max-[520px]:inline">Đối tác</span>
+              </a>
             </div>
           </nav>
         </header>
@@ -932,8 +935,8 @@ function App() {
             <div className="pointer-events-none absolute left-[38%] top-1/2 size-[430px] -translate-y-1/2 rounded-full bg-white/5 max-[900px]:hidden" />
             <div className={cn(ui.container, 'relative grid min-h-[240px] grid-cols-[minmax(0,1fr)_390px] items-center gap-7 py-7 max-[1024px]:grid-cols-[minmax(0,1fr)_340px] max-[900px]:grid-cols-1 max-[900px]:py-7 max-[900px]:text-center max-[768px]:min-h-0 max-[768px]:py-3')}>
               <div className="max-w-[680px]" data-aos="fade-right">
-                <h2 className="font-heading text-[clamp(1.4rem,2.5vw,2rem)] font-extrabold leading-tight text-white">Tất cả nhu cầu, một ứng dụng duy nhất.</h2>
-                <p className="mt-3 max-w-[610px] text-xs font-normal leading-6 text-emerald-50/72 max-[900px]:mx-auto max-[520px]:leading-5">
+                <h2 className="font-heading text-[clamp(1.35rem,3vw,1.75rem)] font-extrabold leading-tight text-white">Tất cả nhu cầu, một ứng dụng duy nhất.</h2>
+                <p className="mt-3 max-w-[560px] text-[0.78rem] font-normal leading-5 text-emerald-50/72 max-[900px]:mx-auto max-[520px]:text-[0.72rem] max-[520px]:leading-[1.15rem]">
                   HomeBooking là siêu app đa dịch vụ giúp bạn đặt mọi nhu cầu trong một ứng dụng - từ ăn uống, cà phê, lưu trú, tour, dịch vụ địa phương đến thanh toán, quản lý đặt chỗ và ưu đãi, mang lại trải nghiệm nhanh, tiện, đồng bộ cho người dùng và đối tác.
                 </p>
 
