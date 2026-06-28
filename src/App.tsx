@@ -1641,7 +1641,7 @@ export function ServicesListingPage() {
       {/* Main layout: sidebar + content */}
       <div className="py-8 max-[520px]:py-4">
         <div className={ui.container}>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+          <div className="relative z-0 bg-white" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
 
             {/* Sidebar — sticky desktop */}
             <div className="max-[1024px]:hidden shrink-0" style={{ width: '268px', position: 'sticky', top: '70px' }}>
@@ -1683,7 +1683,7 @@ export function ServicesListingPage() {
             </div>
 
             {/* Content list */}
-            <div className="flex flex-col gap-6" style={{ flex: 1, minWidth: 0 }}>
+            <div className="flex flex-col gap-6 bg-white max-[520px]:gap-7" style={{ flex: 1, minWidth: 0 }}>
               {serviceCategories.map((cat) => {
                 const subs = allServicesList.filter(s => s.categorySlug === cat.slug);
                 return (
@@ -1712,14 +1712,14 @@ export function ServicesListingPage() {
                       <div className="grid grid-cols-4 gap-4 max-[1280px]:grid-cols-3 max-[900px]:grid-cols-2 max-[520px]:grid-cols-2 max-[520px]:gap-3">
                         {subs.map((service) => (
                           <Link key={service.slug} to={`/dich-vu/${service.slug}`}
-                            className="group flex min-h-[180px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white hover:-translate-y-0.5 hover:border-[#003F3C]/20 hover:bg-slate-50/30 transition-all duration-300 hover:no-underline max-[520px]:min-h-[220px]">
+                            className="group flex min-h-[180px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white hover:-translate-y-0.5 hover:border-[#003F3C]/20 hover:bg-slate-50/30 transition-all duration-300 hover:no-underline max-[520px]:min-h-[220px] max-[520px]:hover:translate-y-0">
                             {/* Image */}
                             <div className="relative h-[110px] overflow-hidden bg-slate-100 shrink-0 max-[520px]:h-[96px]">
                               <img src={service.img} alt={service.name}
                                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                             </div>
                             {/* Body */}
-                            <div className="flex grow flex-col p-3 max-[520px]:p-3">
+                            <div className="flex grow flex-col bg-white p-3 max-[520px]:p-3">
                               {/* Badge */}
                               <div className="mb-2 inline-flex max-w-full self-start items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-semibold max-[520px]:text-[0.66rem] [&_svg]:w-3 [&_svg]:h-3 max-[520px]:[&_svg]:w-2.5 max-[520px]:[&_svg]:h-2.5"
                                 style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
@@ -1727,7 +1727,7 @@ export function ServicesListingPage() {
                                 <span className="truncate">{cat.name}</span>
                               </div>
                               {/* Title */}
-                              <p className="line-clamp-2 min-h-[2.8rem] text-[14px] font-medium leading-relaxed text-slate-800 grow group-hover:text-[#003F3C] transition-colors duration-300 max-[520px]:min-h-[2.35rem] max-[520px]:leading-5">
+                              <p className="line-clamp-2 min-h-[2.8rem] text-[14px] font-medium leading-relaxed text-slate-800 grow group-hover:text-[#003F3C] transition-colors duration-300 max-[520px]:min-h-[2.7rem] max-[520px]:leading-5">
                                 {service.name}
                               </p>
                               {/* Footer */}
