@@ -18,6 +18,7 @@ import qrCodeImg from './assets/qr_code.png'
 import appStoreIcon from './assets/app_store.png'
 import chPlayIcon from './assets/chplay.png'
 import bannerImg from './assets/banner.png'
+import bannerTinTucImg from './assets/bannertintuc.png'
 import bgDichVuImg from './assets/bgdichvu.png'
 import bgLeftImg from './assets/bg-left.jpg'
 import bgRightImg from './assets/bg-right.jpg'
@@ -436,7 +437,7 @@ function NewsListingPage() {
 
   // Sort logic
   const sortedArticles = [...filteredArticles].sort((a, b) => {
-    const parseDate = (dStr) => {
+    const parseDate = (dStr: string) => {
       const [d, m, y] = dStr.split('/').map(Number)
       return new Date(y, m - 1, d).getTime()
     }
@@ -445,7 +446,7 @@ function NewsListingPage() {
     return sortBy === 'newest' ? timeB - timeA : timeA - timeB
   })
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams(searchParams)
     if (category === 'Tất cả') {
       params.delete('category')
@@ -455,7 +456,7 @@ function NewsListingPage() {
     setSearchParams(params)
   }
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const params = new URLSearchParams(searchParams)
     if (event.target.value) {
       params.set('search', event.target.value)
@@ -604,20 +605,20 @@ function NewsListingPage() {
 
           {/* Listing Grid */}
           <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-8 max-[1024px]:grid-cols-1">
-            <div className="flex flex-col">
+            <div className="flex flex-col max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-3">
               {sortedArticles.length > 0 ? (
                 sortedArticles.map((article) => (
-                  <Link to={`/tin-tuc/${article.slug}`} className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 max-[768px]:grid-cols-1 group hover:no-underline" key={article.slug}>
-                    <div className="relative aspect-video overflow-hidden rounded-lg">
+                  <Link to={`/tin-tuc/${article.slug}`} className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 group hover:no-underline max-[768px]:mb-0 max-[768px]:flex max-[768px]:min-h-[220px] max-[768px]:flex-col max-[768px]:gap-0 max-[768px]:overflow-hidden max-[768px]:rounded-lg max-[768px]:border max-[768px]:border-emerald-950/5 max-[768px]:pb-0" key={article.slug}>
+                    <div className="relative aspect-video overflow-hidden rounded-lg max-[768px]:h-[96px] max-[768px]:rounded-none">
                       <img className="h-full w-full object-cover transition duration-700 group-hover:scale-102" src={article.img} alt={article.title} />
                     </div>
-                    <div className="flex min-w-0 flex-col justify-center font-normal">
-                      <span className="mb-2 inline-flex w-fit rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700">{article.tag}</span>
-                      <h2 className="mb-2 line-clamp-2 font-heading text-[14px] md:text-[18px] font-semibold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">
+                    <div className="flex min-w-0 flex-col justify-center font-normal max-[768px]:grow max-[768px]:justify-start max-[768px]:p-3">
+                      <span className="mb-2 inline-flex w-fit rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700 max-[768px]:px-2 max-[768px]:text-[0.62rem]">{article.tag}</span>
+                      <h2 className="mb-2 line-clamp-2 font-heading text-[14px] md:text-[18px] font-semibold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C] max-[768px]:text-[14px] max-[768px]:leading-5">
                         {article.title}
                       </h2>
-                      <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2">{article.excerpt}</p>
-                      <div className="flex items-center justify-between gap-4 max-[640px]:flex-col max-[640px]:items-start">
+                      <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2 max-[768px]:hidden">{article.excerpt}</p>
+                      <div className="flex items-center justify-between gap-4 max-[768px]:mt-auto max-[640px]:flex-col max-[640px]:items-start">
                         <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
                           <span className="flex items-center gap-2">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1119,6 +1120,7 @@ export interface ServiceCategory {
   iconKey: string;
   iconBg: string;
   iconColor: string;
+  desc: string;
 }
 
 export interface ServiceDetail {
