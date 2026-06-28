@@ -18,6 +18,7 @@ import qrCodeImg from './assets/qr_code.png'
 import appStoreIcon from './assets/app_store.png'
 import chPlayIcon from './assets/chplay.png'
 import bannerImg from './assets/banner.png'
+import bgDichVuImg from './assets/bgdichvu.png'
 import bgLeftImg from './assets/bg-left.jpg'
 import bgRightImg from './assets/bg-right.jpg'
 import bgFooterImg from './assets/bgfooter.png'
@@ -295,12 +296,12 @@ export function ShareLinks() {
 }
 
 function NewsSidebar() {
-  const featuredArticles = allNewsArticles.slice(0, 4)
+  const featuredArticles = allNewsArticles.slice(0, 6)
 
   return (
     <aside className="flex flex-col gap-6 md:grid md:grid-cols-2 md:static lg:flex lg:flex-col lg:sticky lg:top-24 lg:self-start">
       {/* 1. Featured Articles */}
-      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none md:border md:border-slate-100 md:bg-white md:p-6 md:shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)] md:col-span-2 lg:col-span-1">
+      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none transition-shadow duration-300 hover:shadow-none md:border md:border-slate-100 md:bg-white md:p-5 md:shadow-[0_8px_30px_rgb(0,0,0,0.02)] md:hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)] md:col-span-2 lg:col-span-1">
         <h2 className="mb-4 font-heading text-base font-extrabold text-slate-900 flex items-center gap-2">
           <span className="h-4 w-1 rounded bg-[#003F3C]"></span>
           Bài viết nổi bật
@@ -316,7 +317,7 @@ function NewsSidebar() {
                 <img className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={article.img} alt={article.title} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <strong className="line-clamp-2 text-sm font-bold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">{article.title}</strong>
+                <span className="line-clamp-2 text-[14px] font-medium leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">{article.title}</span>
                 <span className="flex items-center gap-1 text-xs text-slate-400">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect width="18" height="18" x="3" y="4" rx="2" />
@@ -331,7 +332,7 @@ function NewsSidebar() {
       </section>
 
       {/* 2. Socials */}
-      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none md:border md:border-slate-100 md:bg-white md:p-6 md:shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)]">
+      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none transition-shadow duration-300 hover:shadow-none md:border md:border-slate-100 md:bg-white md:p-5 md:shadow-[0_8px_30px_rgb(0,0,0,0.02)] md:hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)]">
         <h2 className="mb-1 font-heading text-base font-extrabold text-slate-900 flex items-center gap-2">
           <span className="h-4 w-1 rounded bg-[#003F3C]"></span>
           Theo dõi HomeBooking
@@ -354,16 +355,16 @@ function NewsSidebar() {
       </section>
 
       {/* 3. Download App */}
-      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none md:border md:border-emerald-100 md:bg-gradient-to-br md:from-emerald-50/60 md:to-teal-50/20 md:p-6 md:shadow-[0_8px_30px_rgb(0,0,0,0.01)]">
+      <section className="rounded-xl border-0 bg-transparent p-0 shadow-none transition-shadow duration-300 hover:shadow-none md:border md:border-slate-100 md:bg-white md:p-5 md:shadow-[0_8px_30px_rgb(0,0,0,0.02)] md:hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)]">
         <h2 className="mb-1 font-heading text-base font-extrabold text-slate-900">
           Tải ứng dụng <span className="text-[#003F3C]">HomeBooking</span>
         </h2>
         <p className="mb-4 text-sm leading-relaxed text-slate-500">Trải nghiệm đặt dịch vụ nhanh chóng, tiện lợi mọi lúc mọi nơi.</p>
-        <div className="flex gap-4 items-center flex-col items-stretch md:flex-row md:items-center lg:flex-col lg:items-stretch">
+        <div className="flex gap-4 items-center flex-col md:flex-row lg:flex-col">
           <div className="p-1 bg-white rounded-lg border border-emerald-100/40 shadow-sm shrink-0 w-fit mx-auto md:mx-0 lg:mx-auto">
             <img className="size-20 rounded-md object-cover" src={qrCodeImg} alt="QR tải ứng dụng HomeBooking" />
           </div>
-          <div className="flex flex-col gap-2 flex-1 w-full md:w-auto lg:w-full">
+          <div className="grid grid-cols-2 gap-2 flex-1 w-full">
             <a className="rounded-lg bg-[#003F3C] min-h-9 py-2 text-center text-xs font-bold text-white shadow-sm transition duration-300 hover:bg-emerald-800 hover:-translate-y-0.5 flex items-center justify-center gap-1" href="#footer">
               App Store
             </a>
@@ -377,10 +378,53 @@ function NewsSidebar() {
   )
 }
 
+function AppDownloadBand({ title, description }: { title: string; description: string }) {
+  return (
+    <section className="relative z-20 overflow-visible bg-white py-3 max-[768px]:overflow-hidden max-[768px]:py-0">
+      <div className="relative overflow-visible bg-[#193f3a] max-[768px]:overflow-hidden">
+        <div className="pointer-events-none absolute left-[38%] top-1/2 size-[430px] -translate-y-1/2 rounded-full bg-white/5 max-[900px]:hidden" />
+        <div className={cn(ui.container, 'relative grid min-h-[220px] grid-cols-[minmax(0,1fr)_360px] items-center gap-7 py-6 max-[1024px]:grid-cols-[minmax(0,1fr)_320px] max-[900px]:grid-cols-1 max-[900px]:py-7 max-[900px]:text-center max-[768px]:min-h-0 max-[768px]:py-5')}>
+          <div className="max-w-[680px]">
+            <h2 className="font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-extrabold leading-tight text-white">{title}</h2>
+            <p className="mt-3 max-w-[560px] text-sm font-normal leading-6 text-emerald-50/74 max-[900px]:mx-auto max-[520px]:text-sm max-[520px]:leading-5">
+              {description}
+            </p>
+
+            <div className="mt-5 flex gap-2.5 max-[900px]:justify-center max-[520px]:mx-auto max-[520px]:grid max-[520px]:w-full max-[520px]:max-w-[360px] max-[520px]:grid-cols-2 max-[520px]:gap-2">
+              <a href="#footer" className="flex min-h-10 min-w-[145px] items-center justify-center gap-2.5 rounded-lg border border-white/18 bg-white/10 px-4 py-2 text-white shadow-[0_10px_20px_rgba(0,0,0,0.08)] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/16 max-[520px]:min-h-12 max-[520px]:min-w-0 max-[520px]:gap-2 max-[520px]:border-white/25 max-[520px]:px-2 max-[520px]:py-1.5">
+                <img src={appStoreIcon} alt="" className="size-7 object-contain max-[520px]:size-7" />
+                <span className="flex flex-col items-start leading-none">
+                  <span className="text-[0.52rem] font-bold uppercase text-white/70 max-[520px]:text-[0.48rem]">Tải xuống trên</span>
+                  <span className="mt-1 text-[0.84rem] font-extrabold max-[520px]:text-[0.78rem]">App Store</span>
+                </span>
+              </a>
+
+              <a href="#footer" className="flex min-h-10 min-w-[145px] items-center justify-center gap-2.5 rounded-lg border border-white/18 bg-white/10 px-4 py-2 text-white shadow-[0_10px_20px_rgba(0,0,0,0.08)] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/16 max-[520px]:min-h-12 max-[520px]:min-w-0 max-[520px]:gap-2 max-[520px]:border-white/25 max-[520px]:px-2 max-[520px]:py-1.5">
+                <img src={chPlayIcon} alt="" className="size-7 object-contain max-[520px]:size-7" />
+                <span className="flex flex-col items-start leading-none">
+                  <span className="text-[0.52rem] font-bold uppercase text-white/70 max-[520px]:text-[0.48rem]">Tải trên</span>
+                  <span className="mt-1 text-[0.84rem] font-extrabold max-[520px]:text-[0.78rem]">Google Play</span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div className="relative z-30 h-[220px] overflow-visible max-[900px]:h-[190px] max-[768px]:hidden">
+            <div className="absolute inset-y-0 left-[-18px] right-[-18px] flex items-center justify-center max-[900px]:left-0 max-[900px]:right-0">
+              <img src="https://homebooking.global/assets/mock-mobile.png" alt="Ứng dụng HomeBooking trên điện thoại" className="relative z-30 w-[260px] rotate-8 object-contain drop-shadow-[0_24px_26px_rgba(0,0,0,0.28)] transition duration-700 hover:-translate-y-1.5 hover:rotate-6 max-[1024px]:w-[235px] max-[900px]:w-[210px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function NewsListingPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const categoryFilter = searchParams.get('category') || 'Tất cả'
   const searchQuery = searchParams.get('search') || ''
+  const [sortBy, setSortBy] = React.useState('newest');
 
   // Filter logic
   const filteredArticles = allNewsArticles.filter((article) => {
@@ -390,7 +434,18 @@ function NewsListingPage() {
     return matchesCategory && matchesSearch
   })
 
-  const handleCategoryClick = (category: string) => {
+  // Sort logic
+  const sortedArticles = [...filteredArticles].sort((a, b) => {
+    const parseDate = (dStr) => {
+      const [d, m, y] = dStr.split('/').map(Number)
+      return new Date(y, m - 1, d).getTime()
+    }
+    const timeA = parseDate(a.date)
+    const timeB = parseDate(b.date)
+    return sortBy === 'newest' ? timeB - timeA : timeA - timeB
+  })
+
+  const handleCategoryClick = (category) => {
     const params = new URLSearchParams(searchParams)
     if (category === 'Tất cả') {
       params.delete('category')
@@ -400,7 +455,7 @@ function NewsListingPage() {
     setSearchParams(params)
   }
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event) => {
     const params = new URLSearchParams(searchParams)
     if (event.target.value) {
       params.set('search', event.target.value)
@@ -412,64 +467,156 @@ function NewsListingPage() {
 
   return (
     <main className="bg-white text-slate-800">
-      <section className="border-b border-slate-200 bg-cover bg-center pt-20 pb-8" style={{ backgroundImage: `linear-gradient(90deg, rgba(248,250,252,0.94) 0%, rgba(248,250,252,0.9) 48%, rgba(248,250,252,0.82) 100%), url(${bgFooterImg})` }}>
-        <div className={cn(ui.container, 'flex min-h-[118px] items-center')}>
+      <section className="relative w-full overflow-hidden border-b border-slate-200 pt-[58px]" style={{ minHeight: '200px' }}>
+        <img
+          src={bannerTinTucImg}
+          alt="Banner Tin tức HomeBooking"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className={cn(ui.container, 'relative flex min-h-[200px] items-center')}>
           <div>
-            <h1 className="mb-3 font-heading text-[clamp(1.55rem,2.8vw,2rem)] font-extrabold leading-tight text-slate-800">Tin tức</h1>
-            <p className="max-w-2xl text-sm leading-relaxed text-slate-500">Cập nhật những thông tin, mẹo hay và hoạt động mới nhất từ HomeBooking</p>
+            <h1 className="mb-2 font-heading text-[clamp(1.55rem,2.8vw,2.1rem)] font-extrabold leading-tight text-slate-800">Tin tức</h1>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-500">Cập nhật những thông tin, mẹo hay và hoạt động mới nhất từ HomeBooking</p>
           </div>
         </div>
       </section>
 
       <section className="py-8 pb-14">
         <div className={ui.container}>
-          <div className="mb-6 flex items-center justify-between gap-4 max-[900px]:flex-col max-[900px]:items-stretch bg-slate-50/50 p-4 rounded-xl border border-slate-100 max-[768px]:-mx-4 max-[768px]:rounded-none max-[768px]:border-x-0 max-[768px]:px-4">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar max-[900px]:w-full max-[900px]:pb-1" aria-label="Danh mục tin tức">
-              {newsCategories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryClick(category)}
-                  className={cn(
-                    'min-h-9 cursor-pointer rounded-full border px-4 text-xs font-bold transition-all duration-200 shrink-0',
-                    categoryFilter.toLowerCase() === category.toLowerCase()
-                      ? 'border-[#003F3C] bg-[#003F3C] text-white shadow-sm scale-102'
-                      : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700'
-                  )}
-                  type="button"
-                >
-                  <span className="block">{category}</span>
-                </button>
-              ))}
+          
+          {/* Desktop Filter Row (Hidden on mobile) */}
+          <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_360px] gap-8 mb-6">
+            
+            {/* Left side: Categories scroll list (font 14px) */}
+            <div className="flex w-full items-center gap-2 overflow-x-auto no-scrollbar pb-1 md:pb-0" aria-label="Danh mục tin tức">
+              {newsCategories.map((category) => {
+                const isActive = categoryFilter.toLowerCase() === category.toLowerCase()
+                return (
+                  <button
+                    key={category}
+                    onClick={() => handleCategoryClick(category)}
+                    className={cn(
+                      'h-9 cursor-pointer rounded-full border px-4.5 text-[14px] font-semibold transition-all duration-200 shrink-0',
+                      isActive
+                        ? 'border-[#003F3C] bg-[#003F3C] text-white shadow-sm'
+                        : 'border-slate-200 bg-white text-slate-600 hover:border-[#003F3C]/40 hover:bg-slate-50 hover:text-slate-900'
+                    )}
+                    type="button"
+                  >
+                    {category}
+                  </button>
+                )
+              })}
             </div>
 
-            <label className="flex h-11 min-w-[320px] items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 text-emerald-600 max-[900px]:min-w-0 focus-within:ring-2 focus-within:ring-emerald-100 focus-within:border-emerald-600 transition-all duration-200" aria-label="Tìm kiếm bài viết">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-slate-400">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              <input
-                className="w-full border-0 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
-                type="search"
-                placeholder="Tìm kiếm bài viết..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-            </label>
+            {/* Right side: Search + Sort aligned with sidebar */}
+            <div className="flex items-center gap-2.5 w-full">
+              {/* Search Box */}
+              <label className="flex h-9 flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-slate-400 focus-within:border-[#003F3C] focus-within:ring-1 focus-within:ring-[#003F3C]/10">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 text-slate-400">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input
+                  className="w-full border-0 bg-transparent text-[14px] text-slate-800 outline-none placeholder:text-slate-400"
+                  type="search"
+                  placeholder="Tìm kiếm bài viết..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </label>
+
+              {/* Sort Button with Icon */}
+              <button
+                type="button"
+                onClick={() => setSortBy(sortBy === 'newest' ? 'oldest' : 'newest')}
+                className="flex h-9 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-[14px] font-semibold text-slate-700 hover:border-[#003F3C] hover:bg-slate-50 transition cursor-pointer shrink-0"
+                title={sortBy === 'newest' ? "Sắp xếp: Mới nhất" : "Sắp xếp: Cũ nhất"}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500">
+                  {sortBy === 'newest' ? (
+                    <path d="m3 16 4 4 4-4M7 20V4M21 12H13M21 6H13M21 18H13" />
+                  ) : (
+                    <path d="m3 8 4-4 4 4M7 4v16M21 12H13M21 6H13M21 18H13" />
+                  )}
+                </svg>
+                <span>{sortBy === 'newest' ? 'Mới nhất' : 'Cũ nhất'}</span>
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-[minmax(0,1fr)_330px] items-start gap-8 max-[1024px]:grid-cols-1">
+          {/* Mobile/Tablet Filter Row (Hidden on desktop) */}
+          <div className="flex lg:hidden flex-col gap-3 mb-6">
+            {/* Row 1: Search Box (Full Width) */}
+            <div className="w-full">
+              <label className="flex h-9 w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-slate-400 focus-within:border-[#003F3C] focus-within:ring-1 focus-within:ring-[#003F3C]/10">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 text-slate-400">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input
+                  className="w-full border-0 bg-transparent text-[14px] text-slate-800 outline-none placeholder:text-slate-400"
+                  type="search"
+                  placeholder="Tìm kiếm bài viết..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </label>
+            </div>
+
+            {/* Row 2: Categories Dropdown (60%) + Sort Button (40%) */}
+            <div className="flex w-full items-center gap-2.5">
+              {/* Category Dropdown (60%) */}
+              <div className="w-[60%] shrink-0">
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => handleCategoryClick(e.target.value)}
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-[14px] font-medium text-slate-700 outline-none focus:border-[#003F3C] focus:ring-1 focus:ring-[#003F3C]/10 cursor-pointer"
+                >
+                  {newsCategories.map((category) => (
+                    <option key={category} value={category}>
+                      Danh mục: {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Sort Button (40%) */}
+              <div className="w-[40%] flex-1">
+                <button
+                  type="button"
+                  onClick={() => setSortBy(sortBy === 'newest' ? 'oldest' : 'newest')}
+                  className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 text-[14px] font-medium text-slate-700 hover:border-[#003F3C] hover:bg-slate-50 transition cursor-pointer"
+                  title={sortBy === 'newest' ? "Sắp xếp: Mới nhất" : "Sắp xếp: Cũ nhất"}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 shrink-0">
+                    {sortBy === 'newest' ? (
+                      <path d="m3 16 4 4 4-4M7 20V4M21 12H13M21 6H13M21 18H13" />
+                    ) : (
+                      <path d="m3 8 4-4 4 4M7 4v16M21 12H13M21 6H13M21 18H13" />
+                    )}
+                  </svg>
+                  <span className="truncate">{sortBy === 'newest' ? 'Mới nhất' : 'Cũ nhất'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Listing Grid */}
+          <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-8 max-[1024px]:grid-cols-1">
             <div className="flex flex-col">
-              {filteredArticles.length > 0 ? (
-                filteredArticles.map((article) => (
+              {sortedArticles.length > 0 ? (
+                sortedArticles.map((article) => (
                   <Link to={`/tin-tuc/${article.slug}`} className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 max-[768px]:grid-cols-1 group hover:no-underline" key={article.slug}>
                     <div className="relative aspect-video overflow-hidden rounded-lg">
                       <img className="h-full w-full object-cover transition duration-700 group-hover:scale-102" src={article.img} alt={article.title} />
                     </div>
                     <div className="flex min-w-0 flex-col justify-center font-normal">
-                      <h2 className="mb-3 line-clamp-2 font-heading text-lg md:text-xl font-extrabold leading-snug text-slate-800 transition duration-300 group-hover:text-emerald-700">
+                      <span className="mb-2 inline-flex w-fit rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700">{article.tag}</span>
+                      <h2 className="mb-2 line-clamp-2 font-heading text-[14px] md:text-[18px] font-semibold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">
                         {article.title}
                       </h2>
-                      <p className="mb-5 text-sm leading-7 text-slate-500 line-clamp-2">{article.excerpt}</p>
+                      <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2">{article.excerpt}</p>
                       <div className="flex items-center justify-between gap-4 max-[640px]:flex-col max-[640px]:items-start">
                         <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
                           <span className="flex items-center gap-2">
@@ -481,7 +628,6 @@ function NewsListingPage() {
                             </svg>
                             {article.date}
                           </span>
-                          <span className="inline-flex rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.68rem] font-extrabold uppercase tracking-wide text-emerald-700">{article.tag}</span>
                         </div>
                         <span
                           className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-extrabold text-[#003F3C] transition group-hover:text-emerald-700 hover:translate-x-1 max-[768px]:hidden"
@@ -501,8 +647,6 @@ function NewsListingPage() {
                   Không tìm thấy bài viết nào phù hợp với bộ lọc hoặc từ khóa tìm kiếm của bạn.
                 </div>
               )}
-
-
             </div>
 
             <NewsSidebar />
@@ -990,120 +1134,273 @@ export interface ServiceDetail {
 }
 
 const serviceCategories: ServiceCategory[] = [
-  { name: 'Mẹ & Bé', slug: 'me-va-be', iconKey: 'mom-baby', iconBg: '#FFF5F5', iconColor: '#E53E3E' },
-  { name: 'Làm đẹp', slug: 'lam-dep', iconKey: 'beauty', iconBg: '#FFFDF0', iconColor: '#D69E2E' },
-  { name: 'Vệ sinh nhà cửa', slug: 've-sinh-nha-cua', iconKey: 'home', iconBg: '#E6FFFA', iconColor: '#319795' },
-  { name: 'Điện nước', slug: 'dien-nuoc', iconKey: 'repair', iconBg: '#FFFAF0', iconColor: '#DD6B20' },
-  { name: 'Y tế & Sức khỏe', slug: 'y-te-va-suc-khoe', iconKey: 'health', iconBg: '#EBF8FF', iconColor: '#3182CE' },
-  { name: 'Chăm sóc người già', slug: 'cham-soc-nguoi-gia', iconKey: 'elderly', iconBg: '#F0FDF4', iconColor: '#38A169' },
-  { name: 'Thú cưng', slug: 'thu-cung', iconKey: 'pets', iconBg: '#FFF5F5', iconColor: '#E53E3E' },
-  { name: 'Logistics & Giao vận', slug: 'logistics', iconKey: 'truck', iconBg: '#EBF8FF', iconColor: '#3182CE' },
+  { name: 'Dọn dẹp & Vệ sinh', slug: 'don-dep-ve-sinh', iconKey: 'home', iconBg: '#E6FFFA', iconColor: '#319795', desc: 'Dọn nhà, vệ sinh văn phòng, giặt sofa, thảm' },
+  { name: 'Bảo trì & Thiết bị', slug: 'bao-tri-dien-lanh', iconKey: 'repair', iconBg: '#FFFAF0', iconColor: '#DD6B20', desc: 'Rửa máy lạnh, sửa tủ lạnh, máy giặt, tivi' },
+  { name: 'Sửa chữa điện nước', slug: 'sua-chua-dien-nuoc', iconKey: 'wrench', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Lắp đặt đèn, sửa ống nước, sửa đường điện' },
+  { name: 'Chăm sóc Mẹ & Bé', slug: 'me-va-be', iconKey: 'mom-baby', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Tắm bé sơ sinh, chăm sóc mẹ sau sinh, thông tắc tia sữa' },
+  { name: 'Y tế & Sức khỏe', slug: 'y-te-suc-khoe', iconKey: 'health', iconBg: '#EBF8FF', iconColor: '#3182CE', desc: 'Khám bệnh tại nhà, truyền dịch, tiêm thuốc, xét nghiệm' },
+  { name: 'Chăm sóc Người già', slug: 'cham-soc-nguoi-gia', iconKey: 'elderly', iconBg: '#F0FDF4', iconColor: '#38A169', desc: 'Chăm sóc người bệnh, bầu bạn, hỗ trợ sinh hoạt' },
+  { name: 'Làm đẹp & Spa', slug: 'lam-dep-spa', iconKey: 'beauty', iconBg: '#FFFDF0', iconColor: '#D69E2E', desc: 'Chăm sóc da mặt, massage trị liệu, làm nail, gội đầu dưỡng sinh' },
+  { name: 'Trông trẻ & Giúp việc', slug: 'trong-tre-giup-viec', iconKey: 'baby-sitting', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Trông trẻ theo giờ, giúp việc định kỳ, nấu ăn gia đình' },
+  { name: 'Chăm sóc Thú cưng', slug: 'cham-soc-thu-cung', iconKey: 'pets', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Tắm rửa, tỉa lông, khách sạn thú cưng, dắt chó đi dạo' },
+  { name: 'Logistics & Giao vận', slug: 'logistics-giao-van', iconKey: 'truck', iconBg: '#EBF8FF', iconColor: '#3182CE', desc: 'Chuyển nhà trọn gói, chở hàng, giao hàng hỏa tốc' },
+  { name: 'Gia sư & Dạy kèm', slug: 'gia-su-day-kem', iconKey: 'tutor', iconBg: '#F0FDF4', iconColor: '#38A169', desc: 'Gia sư các môn học, dạy tiếng Anh, năng khiếu' },
+  { name: 'Đưa đón & Tài xế', slug: 'dua-don-tai-xe', iconKey: 'driver', iconBg: '#FFFAF0', iconColor: '#DD6B20', desc: 'Tài xế hộ tống, lái xe hộ người say, đưa đón sân bay' },
+  { name: 'Tổ chức & Trang trí', slug: 'to-chuc-trang-tri', iconKey: 'event', iconBg: '#FFFDF0', iconColor: '#D69E2E', desc: 'Trang trí sinh nhật, thôi nôi, tiệc gia đình' }
 ];
 
 const allServicesList: ServiceDetail[] = [
   {
-    slug: 've-sinh-nha-cua',
-    name: 'Vệ sinh nhà cửa',
-    categorySlug: 've-sinh-nha-cua',
-    tag: 'VỆ SINH NHÀ CỬA',
-    desc: 'Không gian sạch sẽ, thoáng mát mỗi ngày',
+    slug: 'don-nha-theo-gio',
+    name: 'Dọn dẹp nhà theo giờ',
+    categorySlug: 'don-dep-ve-sinh',
+    tag: 'DỌN DẸP & VỆ SINH',
+    desc: 'Lau chùi, dọn dẹp nhà cửa định kỳ theo giờ với đội ngũ chuyên nghiệp, an tâm.',
     img: homeCleaningImg,
-    gallery: [
-      homeCleaningImg,
-      spaBeautyImg,
-      applianceRepairImg
-    ],
+    gallery: [homeCleaningImg, spaBeautyImg, applianceRepairImg],
     features: [
-      { title: 'Sạch sâu - Khử khuẩn', desc: 'Làm sạch toàn diện' },
-      { title: 'Đội ngũ chuyên nghiệp', desc: 'Đào tạo bài bản' },
-      { title: 'Linh hoạt - Tiện lợi', desc: 'Đặt lịch dễ dàng' }
+      { title: 'Sạch sẽ - Gọn gàng', desc: 'Đảm bảo vệ sinh chuẩn mực' },
+      { title: 'Nhân sự tin cậy', desc: 'Xác thực lý lịch rõ ràng' }
     ],
-    includes: [
-      'Quét dọn, hút bụi tất cả các phòng',
-      'Lau chùi bàn ghế, bề mặt',
-      'Lau cửa kính, cửa sổ',
-      'Vệ sinh nhà tắm, nhà vệ sinh',
-      'Vệ sinh bếp, bồn rửa, thiết bị',
-      'Thu gom rác và thay túi rác'
-    ]
+    includes: ['Quét dọn bụi bẩn các phòng', 'Lau sàn nhà, lau kính cơ bản', 'Thu gom rác sinh hoạt']
   },
   {
-    slug: 'cham-soc-me-va-be',
-    name: 'Chăm sóc mẹ & bé',
-    categorySlug: 'me-va-be',
-    tag: 'MẸ & BÉ',
-    desc: 'Chăm sóc tận tâm, yêu thương hết mực',
-    img: momBabyCareImg,
-    gallery: [
-      momBabyCareImg,
-      elderlyCareImg,
-      homeHealthcareImg
-    ],
+    slug: 've-sinh-sau',
+    name: 'Tổng vệ sinh sâu (Deep Clean)',
+    categorySlug: 'don-dep-ve-sinh',
+    tag: 'DỌN DẸP & VỆ SINH',
+    desc: 'Vệ sinh toàn diện nhà cửa đón Tết, nhà mới sửa xong hoặc lâu ngày không dọn dẹp.',
+    img: homeCleaningImg,
+    gallery: [homeCleaningImg, spaBeautyImg],
     features: [
-      { title: 'Tận tâm - Chu đáo', desc: 'Yêu thương như người nhà' },
-      { title: 'Kỹ năng chuyên sâu', desc: 'Chứng chỉ điều dưỡng' },
-      { title: 'Đúng giờ - Đúng việc', desc: 'Đảm bảo sự an tâm' }
+      { title: 'Làm sạch sâu', desc: 'Đánh bay mọi vết bám lâu ngày' },
+      { title: 'Thiết bị chuyên nghiệp', desc: 'Sử dụng máy hút bụi công suất lớn' }
     ],
-    includes: [
-      'Tắm bé sơ sinh, vệ sinh rốn, hơ lá trầu',
-      'Massage cho mẹ trước/sau sinh giảm căng thẳng',
-      'Hỗ trợ mẹ bỉm sữa chăm sóc bé ban đêm',
-      'Tư vấn dinh dưỡng chuẩn y khoa cho mẹ',
-      'Vệ sinh đồ chơi, phòng ốc và bình sữa của bé',
-      'Chăm sóc bé trong suốt thời gian mẹ vắng nhà'
-    ]
+    includes: ['Khử khuẩn toàn bộ các phòng', 'Đánh bóng sàn gạch, sàn gỗ', 'Vệ sinh tủ bếp và nhà tắm chuyên sâu']
   },
   {
     slug: 've-sinh-may-lanh',
-    name: 'Vệ sinh máy lạnh',
-    categorySlug: 'dien-nuoc',
-    tag: 'ĐIỆN NƯỚC',
-    desc: 'Mát lạnh, tiết kiệm điện năng tức thì',
+    name: 'Vệ sinh & Bảo dưỡng máy lạnh',
+    categorySlug: 'bao-tri-dien-lanh',
+    tag: 'BẢO TRÌ & THIẾT BỊ',
+    desc: 'Xịt rửa dàn nóng, dàn lạnh máy lạnh tại nhà giúp thổi hơi lạnh sâu, tiết kiệm điện.',
     img: applianceRepairImg,
-    gallery: [
-      applianceRepairImg,
-      homeCleaningImg,
-      spaBeautyImg
-    ],
+    gallery: [applianceRepairImg, homeCleaningImg],
     features: [
-      { title: 'Làm lạnh sâu', desc: 'Bảo vệ hệ hô hấp' },
-      { title: 'Kỹ thuật tay nghề cao', desc: 'Hơn 5 năm kinh nghiệm' },
-      { title: 'Bảo hành uy tín', desc: 'Thời gian bảo hành dài lâu' }
+      { title: 'Tiết kiệm điện', desc: 'Tăng hiệu suất làm lạnh tối đa' },
+      { title: 'Bảo hành rò nước', desc: 'Bảo hành chảy nước sau vệ sinh' }
     ],
-    includes: [
-      'Vệ sinh xịt rửa lưới lọc, dàn nóng, dàn lạnh',
-      'Kiểm tra rò rỉ gas và lượng gas hiện có',
-      'Nạp gas bổ sung khi cần thiết (đúng quy chuẩn)',
-      'Kiểm tra độ rung và dòng điện của máy nén',
-      'Thông tắc đường ống thoát nước ngưng điều hòa',
-      'Khử mùi và diệt khuẩn màng lọc điều hòa'
-    ]
+    includes: ['Rửa lưới lọc và dàn trao đổi nhiệt', 'Kiểm tra đo dòng định mức và lượng gas', 'Thông đường ống nước ngưng']
+  },
+  {
+    slug: 'sua-tu-lanh-tai-nha',
+    name: 'Sửa chữa tủ lạnh chuyên nghiệp',
+    categorySlug: 'bao-tri-dien-lanh',
+    tag: 'BẢO TRÌ & THIẾT BỊ',
+    desc: 'Khắc phục nhanh tình trạng tủ lạnh không đông đá, rò rỉ nước hoặc kêu to.',
+    img: applianceRepairImg,
+    gallery: [applianceRepairImg, homeCleaningImg],
+    features: [
+      { title: 'Thay thế linh kiện chính hãng', desc: 'Linh kiện đạt chuẩn bảo hành' },
+      { title: 'Thợ tay nghề cao', desc: 'Có mặt sau 30 phút' }
+    ],
+    includes: ['Kiểm tra nạp gas lạnh', 'Sửa chữa bo mạch và cảm biến nhiệt', 'Thay block tủ lạnh nếu hỏng']
+  },
+  {
+    slug: 'sua-dien-nuoc-tai-nha',
+    name: 'Sửa chữa điện nước khẩn cấp',
+    categorySlug: 'sua-chua-dien-nuoc',
+    tag: 'SỬA CHỮA ĐIỆN NƯỚC',
+    desc: 'Giải quyết các sự cố chập điện, rò rỉ nước, hỏng máy bơm nước tại nhà nhanh chóng.',
+    img: applianceRepairImg,
+    gallery: [applianceRepairImg],
+    features: [
+      { title: 'Phục vụ 24/7', desc: 'Có mặt bất kể ngày đêm khi khẩn cấp' },
+      { title: 'Giá cả rõ ràng', desc: 'Báo giá trước khi thi công' }
+    ],
+    includes: ['Dò tìm vị trí rò rỉ nước âm tường', 'Thay thế aptomat, ổ cắm chập cháy', 'Thông nghẹt đường ống thoát nước']
+  },
+  {
+    slug: 'tam-be-so-sinh-tai-nha',
+    name: 'Tắm bé sơ sinh & Massage tại nhà',
+    categorySlug: 'me-va-be',
+    tag: 'CHĂM SÓC MẸ & BÉ',
+    desc: 'Tắm bé theo chuẩn y khoa, vệ sinh rốn tránh nhiễm trùng kết hợp massage thư giãn cho bé.',
+    img: momBabyCareImg,
+    gallery: [momBabyCareImg, elderlyCareImg],
+    features: [
+      { title: 'Điều dưỡng chuyên nghiệp', desc: 'Có chứng chỉ y khoa chính quy' },
+      { title: 'Tận tâm, yêu thương', desc: 'Thao tác nhẹ nhàng chu đáo' }
+    ],
+    includes: ['Massage kích thích tuần hoàn cho bé', 'Tắm và chăm sóc rốn đúng chuẩn y tế', 'Hơ lá trầu cho trẻ sơ sinh']
+  },
+  {
+    slug: 'cham-soc-me-sau-sinh',
+    name: 'Chăm sóc & Phục hồi mẹ sau sinh',
+    categorySlug: 'me-va-be',
+    tag: 'CHĂM SÓC MẸ & BÉ',
+    desc: 'Liệu trình xông hơi, massage bụng tống sản dịch, thông tắc tia sữa và hỗ trợ giảm eo.',
+    img: momBabyCareImg,
+    gallery: [momBabyCareImg],
+    features: [
+      { title: 'Liệu trình chuẩn', desc: 'Giúp mẹ nhanh chóng lấy lại vóc dáng' },
+      { title: 'Giảm đau mỏi bả vai', desc: 'Thư giãn cơ khớp sau sinh' }
+    ],
+    includes: ['Xông thảo dược phục hồi cơ thể', 'Massage bụng hóa lỏng mỡ thừa', 'Thông tắc tia sữa ban đầu']
+  },
+  {
+    slug: 'truyen-dich-tai-nha',
+    name: 'Dịch vụ truyền dịch & tiêm thuốc tại nhà',
+    categorySlug: 'y-te-suc-khoe',
+    tag: 'Y TẾ & SỨC KHỎE',
+    desc: 'Truyền nước biển, nước hoa quả nâng cao đề kháng, tiêm thuốc theo y lệnh bác sĩ.',
+    img: homeHealthcareImg,
+    gallery: [homeHealthcareImg],
+    features: [
+      { title: 'Y tá kinh nghiệm', desc: 'Làm việc tại các bệnh viện lớn' },
+      { title: 'Đảm bảo an toàn', desc: 'Theo dõi chỉ số sinh tồn suốt quá trình' }
+    ],
+    includes: ['Cắm kim và theo dõi dịch truyền', 'Tiêm bắp, tiêm tĩnh mạch an toàn', 'Kiểm tra huyết áp và mạch nhiệt độ']
+  },
+  {
+    slug: 'kham-benh-tai-nha',
+    name: 'Thăm khám & Xét nghiệm tại nhà',
+    categorySlug: 'y-te-suc-khoe',
+    tag: 'Y TẾ & SỨC KHỎE',
+    desc: 'Bác sĩ trực tiếp đến nhà thăm khám, lấy mẫu xét nghiệm máu và trả kết quả tận nhà.',
+    img: homeHealthcareImg,
+    gallery: [homeHealthcareImg],
+    features: [
+      { title: 'Bác sĩ chuyên khoa', desc: 'Chẩn đoán chính xác tại nhà' },
+      { title: 'Lấy mẫu tiện lợi', desc: 'Không cần xét hàng mệt mỏi' }
+    ],
+    includes: ['Khám tổng quát tai mũi họng tim phổi', 'Lấy mẫu máu, nước tiểu gửi labo', 'Kê đơn thuốc điều trị chi tiết']
+  },
+  {
+    slug: 'cham-soc-nguoi-gia-ngay',
+    name: 'Chăm sóc & Bầu bạn người cao tuổi',
+    categorySlug: 'cham-soc-nguoi-gia',
+    tag: 'CHĂM SÓC NGƯỜI GIÀ',
+    desc: 'Đồng hành chăm sóc sinh hoạt, đo huyết áp, nhắc nhở uống thuốc và bầu bạn cùng ông bà.',
+    img: elderlyCareImg,
+    gallery: [elderlyCareImg],
+    features: [
+      { title: 'Kiên nhẫn - Thấu hiểu', desc: 'Kính trọng và kiên nhẫn chăm sóc' },
+      { title: 'Hỗ trợ y tế cơ bản', desc: 'Đo huyết áp, nhịp tim hàng ngày' }
+    ],
+    includes: ['Hỗ trợ ăn uống, vệ sinh cá nhân', 'Dìu đi dạo và trò chuyện tâm sự', 'Nhắc nhở dùng thuốc đúng giờ kê đơn']
   },
   {
     slug: 'cham-soc-da-mat',
-    name: 'Chăm sóc da mặt',
-    categorySlug: 'lam-dep',
-    tag: 'LÀM ĐẸP',
-    desc: 'Đẹp hơn mỗi ngày, tự tin tỏa sáng rực rỡ',
+    name: 'Chăm sóc da mặt chuẩn Spa',
+    categorySlug: 'lam-dep-spa',
+    tag: 'LÀM ĐẸP & SPA',
+    desc: 'Tẩy trang, xông hơi, hút bã nhờn, massage nâng cơ mặt thải độc tố giúp da mịn màng.',
     img: spaBeautyImg,
-    gallery: [
-      spaBeautyImg,
-      momBabyCareImg,
-      homeHealthcareImg
-    ],
+    gallery: [spaBeautyImg, momBabyCareImg],
     features: [
-      { title: 'Mỹ phẩm organic', desc: 'An toàn cho làn da' },
-      { title: 'Kỹ thuật viên lành nghề', desc: 'Massage chuyên sâu' },
-      { title: 'Liệu trình bài bản', desc: 'Hiệu quả sau lần đầu' }
+      { title: 'Mỹ phẩm an toàn', desc: 'Chiết xuất từ thiên nhiên lành tính' },
+      { title: 'Kỹ thuật viên chuyên nghiệp', desc: 'Đào tạo bài bản chuẩn spa' }
     ],
-    includes: [
-      'Tẩy trang, rửa mặt làm sạch sâu lớp bụi bẩn',
-      'Tẩy tế bào chết vật lý/hóa học dịu nhẹ',
-      'Xông hơi nóng làm giãn nở lỗ chân lông',
-      'Hút bã nhờn, mụn cám, mụn đầu đen',
-      'Massage nâng cơ mặt kích thích lưu thông máu',
-      'Đắp mặt nạ cấp ẩm nuôi dưỡng da sâu bên trong'
-    ]
+    includes: ['Rửa mặt làm sạch sâu bụi bẩn', 'Xông hơi nóng làm giãn nở lỗ chân lông', 'Đắp mặt nạ dưỡng chất ngọc trai']
+  },
+  {
+    slug: 'goi-dau-duong-sinh',
+    name: 'Gội đầu dưỡng sinh thảo dược',
+    categorySlug: 'lam-dep-spa',
+    tag: 'LÀM ĐẸP & SPA',
+    desc: 'Gội đầu bằng nước bồ kết thảo dược kết hợp bấm huyệt, massage cổ vai gáy giải tỏa mỏi mệt.',
+    img: spaBeautyImg,
+    gallery: [spaBeautyImg],
+    features: [
+      { title: 'Thảo dược tự nhiên', desc: 'Không hóa chất tạo bọt công nghiệp' },
+      { title: 'Massage bấm huyệt', desc: 'Đả thông kinh lạc vùng đầu cổ' }
+    ],
+    includes: ['Gội đầu 2 lần thảo dược', 'Massage mặt và đắp mặt nạ dưa leo', 'Bấm huyệt đầu, cổ, vai, gáy']
+  },
+  {
+    slug: 'trong-tre-theo-gio',
+    name: 'Trông trẻ theo giờ tại nhà',
+    categorySlug: 'trong-tre-giup-viec',
+    tag: 'TRÔNG TRẺ & GIÚP VIỆC',
+    desc: 'Giữ trẻ, cho trẻ ăn uống, chơi cùng trẻ khi ba mẹ có việc bận đột xuất cần đi ra ngoài.',
+    img: momBabyCareImg,
+    gallery: [momBabyCareImg],
+    features: [
+      { title: 'Yêu trẻ em', desc: 'Bảo mẫu thân thiện, chu đáo' },
+      { title: 'Tương tác thông minh', desc: 'Đọc truyện, vẽ tranh cùng bé' }
+    ],
+    includes: ['Cho bé ăn cháo, uống sữa theo giờ', 'Vệ sinh thay bỉm tã cho bé', 'Đảm bảo an toàn tuyệt đối cho bé']
+  },
+  {
+    slug: 'grooming-thu-cung',
+    name: 'Tắm & Tỉa lông thú cưng tại nhà',
+    categorySlug: 'cham-soc-thu-cung',
+    tag: 'CHĂM SÓC THÚ CƯNG',
+    desc: 'Chăm sóc sắc đẹp cho chó mèo tại nhà: cắt móng, mài móng, vệ sinh tai, tắm sấy thơm tho.',
+    img: petCareImg,
+    gallery: [petCareImg],
+    features: [
+      { title: 'Thợ lành nghề', desc: 'Kỹ năng vuốt ve, xử lý chó mèo nhát' },
+      { title: 'Dụng cụ tiệt trùng', desc: 'Đảm bảo vệ sinh tuyệt đối' }
+    ],
+    includes: ['Cắt tỉa lông tạo kiểu theo yêu cầu', 'Vắt tuyến hôi, tắm sấy thơm tho', 'Cắt và mài móng chân']
+  },
+  {
+    slug: 'chuyen-nha-tron-goi',
+    name: 'Dịch vụ chuyển nhà trọn gói',
+    categorySlug: 'logistics-giao-van',
+    tag: 'LOGISTICS & GIAO VẬN',
+    desc: 'Đóng gói đồ đạc bằng màng pe, thùng carton, bốc xếp xe tải chuyên chở sang nhà mới từ A-Z.',
+    img: localCommunityImg,
+    gallery: [localCommunityImg],
+    features: [
+      { title: 'Cam kết bồi hoàn', desc: 'Đảm bảo không hư hại, thất lạc đồ đạc' },
+      { title: 'Hỗ trợ tháo lắp', desc: 'Tháo lắp tủ giường, máy lạnh chuyên nghiệp' }
+    ],
+    includes: ['Cung cấp thùng carton băng keo', 'Đóng gói bọc lót kỹ lượng đồ dễ vỡ', 'Vận chuyển bốc xếp lên nhà mới']
+  },
+  {
+    slug: 'gia-su-day-kem-tai-nha',
+    name: 'Gia sư dạy kèm tại nhà theo nhóm/cá nhân',
+    categorySlug: 'gia-su-day-kem',
+    tag: 'GIA SƯ & DẠY KÈM',
+    desc: 'Gia sư các môn Toán, Văn, Anh văn cho học sinh tiểu học, trung học lấy lại gốc kiến thức.',
+    img: kindnessServiceImg,
+    gallery: [kindnessServiceImg],
+    features: [
+      { title: 'Gia sư chất lượng', desc: 'Sinh viên trường Top hoặc giáo viên chính quy' },
+      { title: 'Phương pháp khoa học', desc: 'Thiết lập lộ trình học tập riêng biệt' }
+    ],
+    includes: ['Kiểm tra đánh giá năng lực ban đầu', 'Dạy bám sát chương trình sách giáo khoa', 'Hỗ trợ giải bài tập khó hàng tuần']
+  },
+  {
+    slug: 'lai-xe-ho-alcofree',
+    name: 'Tài xế lái xe hộ đưa người say về nhà',
+    categorySlug: 'dua-don-tai-xe',
+    tag: 'ĐƯA ĐÓN & TÀI XẾ',
+    desc: 'Tài xế giàu kinh nghiệm đến tận nơi điều khiển xe của bạn đưa bạn và xe về nhà an toàn.',
+    img: localCommunityImg,
+    gallery: [localCommunityImg],
+    features: [
+      { title: 'An toàn tuyệt đối', desc: 'Đưa cả người và phương tiện về nhà' },
+      { title: 'Tài xế trung thực', desc: 'Lý lịch tư pháp rõ ràng sạch sẽ' }
+    ],
+    includes: ['Có mặt sau 15-20 phút gọi', 'Lái xe ô tô/xe máy của khách an toàn', 'Bảo hiểm trách nhiệm chuyến đi']
+  },
+  {
+    slug: 'trang-tri-sinh-nhat',
+    name: 'Trang trí tiệc sinh nhật & Sự kiện gia đình',
+    categorySlug: 'to-chuc-trang-tri',
+    tag: 'TỔ CHỨC & TRANG TRÍ',
+    desc: 'Lên ý tưởng, dựng sân khấu bong bóng, bàn tiệc gallery trang trí sự kiện sinh nhật, thôi nôi ấm cúng.',
+    img: localCommunityImg,
+    gallery: [localCommunityImg],
+    features: [
+      { title: 'Thiết kế độc đáo', desc: 'Dựng phối cảnh 3D trước khi duyệt' },
+      { title: 'Thi công nhanh gọn', desc: 'Dọn dẹp sạch sẽ sau khi tiệc kết thúc' }
+    ],
+    includes: ['Setup backdrop bong bóng bóng bay', 'Trang trí bàn tiệc gallery bánh kem', 'Bàn giao đúng giờ cam kết']
   }
 ];
 
@@ -1132,6 +1429,12 @@ function getCategoryIcon(iconKey: string) {
         </svg>
       );
     case 'repair':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+        </svg>
+      );
+    case 'wrench':
       return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
@@ -1168,6 +1471,37 @@ function getCategoryIcon(iconKey: string) {
           <circle cx="18.5" cy="18.5" r="2.5" />
         </svg>
       );
+    case 'baby-sitting':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>
+      );
+    case 'tutor':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+      );
+    case 'driver':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          <path d="M2 12h20" />
+        </svg>
+      );
+    case 'event':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 12 20 22 4 22 4 12" />
+          <rect width="20" height="5" x="2" y="7" />
+          <line x1="12" x2="12" y1="22" y2="7" />
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+        </svg>
+      );
     case 'grid':
       return (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -1183,338 +1517,247 @@ function getCategoryIcon(iconKey: string) {
 }
 
 export function ServicesListingPage() {
-  const navigate = useNavigate();
+  const [activeNavCategory, setActiveNavCategory] = React.useState('');
+  const isScrollingRef = React.useRef(false);
+  const scrollTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mobileTabsRef = React.useRef<HTMLDivElement | null>(null);
 
-  const goToDownload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate('/');
-    setTimeout(() => {
-      const el = document.getElementById('about');
-      if (el) {
-        const headerHeight = 60;
-        const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
-        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-      }
-    }, 250);
+  const handleNavClick = (slug: string) => {
+    // Set active immediately and pause scrollspy to prevent flicker
+    setActiveNavCategory(slug);
+    isScrollingRef.current = true;
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      isScrollingRef.current = false;
+    }, 800);
+
+    const el = document.getElementById(`category-${slug}`);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   };
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
+    return () => {
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    };
   }, []);
 
+  React.useEffect(() => {
+    const onScroll = () => {
+      // Skip scrollspy while programmatic scroll is in progress
+      if (isScrollingRef.current) return;
+      const scrollPos = window.scrollY + 120;
+      let currentSlug = serviceCategories[0]?.slug || '';
+
+      for (const cat of serviceCategories) {
+        const el = document.getElementById(`category-${cat.slug}`);
+        if (el && scrollPos >= el.offsetTop) {
+          currentSlug = cat.slug;
+        }
+      }
+
+      setActiveNavCategory((value) => (value === currentSlug ? value : currentSlug));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    if (!activeNavCategory) return;
+    const tab = mobileTabsRef.current?.querySelector<HTMLButtonElement>(`[data-category-tab="${activeNavCategory}"]`);
+    tab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }, [activeNavCategory]);
+
   return (
-    <main className="bg-white text-slate-800 pt-[58px] max-[768px]:pt-[52px]">
-      {/* 1. Hero Section */}
-      <section className="relative border-b border-slate-200 bg-cover bg-center py-12 md:py-20" style={{ backgroundImage: `linear-gradient(90deg, rgba(248,250,252,0.96) 0%, rgba(248,250,252,0.92) 48%, rgba(248,250,252,0.88) 100%), url(${bgFooterImg})` }}>
-        <div className={cn(ui.container, "grid grid-cols-[1.1fr_0.9fr] gap-10 items-center max-[900px]:grid-cols-1")}>
-          <div className="flex flex-col items-start" data-aos="fade-right">
-            <h1 className="mb-4 font-heading text-[clamp(2.2rem,4vw,2.75rem)] font-extrabold leading-tight text-slate-900">
-              Tất cả dịch vụ <br /> trong <span className="text-[#003F3C]">HomeBooking</span>
-            </h1>
-            <p className="mb-6 max-w-md text-base leading-relaxed text-slate-500">
-              Đa dạng dịch vụ chất lượng. <br /> Đáp ứng mọi nhu cầu của bạn và gia đình.
-            </p>
-            <button className={cn(ui.btn, ui.btnPrimary, "mb-8 px-6 py-3 rounded-full text-sm font-bold flex items-center gap-2")} onClick={goToDownload}>
-              Tải ứng dụng ngay
-              <span className="grid size-5 place-items-center rounded-full bg-white/20">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                </svg>
-              </span>
-            </button>
+    <main className="bg-white text-slate-800 pt-[58px] max-[768px]:pt-[56px] max-[520px]:pt-[48px]">
 
-            {/* Stats row */}
-            <div className="flex flex-wrap items-center gap-8 border-t border-slate-200/60 pt-6 w-full">
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-full bg-emerald-50 text-[#003F3C] border border-emerald-100">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
-                </span>
-                <div>
-                  <span className="block text-lg font-black text-[#003F3C] leading-none">13+</span>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Danh mục</span>
-                </div>
-              </div>
-              <div className="h-8 w-px bg-slate-200"></div>
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-full bg-emerald-50 text-[#003F3C] border border-emerald-100">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" x2="16" y1="2" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>
-                </span>
-                <div>
-                  <span className="block text-lg font-black text-[#003F3C] leading-none">100+</span>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Dịch vụ</span>
-                </div>
-              </div>
-              <div className="h-8 w-px bg-slate-200"></div>
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-full bg-emerald-50 text-[#003F3C] border border-emerald-100">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
-                </span>
-                <div>
-                  <span className="block text-lg font-black text-[#003F3C] leading-none">50.000+</span>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Người dùng tin chọn</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero mockup with surrounding cards (Exactly matching the layout image) */}
-          <div className="relative flex justify-center max-[900px]:mt-10" data-aos="fade-left">
-            <div className="relative w-full max-w-[420px] aspect-[4/3] flex items-center justify-center">
-
-              {/* Card 1 (Top-Left): Mom and Baby */}
-              <div className="absolute top-0 left-0 w-[120px] rounded-2xl overflow-visible border border-slate-100 shadow-lg bg-white p-1 z-10 transition-transform duration-300 hover:scale-103">
-                <div className="absolute -top-2.5 -left-2.5 size-7 rounded-full bg-red-50 text-red-500 flex items-center justify-center border-2 border-white shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
-                </div>
-                <img src={momBabyCareImg} className="w-full aspect-[4/3] object-cover rounded-xl" alt="Mom & Baby" />
-              </div>
-
-              {/* Card 2 (Bottom-Left): Cleaning */}
-              <div className="absolute bottom-4 -left-6 w-[120px] rounded-2xl overflow-visible border border-slate-100 shadow-lg bg-white p-1 z-10 transition-transform duration-300 hover:scale-103">
-                <div className="absolute -bottom-2.5 -left-2.5 size-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border-2 border-white shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m3 21 18-18" /></svg>
-                </div>
-                <img src={homeCleaningImg} className="w-full aspect-[4/3] object-cover rounded-xl" alt="Cleaning" />
-              </div>
-
-              {/* Card 3 (Top-Right): Repair */}
-              <div className="absolute top-4 right-0 w-[120px] rounded-2xl overflow-visible border border-slate-100 shadow-lg bg-white p-1 z-10 transition-transform duration-300 hover:scale-103">
-                <div className="absolute -top-2.5 -right-2.5 size-7 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border-2 border-white shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6" /></svg>
-                </div>
-                <img src={applianceRepairImg} className="w-full aspect-[4/3] object-cover rounded-xl" alt="Repair" />
-              </div>
-
-              {/* Card 4 (Bottom-Right): Beauty */}
-              <div className="absolute bottom-6 right-0 w-[120px] rounded-2xl overflow-visible border border-slate-100 shadow-lg bg-white p-1 z-10 transition-transform duration-300 hover:scale-103">
-                <div className="absolute -bottom-2.5 -right-2.5 size-7 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center border-2 border-white shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10" /></svg>
-                </div>
-                <img src={spaBeautyImg} className="w-full aspect-[4/3] object-cover rounded-xl" alt="Beauty" />
-              </div>
-
-              {/* Center Phone */}
-              <div className="w-[180px] aspect-[9/18] bg-slate-900 rounded-[36px] p-2 shadow-2xl border-4 border-slate-800 relative z-0">
-                <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-900 rounded-full z-20"></div>
-                <div className="size-full bg-white rounded-[28px] overflow-hidden flex flex-col p-3 pt-6 relative">
-                  <div className="flex items-center gap-1.5 mb-3">
-                    <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-3 w-auto" alt="Logo" />
-                  </div>
-                  <div className="h-1.5 w-3/4 bg-slate-100 rounded mb-4"></div>
-                  <div className="grid grid-cols-3 gap-2 grow">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="bg-emerald-50/50 rounded-lg p-1.5 flex flex-col items-center justify-center border border-emerald-100/10">
-                        <div className="size-5 rounded-full bg-[#003F3C] flex items-center justify-center text-[7px] text-white">HB</div>
-                        <div className="h-1.5 w-8 bg-slate-200 rounded mt-1.5"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-2 h-7 rounded-lg bg-[#003F3C] flex items-center justify-center text-[7px] font-bold text-white uppercase tracking-wider">Tải app đặt ngay</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Danh mục dịch vụ Section */}
-      <section className="py-12 bg-slate-50/30">
+      {/* Page Banner */}
+      <div
+        className="bg-white bg-cover bg-center px-0"
+        style={{ backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 45%, rgba(255,255,255,0.52) 100%), url(${bgDichVuImg})` }}
+      >
         <div className={ui.container}>
-          <div className="mb-8 text-center" data-aos="fade-up">
-            <h2 className="font-heading text-2xl font-extrabold text-slate-900">Danh mục dịch vụ</h2>
-          </div>
-
-          <div className="grid grid-cols-9 gap-4 max-[1200px]:grid-cols-5 max-[768px]:grid-cols-3 max-[480px]:grid-cols-2">
-            {serviceCategories.map((category) => (
-              <div
-                key={category.slug}
-                onClick={() => {
-                  const target = allServicesList.find(s => s.categorySlug === category.slug);
-                  if (target) {
-                    navigate(`/dich-vu/${target.slug}`);
-                  } else {
-                    alert('Dịch vụ đang được phát triển, hãy trải nghiệm trên ứng dụng!');
-                  }
-                }}
-                className="bg-white rounded-xl border border-slate-100 p-4 flex flex-col items-center justify-center text-center cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 group"
-              >
-                <div className="size-12 rounded-xl flex items-center justify-center mb-3 transition-colors duration-300 group-hover:bg-emerald-100/20" style={{ backgroundColor: category.iconBg, color: category.iconColor }}>
-                  {getCategoryIcon(category.iconKey)}
-                </div>
-                <span className="text-xs font-bold text-slate-700 group-hover:text-[#003F3C] leading-snug line-clamp-2 min-h-[2rem] flex items-center justify-center">
-                  {category.name}
-                </span>
-              </div>
-            ))}
-            <div
-              onClick={() => alert('Đang hiển thị tất cả các danh mục nổi bật!')}
-              className="bg-white rounded-xl border border-slate-100 p-4 flex flex-col items-center justify-center text-center cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 group"
-            >
-              <div className="size-12 rounded-xl bg-slate-50 text-slate-500 flex items-center justify-center mb-3 group-hover:bg-slate-100">
-                {getCategoryIcon('grid')}
-              </div>
-              <span className="text-xs font-bold text-slate-500 group-hover:text-slate-700 leading-snug line-clamp-2 min-h-[2rem] flex items-center justify-center font-bold">
-                Xem tất cả
-              </span>
+          <div className="flex min-h-[220px] items-center justify-between gap-6 py-9 max-[768px]:min-h-[190px] max-[768px]:py-7 max-[640px]:min-h-[165px] max-[640px]:flex-col max-[640px]:items-start max-[640px]:justify-center max-[640px]:gap-4">
+            <div className="max-w-[560px]">
+              <span className="mb-1 inline-flex rounded bg-emerald-50 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-emerald-700">Hệ sinh thái dịch vụ</span>
+              <h1 className="mt-1 font-heading text-[clamp(1.55rem,3vw,2.15rem)] font-extrabold leading-tight text-slate-900">
+                Dịch vụ của <span className="text-[#003F3C]">HomeBooking</span>
+              </h1>
+              <p className="mt-1 text-[14px] text-slate-500">Đặt dịch vụ nhanh chóng, an tâm mọi nhu cầu gia đình</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Dịch vụ nổi bật Section */}
-      <section className="py-12 border-t border-slate-100 bg-white">
-        <div className={ui.container}>
-          <div className="mb-8 text-left" data-aos="fade-up">
-            <h2 className="font-heading text-2xl font-extrabold text-slate-900">Dịch vụ nổi bật</h2>
-          </div>
-
-          <div className="grid grid-cols-4 gap-6 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:grid-cols-1">
-            {allServicesList.map((service, index) => (
-              <Link
-                key={service.slug}
-                to={`/dich-vu/${service.slug}`}
-                className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.01)] hover:shadow-[0_8px_30px_rgba(0,63,60,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-emerald-100 group flex flex-col h-full"
-                data-aos="fade-up"
-                data-aos-delay={index * 80}
-              >
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                  <img src={service.img} alt={service.name} className="size-full object-cover transition-transform duration-700 group-hover:scale-103" />
-                </div>
-                <div className="p-5 flex flex-col grow">
-                  <h3 className="mb-2 text-base font-extrabold text-slate-900 group-hover:text-[#003F3C] transition duration-200">
-                    {service.name}
-                  </h3>
-                  <p className="text-xs text-slate-400 leading-relaxed mb-4 line-clamp-2">
-                    {service.desc}
-                  </p>
-                  <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-[#003F3C] group-hover:text-emerald-700">
-                    Khám phá trên app
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:translate-x-0.5">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
+            <div className="relative hidden min-w-[300px] items-center justify-end gap-4 pr-4 max-[900px]:min-w-[250px] max-[768px]:hidden md:flex">
+              <div className="flex flex-col gap-2">
+                <a href="#footer" className="flex min-h-10 min-w-[145px] items-center gap-2.5 rounded-lg border border-[#003F3C]/10 bg-white/80 px-3 py-2 text-[#003F3C] shadow-[0_10px_20px_rgba(0,63,60,0.06)] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white">
+                  <img src={appStoreIcon} alt="" className="size-7 object-contain" />
+                  <span className="flex flex-col items-start leading-none">
+                    <span className="text-[0.52rem] font-bold uppercase text-slate-400">Tải xuống trên</span>
+                    <span className="mt-1 text-[0.84rem] font-extrabold">App Store</span>
                   </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Vì sao nên chọn HomeBooking? Section */}
-      <section className="py-12 bg-slate-50/30 border-t border-slate-100">
-        <div className={ui.container}>
-          <div className="mb-10 text-center" data-aos="fade-up">
-            <h2 className="font-heading text-2xl font-extrabold text-slate-900">Vì sao nên chọn HomeBooking?</h2>
-          </div>
-
-          <div className="grid grid-cols-5 gap-6 max-[1024px]:grid-cols-3 max-[640px]:grid-cols-1">
-            {[
-              {
-                title: 'Đối tác xác thực',
-                desc: 'Kiểm duyệt kỹ lưỡng, an tâm sử dụng',
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#003F3C]">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <path d="m9 11 2 2 4-4" />
-                  </svg>
-                )
-              },
-              {
-                title: 'Đặt lịch nhanh chóng',
-                desc: 'Chỉ vài thao tác trên ứng dụng',
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#003F3C]">
-                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                    <line x1="16" x2="16" y1="2" y2="6" />
-                    <line x1="8" x2="8" y1="2" y2="6" />
-                    <line x1="3" x2="21" y1="10" y2="10" />
-                  </svg>
-                )
-              },
-              {
-                title: 'Giá cả minh bạch',
-                desc: 'Không phát sinh chi phí',
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#003F3C]">
-                    <line x1="12" x2="12" y1="1" y2="23" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
-                )
-              },
-              {
-                title: 'Nhiều ưu đãi',
-                desc: 'Ưu đãi hấp dẫn mỗi tháng',
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#003F3C]">
-                    <polyline points="20 12 20 22 4 22 4 12" />
-                    <rect width="20" height="5" x="2" y="7" />
-                    <line x1="12" x2="12" y1="22" y2="7" />
-                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7Z" />
-                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z" />
-                  </svg>
-                )
-              },
-              {
-                title: 'Hỗ trợ 24/7',
-                desc: 'Đội ngũ hỗ trợ luôn sẵn sàng giúp bạn',
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#003F3C]">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.05 9.91a16 16 0 0 0 6.04 6.04l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92Z" />
-                  </svg>
-                )
-              }
-            ].map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center p-4" data-aos="fade-up" data-aos-delay={idx * 80}>
-                <div className="size-16 rounded-full bg-emerald-50/50 flex items-center justify-center mb-4 border border-emerald-100/50">
-                  {item.icon}
-                </div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1.5">{item.title}</h4>
-                <p className="text-xs text-slate-500 leading-normal max-w-[180px]">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Bottom Banner */}
-      <section className="py-12 bg-white">
-        <div className={ui.container}>
-          <div className="rounded-2xl border border-emerald-100 bg-[#003F3C] text-white p-8 shadow-xl relative overflow-hidden flex items-center justify-between gap-8 max-[900px]:flex-col max-[900px]:items-stretch" data-aos="zoom-in">
-            <div className="absolute right-0 bottom-0 top-0 w-1/3 bg-gradient-to-l from-emerald-800/10 to-transparent pointer-events-none"></div>
-
-            <div className="relative z-10 flex-1">
-              <h3 className="text-2xl font-black mb-3">
-                Trải nghiệm ngay hàng trăm dịch vụ <br /> trên ứng dụng HomeBooking
-              </h3>
-              <p className="text-sm text-emerald-100/70 leading-relaxed mb-6 max-w-lg">
-                Tiện lợi – Nhanh chóng – An toàn. Đặt dịch vụ dọn dẹp, sửa chữa, làm đẹp mọi lúc mọi nơi ngay trên chiếc điện thoại của bạn.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a className="rounded-full bg-white text-[#003F3C] py-2.5 px-5 text-xs font-bold shadow-sm transition duration-300 hover:bg-emerald-50 flex items-center gap-2" href="#footer">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.17c.65-.79 1.09-1.9 1-3-.99.04-2.19.67-2.9 1.49-.62.72-1.16 1.84-1.01 2.92 1.11.09 2.24-.59 2.91-1.41Z" /></svg>
-                  Tải App Store
                 </a>
-                <a className="rounded-full bg-white text-[#003F3C] py-2.5 px-5 text-xs font-bold shadow-sm transition duration-300 hover:bg-emerald-50 flex items-center gap-2" href="#footer">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0"><path d="M5 3.25c-.28 0-.5.22-.5.5v16.5c0 .28.22.5.5.5h.19l9.31-9.31-9.31-9.31H5Zm1.69.75L15.31 12 6.69 20.06V4ZM16.72 10.6l3.59-3.59c.39-.39 1.02-.39 1.41 0a1 1 0 0 1 0 1.41l-3.59 3.59-1.41-1.41Zm0 2.8 1.41-1.41 3.59 3.59a1 1 0 0 1 0 1.41c-.39.39-1.02.39-1.41 0l-3.59-3.59Z" /></svg>
-                  Tải Google Play
+                <a href="#footer" className="flex min-h-10 min-w-[145px] items-center gap-2.5 rounded-lg border border-[#003F3C]/10 bg-white/80 px-3 py-2 text-[#003F3C] shadow-[0_10px_20px_rgba(0,63,60,0.06)] backdrop-blur transition hover:-translate-y-0.5 hover:bg-white">
+                  <img src={chPlayIcon} alt="" className="size-7 object-contain" />
+                  <span className="flex flex-col items-start leading-none">
+                    <span className="text-[0.52rem] font-bold uppercase text-slate-400">Tải trên</span>
+                    <span className="mt-1 text-[0.84rem] font-extrabold">Google Play</span>
+                  </span>
                 </a>
               </div>
+              <img src="https://homebooking.global/assets/mock-mobile.png" alt="Ứng dụng HomeBooking" className="h-[250px] w-auto rotate-6 object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.2)] max-[900px]:h-[205px]" />
             </div>
-
-            <div className="relative z-10 flex items-center gap-6 max-[900px]:justify-center">
-              <div className="p-2 bg-white rounded-xl shadow-lg shrink-0">
-                <img className="size-20 rounded-lg object-cover" src={qrCodeImg} alt="QR Code" />
-              </div>
-              <div>
-                <span className="block text-sm font-extrabold uppercase tracking-wide text-emerald-400">Quét QR</span>
-                <span className="text-xs text-emerald-100/70">Để tải app ngay</span>
-              </div>
+            <div className="hidden">
+              <span className="text-[13px] font-semibold text-slate-500">{serviceCategories.length} danh mục</span>
+              <span className="text-[13px] font-semibold text-slate-500">{allServicesList.length} dịch vụ</span>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Mobile: horizontal scroll tabs — sticky below header+banner */}
+      <div ref={mobileTabsRef} className="hidden max-[1024px]:flex sticky top-[56px] z-20 items-center gap-2 overflow-x-auto no-scrollbar bg-white/95 backdrop-blur px-3 py-2 max-[520px]:top-[48px]">
+        {serviceCategories.map((cat) => {
+          const isActive = activeNavCategory === cat.slug;
+          return (
+            <button key={cat.slug} data-category-tab={cat.slug} onClick={() => handleNavClick(cat.slug)} type="button"
+              className={cn('h-8 px-3 rounded-full text-[13px] font-semibold shrink-0 flex items-center gap-1.5 transition-colors',
+                isActive ? 'bg-[#FEF4ED] text-[#002A28]' : 'bg-white text-slate-600 hover:bg-slate-50'
+              )}>
+              <span className="size-4 shrink-0 flex items-center justify-center">{getCategoryIcon(cat.iconKey)}</span>
+              <span>{cat.name}</span>
+            </button>
+          );
+        })}
+      </div>
+
+
+      {/* Main layout: sidebar + content */}
+      <div className="py-8 max-[520px]:py-4">
+        <div className={ui.container}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+
+            {/* Sidebar — sticky desktop */}
+            <div className="max-[1024px]:hidden shrink-0" style={{ width: '268px', position: 'sticky', top: '70px' }}>
+              <div className="bg-white overflow-hidden rounded-xl border border-slate-100" style={{ maxHeight: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column' }}>
+                <div className="px-4 py-3 shrink-0 border-b border-slate-100">
+                  <h2 className="text-[13px] font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                    <span className="h-3 w-1 rounded bg-[#003F3C]"></span>
+                    Danh mục dịch vụ
+                  </h2>
+                </div>
+                <div style={{ overflowY: 'auto', flex: 1 }} className="p-2 flex flex-col gap-0.5 custom-scrollbar">
+                  {serviceCategories.map((cat) => {
+                    const count = allServicesList.filter(s => s.categorySlug === cat.slug).length;
+                    const isActive = activeNavCategory === cat.slug;
+                    return (
+                      <button key={cat.slug} onClick={() => handleNavClick(cat.slug)} type="button"
+                        className={cn(
+                          'w-full text-left flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-[14px] font-medium transition-all cursor-pointer',
+                          isActive ? 'bg-[#FEF4ED] text-[#002A28]' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        )}>
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="size-6 shrink-0 rounded-md flex items-center justify-center [&_svg]:w-3.5 [&_svg]:h-3.5"
+                            style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
+                            {getCategoryIcon(cat.iconKey)}
+                          </span>
+                          <span className="truncate leading-none">{cat.name}</span>
+                        </div>
+                        {count > 0 && (
+                          <span className={cn('text-[11px] font-bold px-1.5 py-0.5 rounded-full shrink-0',
+                            'bg-slate-100 text-slate-500')}>
+                            {count}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Content list */}
+            <div className="flex flex-col gap-6" style={{ flex: 1, minWidth: 0 }}>
+              {serviceCategories.map((cat) => {
+                const subs = allServicesList.filter(s => s.categorySlug === cat.slug);
+                return (
+                  <div key={cat.slug} id={`category-${cat.slug}`}
+                    className="bg-white rounded-xl border border-slate-100 p-5 scroll-mt-24 overflow-hidden max-[520px]:rounded-none max-[520px]:border-0 max-[520px]:p-0">
+                    {/* Category header */}
+                    <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-100 max-[520px]:mb-3 max-[520px]:border-b-0 max-[520px]:pb-0">
+                      <span className="size-9 rounded-xl flex items-center justify-center [&_svg]:w-5 [&_svg]:h-5 shrink-0 max-[520px]:hidden"
+                        style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
+                        {getCategoryIcon(cat.iconKey)}
+                      </span>
+                      <div className="min-w-0">
+                        <h2 className="text-[15px] font-bold text-slate-900 leading-snug max-[520px]:text-[14px] max-[520px]:leading-5">
+                          {cat.name}
+                          <span className="hidden text-slate-400 font-semibold max-[520px]:inline"> ({subs.length})</span>
+                        </h2>
+                        <p className="text-[13px] text-slate-400 max-[520px]:hidden">{cat.desc}</p>
+                      </div>
+                      <span className="ml-auto text-[11px] font-bold bg-emerald-50 text-[#003F3C] px-2.5 py-1 rounded-full shrink-0 max-[520px]:hidden">
+                        {subs.length} dịch vụ
+                      </span>
+                    </div>
+
+                    {/* Cards */}
+                    {subs.length > 0 ? (
+                      <div className="grid grid-cols-4 gap-4 max-[1280px]:grid-cols-3 max-[900px]:grid-cols-2 max-[520px]:grid-cols-2 max-[520px]:gap-3">
+                        {subs.map((service) => (
+                          <Link key={service.slug} to={`/dich-vu/${service.slug}`}
+                            className="group flex min-h-[180px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white hover:-translate-y-0.5 hover:border-[#003F3C]/20 hover:bg-slate-50/30 transition-all duration-300 hover:no-underline max-[520px]:min-h-[170px]">
+                            {/* Image */}
+                            <div className="relative h-[110px] overflow-hidden bg-slate-100 shrink-0 max-[520px]:h-[96px]">
+                              <img src={service.img} alt={service.name}
+                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                            </div>
+                            {/* Body */}
+                            <div className="flex grow flex-col p-3 max-[520px]:p-3">
+                              {/* Badge */}
+                              <div className="mb-2 inline-flex max-w-full self-start items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-semibold max-[520px]:text-[0.66rem] [&_svg]:w-3 [&_svg]:h-3 max-[520px]:[&_svg]:w-2.5 max-[520px]:[&_svg]:h-2.5"
+                                style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
+                                <span className="shrink-0">{getCategoryIcon(cat.iconKey)}</span>
+                                <span className="truncate">{cat.name}</span>
+                              </div>
+                              {/* Title */}
+                              <p className="line-clamp-2 min-h-[2.8rem] text-[14px] font-medium leading-relaxed text-slate-800 grow group-hover:text-[#003F3C] transition-colors duration-300 max-[520px]:min-h-[2.35rem] max-[520px]:leading-5">
+                                {service.name}
+                              </p>
+                              {/* Footer */}
+                              <div className="hidden">
+                                <div className="flex flex-col gap-0.5">
+                                  <span className="text-[11px] font-medium uppercase text-slate-400">Giá chỉ từ</span>
+                                  <span className="text-[13px] font-bold text-[#F3A365]">Đang cập nhật</span>
+                                </div>
+                                <span className="grid size-7 place-items-center rounded-full bg-emerald-50 text-[#003F3C] transition-colors duration-300 group-hover:bg-[#003F3C] group-hover:text-white">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-6 text-center text-[14px] text-slate-400 bg-white rounded-lg border border-dashed border-slate-200">
+                        Dịch vụ đang được cập nhật trên App HomeBooking.
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      {false && <AppDownloadBand
+        title="Đặt mọi dịch vụ trong một ứng dụng"
+        description="Tải HomeBooking để xem danh mục dịch vụ, đặt lịch nhanh chóng và theo dõi lịch hẹn thuận tiện ngay trên điện thoại."
+      />}
     </main>
   );
 }
@@ -1579,24 +1822,24 @@ export function ServiceDetailPage() {
       </div>
 
       {/* Main Details Section */}
-      <section className="py-8 bg-white">
-        <div className={cn(ui.container, "grid grid-cols-[1fr_1fr] gap-8 items-start max-[900px]:grid-cols-1")}>
+      <section className="py-6 bg-white max-[640px]:py-4">
+        <div className={cn(ui.container, "grid max-w-[980px] grid-cols-[minmax(0,1fr)_340px] gap-6 items-start max-[900px]:grid-cols-1 max-[640px]:gap-4")}>
 
           {/* Left Column: Image Slider */}
-          <div className="flex flex-col gap-3">
-            <div className="relative w-full rounded-xl overflow-hidden bg-slate-100 shadow-sm border border-slate-100" style={{ aspectRatio: '4/3' }}>
-              <img src={slides[sliderIndex]} className="size-full object-cover transition-all duration-500" alt={service.name} />
+          <div className="order-2 flex flex-col gap-3 max-[900px]:order-2">
+            <div className="relative w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-100" style={{ aspectRatio: '16/11' }}>
+              <img src={service.img} className="size-full object-cover transition-all duration-500" alt={service.name} />
 
-              <button onClick={handlePrevSlide} className="absolute left-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-white/95 shadow-md text-[#003F3C] flex items-center justify-center hover:bg-white transition-colors z-10" aria-label="Previous">
+              <button onClick={handlePrevSlide} className="hidden absolute left-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-white/95 shadow-md text-[#003F3C] items-center justify-center hover:bg-white transition-colors z-10" aria-label="Previous">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
               </button>
-              <button onClick={handleNextSlide} className="absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-white/95 shadow-md text-[#003F3C] flex items-center justify-center hover:bg-white transition-colors z-10" aria-label="Next">
+              <button onClick={handleNextSlide} className="hidden absolute right-3 top-1/2 -translate-y-1/2 size-9 rounded-full bg-white/95 shadow-md text-[#003F3C] items-center justify-center hover:bg-white transition-colors z-10" aria-label="Next">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
               </button>
             </div>
 
             {/* Dots */}
-            <div className="flex items-center justify-center gap-1.5">
+            <div className="hidden items-center justify-center gap-1.5">
               {slides.map((_, idx) => (
                 <button key={idx} onClick={() => setSliderIndex(idx)}
                   className={cn("h-1.5 rounded-full transition-all duration-200", sliderIndex === idx ? "bg-[#003F3C] w-5" : "w-1.5 bg-slate-300 hover:bg-slate-400")}
@@ -1607,22 +1850,45 @@ export function ServiceDetailPage() {
           </div>
 
           {/* Right Column: Info & Booking */}
-          <div className="flex flex-col items-start">
+          <div className="order-1 flex flex-col items-start">
             <span className="mb-2 inline-flex rounded-md bg-emerald-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-[#007A63] border border-emerald-100">
               {service.tag}
             </span>
-            <h1 className="mb-1.5 font-heading text-[1.75rem] font-extrabold text-slate-900 leading-tight">
+            <h1 className="mb-1.5 font-heading text-[clamp(1.35rem,3vw,1.7rem)] font-extrabold text-slate-900 leading-tight">
               {service.name}
             </h1>
-            <p className="mb-5 text-sm leading-relaxed text-slate-500">
+            <div className="mb-4 flex flex-wrap items-center gap-4 text-sm">
+              <span className="hidden items-center gap-2">
+                <span className="flex items-center gap-0.5 text-[#E8A365]" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, idx) => (
+                    <svg key={idx} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  ))}
+                </span>
+                <strong className="text-slate-900">0.0</strong>
+                <span className="text-slate-400">{'(Ch\u01b0a c\u00f3 l\u01b0\u1ee3t \u0111\u00e1nh gi\u00e1)'}</span>
+              </span>
+              <span className="font-semibold text-slate-500">{'Gi\u00e1:'} <strong className="text-[#E8A365]">{'\u0110ang c\u1eadp nh\u1eadt'}</strong></span>
+            </div>
+            <div className="hidden">
+              <span className="flex items-center gap-2">
+                <span className="text-[#E8A365]">â˜†â˜†â˜☆â˜†â˜†</span>
+                <strong className="text-slate-900">0.0</strong>
+                <span className="text-slate-400">(ChÆ°a cÃ³ lÆ°á»£t Ä‘Ã¡nh giÃ¡)</span>
+              </span>
+              <span className="h-4 w-px bg-slate-200"></span>
+              <span className="font-semibold text-slate-500">GiÃ¡: <strong className="text-[#E8A365]">Äang cáº­p nháº­t</strong></span>
+            </div>
+            <p className="mb-4 text-sm leading-relaxed text-slate-500">
               {service.desc}
             </p>
 
             {/* 3 selling points */}
-            <div className="grid grid-cols-3 gap-3 mb-6 w-full">
+            <div className="hidden grid-cols-3 gap-2.5 mb-4 w-full max-[520px]:grid-cols-1">
               {service.features.map((feat, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-50/70 border border-slate-100">
-                  <span className="size-10 rounded-full border border-emerald-200/60 text-[#007A63] flex items-center justify-center mb-2 bg-white shadow-sm">
+                <div key={idx} className="flex flex-col items-center text-center p-3 rounded-xl bg-slate-50/70 border border-slate-100 max-[520px]:items-start max-[520px]:text-left">
+                  <span className="size-9 rounded-full border border-emerald-200/60 text-[#007A63] flex items-center justify-center mb-2 bg-white">
                     {idx === 0 && (
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 11 2 2 4-4" /></svg>
                     )}
@@ -1642,9 +1908,9 @@ export function ServiceDetailPage() {
             </div>
 
             {/* Booking callout box */}
-            <div className="w-full rounded-xl border border-slate-200 bg-slate-50 p-4 flex flex-col gap-3">
+            <div className="hidden w-full rounded-xl border border-slate-200 bg-slate-50 p-4 flex-col gap-3">
               <div className="flex items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[#007A63] border border-emerald-200/60 shadow-sm">
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[#007A63] border border-emerald-200/60">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.05 9.91a16 16 0 0 0 6.04 6.04l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92Z" /></svg>
                 </span>
                 <div>
@@ -1662,16 +1928,23 @@ export function ServiceDetailPage() {
       </section>
 
       {/* Dịch vụ bao gồm Section */}
-      <section className="py-10 bg-white border-t border-slate-100">
-        <div className={ui.container}>
+      <div className="mt-14 max-[640px]:mt-10">
+      <AppDownloadBand
+        title="Tải app để đặt dịch vụ này"
+        description={`Đặt ${service.name} trên HomeBooking để chọn thời gian phù hợp, nhận thông tin dịch vụ và theo dõi lịch hẹn dễ dàng.`}
+      />
+      </div>
+
+      <section className="hidden pb-8 bg-white max-[640px]:pb-6">
+        <div className={cn(ui.container, 'max-w-[980px]')}>
           <h2 className="font-heading text-xl font-extrabold text-slate-900 mb-6">Dịch vụ bao gồm</h2>
-          <div className="grid grid-cols-6 gap-3 max-[1024px]:grid-cols-3 max-[640px]:grid-cols-2">
+          <div className="grid grid-cols-3 gap-3 max-[640px]:grid-cols-1">
             {service.includes.map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 text-[#007A63] flex items-center justify-center mb-3 shrink-0">
+              <div key={idx} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-100">
+                <div className="size-10 rounded-xl bg-emerald-50 border border-emerald-100 text-[#007A63] flex items-center justify-center shrink-0 [&_svg]:size-5">
                   {getIncludeIcon(idx)}
                 </div>
-                <p className="text-[11px] font-semibold text-slate-700 leading-snug">{item}</p>
+                <p className="text-[12px] font-semibold text-slate-700 leading-snug">{item}</p>
               </div>
             ))}
           </div>
@@ -1679,7 +1952,7 @@ export function ServiceDetailPage() {
       </section>
 
       {/* Tại sao chọn HomeBooking Section */}
-      <section className="py-10 border-t border-slate-100 bg-slate-50/40">
+      <section className="hidden py-10 border-t border-slate-100 bg-slate-50/40">
         <div className={ui.container}>
           <h2 className="font-heading text-xl font-extrabold text-slate-900 mb-8 text-center">Tại sao chọn HomeBooking?</h2>
           <div className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[640px]:grid-cols-1">
@@ -1714,7 +1987,7 @@ export function ServiceDetailPage() {
       </section>
 
       {/* Bottom App Banner (Exactly matching light gray-green color in mockup detail) */}
-      <section className="py-12 bg-slate-50/30 border-t border-slate-100">
+      <section className="hidden py-12 bg-slate-50/30 border-t border-slate-100">
         <div className={ui.container}>
           <div className="rounded-2xl border border-slate-200/60 bg-[#F4F9F8] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden flex items-center justify-between gap-8 max-[900px]:flex-col max-[900px]:items-stretch" data-aos="zoom-in">
 
@@ -1849,7 +2122,7 @@ export function ServiceDetailPage() {
         </div>
       )}
 
-      <div className={cn('min-h-screen overflow-x-hidden bg-white opacity-0 transition-opacity duration-700', isLoaded && 'opacity-100')}>
+      <div className={cn('min-h-screen bg-white opacity-0 transition-opacity duration-700', isLoaded && 'opacity-100')} style={{ overflowX: 'clip' }}>
         {/* 1. Header (Navbar) */}
         <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/30 bg-white/70 shadow-[0_8px_24px_rgba(0,63,60,0.04)] backdrop-blur-xl" data-aos="fade-down" data-aos-duration="600">
           <nav className={cn(ui.container, 'flex h-14 items-center justify-between gap-4 max-[520px]:h-12 max-[520px]:gap-2')}>
