@@ -619,9 +619,9 @@ function NewsListingPage() {
                       </h2>
                       <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2 max-[768px]:hidden">{article.excerpt}</p>
                       <div className="flex items-center justify-between gap-4 max-[768px]:mt-auto max-[640px]:flex-col max-[640px]:items-start">
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 max-[768px]:text-[12px]">
                           <span className="flex items-center gap-2">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="max-[768px]:size-3" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M8 2v4" />
                               <path d="M16 2v4" />
                               <rect width="18" height="18" x="3" y="4" rx="2" />
@@ -1535,7 +1535,9 @@ export function ServicesListingPage() {
 
     const el = document.getElementById(`category-${slug}`);
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      const isMobileLayout = window.matchMedia('(max-width: 1024px)').matches;
+      const topOffset = isMobileLayout ? 112 : 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - topOffset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   };
@@ -1551,7 +1553,8 @@ export function ServicesListingPage() {
     const onScroll = () => {
       // Skip scrollspy while programmatic scroll is in progress
       if (isScrollingRef.current) return;
-      const scrollPos = window.scrollY + 120;
+      const isMobileLayout = window.matchMedia('(max-width: 1024px)').matches;
+      const scrollPos = window.scrollY + (isMobileLayout ? 150 : 120);
       let currentSlug = serviceCategories[0]?.slug || '';
 
       for (const cat of serviceCategories) {
@@ -1685,7 +1688,7 @@ export function ServicesListingPage() {
                 const subs = allServicesList.filter(s => s.categorySlug === cat.slug);
                 return (
                   <div key={cat.slug} id={`category-${cat.slug}`}
-                    className="bg-white rounded-xl border border-slate-100 p-5 scroll-mt-24 overflow-hidden max-[520px]:rounded-none max-[520px]:border-0 max-[520px]:p-0">
+                    className="bg-white rounded-xl border border-slate-100 p-5 scroll-mt-24 overflow-hidden max-[1024px]:scroll-mt-32 max-[520px]:rounded-none max-[520px]:border-0 max-[520px]:p-0">
                     {/* Category header */}
                     <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-100 max-[520px]:mb-3 max-[520px]:border-b-0 max-[520px]:pb-0">
                       <span className="size-9 rounded-xl flex items-center justify-center [&_svg]:w-5 [&_svg]:h-5 shrink-0 max-[520px]:hidden"
@@ -1709,7 +1712,7 @@ export function ServicesListingPage() {
                       <div className="grid grid-cols-4 gap-4 max-[1280px]:grid-cols-3 max-[900px]:grid-cols-2 max-[520px]:grid-cols-2 max-[520px]:gap-3">
                         {subs.map((service) => (
                           <Link key={service.slug} to={`/dich-vu/${service.slug}`}
-                            className="group flex min-h-[180px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white hover:-translate-y-0.5 hover:border-[#003F3C]/20 hover:bg-slate-50/30 transition-all duration-300 hover:no-underline max-[520px]:min-h-[170px]">
+                            className="group flex min-h-[180px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white hover:-translate-y-0.5 hover:border-[#003F3C]/20 hover:bg-slate-50/30 transition-all duration-300 hover:no-underline max-[520px]:min-h-[220px]">
                             {/* Image */}
                             <div className="relative h-[110px] overflow-hidden bg-slate-100 shrink-0 max-[520px]:h-[96px]">
                               <img src={service.img} alt={service.name}
@@ -1728,7 +1731,7 @@ export function ServicesListingPage() {
                                 {service.name}
                               </p>
                               {/* Footer */}
-                              <div className="hidden">
+                              <div className="mt-auto hidden items-end justify-between border-t border-slate-100 pt-2.5 max-[520px]:flex">
                                 <div className="flex flex-col gap-0.5">
                                   <span className="text-[11px] font-medium uppercase text-slate-400">Giá chỉ từ</span>
                                   <span className="text-[13px] font-bold text-[#F3A365]">Đang cập nhật</span>
