@@ -1,0 +1,26 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "result.proto";
+import "common.proto";
+package NewsCategory;
+
+service NewsCategoryQuery {
+  rpc GetAllNewsCategories(GetAllNewsCategoriesRequest) returns (CommonResult);
+  rpc GetDetailNewsCategory(GetDetailNewsCategoryRequest) returns (CommonResult);
+  rpc AdminGetAllNewsCategories(AdminGetAllNewsCategoriesRequest) returns (CommonResult);
+}
+
+message GetAllNewsCategoriesRequest {
+      optional SkipTakeOption SkipTakeOption = 1;
+      optional PagingOption PagingOption = 2;
+      repeated OrderByOption OrderBy = 3;
+}
+message GetDetailNewsCategoryRequest {
+      optional google.protobuf.Int32Value Id = 1;
+}
+message AdminGetAllNewsCategoriesRequest {
+      optional SkipTakeOption SkipTakeOption = 1;
+      optional PagingOption PagingOption = 2;
+      repeated FilterOption Filter = 3;
+      repeated OrderByOption OrderBy = 4;
+}

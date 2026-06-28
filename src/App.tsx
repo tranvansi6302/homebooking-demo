@@ -22,8 +22,16 @@ import bgFooterImg from './assets/bgfooter.png'
 import defaultServiceImg from './assets/default-service.jpg'
 import { serviceCatalogHttp2 } from './modules/services/_apis/queries/http2/service-catalog.http2'
 import type { ServiceResponseType } from './modules/services/_types/service-catalog/service-catalog.res.type'
+import { newsPostsHttp2 } from './modules/news/_apis/queries/http2/news-posts.http2'
+import { newsCategoriesHttp2 } from './modules/news/_apis/queries/http2/news-categories.http2'
 
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
+
+const formatDate = (timestamp: number) => {
+  if (!timestamp) return ''
+  const date = new Date(timestamp * 1000)
+  return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`
+}
 
 const ui = {
   container: 'mx-auto w-[calc(100%-48px)] max-w-[1200px] max-[768px]:w-full max-[768px]:px-3',
@@ -142,9 +150,6 @@ const allNewsArticles: Article[] = [
     ]
   }
 ]
-
-const newsCategories = ['Tất cả', 'Mẹo vặt', 'Mẹ & Bé', 'Dịch vụ', 'Khuyến mãi', 'Sự kiện', 'Công ty', 'Cộng đồng']
-
 export function ShareLinks() {
   const share = (platform: string) => {
     alert(`Chia sẻ bài viết qua ${platform}!`)
@@ -182,7 +187,27 @@ export function ShareLinks() {
 }
 
 function NewsSidebar() {
-  const featuredArticles = allNewsArticles.slice(0, 6)
+  const [featuredArticles, setFeaturedArticles] = React.useState<any[]>([])
+
+  React.useEffect(() => {
+    let active = true
+    newsPostsHttp2.getAllNewsPosts({
+      pagingOption: { pageNumber: 1, pageSize: 6 }
+    }).then(res => {
+      if (!active) return
+      const items = res?.Items || (res as any)?.items || res || []
+      if (items && items.length > 0) {
+        setFeaturedArticles(items)
+      }
+    }).catch(err => {
+      console.error("Lỗi khi tải tin tức nổi bật:", err)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const displayArticles = featuredArticles.length > 0 ? featuredArticles : allNewsArticles.slice(0, 6)
 
   return (
     <aside className="flex flex-col gap-6 md:grid md:grid-cols-2 md:static lg:flex lg:flex-col lg:sticky lg:top-24 lg:self-start">
@@ -193,27 +218,35 @@ function NewsSidebar() {
           Bài viết nổi bật
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
-          {featuredArticles.map((article) => (
-            <Link
-              to={`/tin-tuc/${article.slug}`}
-              className="grid grid-cols-[74px_minmax(0,1fr)] items-center gap-4 group p-2 -mx-2 rounded-lg transition-colors duration-200 hover:bg-slate-50"
-              key={article.slug}
-            >
-              <div className="h-[62px] w-[74px] overflow-hidden rounded-lg border border-slate-100 shadow-sm">
-                <img className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={article.img} alt={article.title} />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span className="line-clamp-2 text-[14px] font-medium leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">{article.title}</span>
-                <span className="flex items-center gap-1 text-xs text-slate-400">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="18" x="3" y="4" rx="2" />
-                    <path d="M3 10h18" />
-                  </svg>
-                  {article.date}
-                </span>
-              </div>
-            </Link>
-          ))}
+          {displayArticles.map((article, index) => {
+            const isReal = 'Id' in article || 'id' in article
+            const slug = isReal ? (article.PostSlug || article.postSlug) : article.slug
+            const title = isReal ? (article.PostTitle || article.postTitle) : article.title
+            const img = isReal ? (article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : article.img
+            const date = isReal ? formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate) : article.date
+
+            return (
+              <Link
+                to={`/tin-tuc/${slug}`}
+                className="grid grid-cols-[74px_minmax(0,1fr)] items-center gap-4 group p-2 -mx-2 rounded-lg transition-colors duration-200 hover:bg-slate-50"
+                key={index}
+              >
+                <div className="h-[62px] w-[74px] overflow-hidden rounded-lg border border-slate-100 shadow-sm">
+                  <img className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" src={img} alt={title} />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="line-clamp-2 text-[14px] font-medium leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C]">{title}</span>
+                  <span className="flex items-center gap-1 text-xs text-slate-400">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="18" height="18" x="3" y="4" rx="2" />
+                      <path d="M3 10h18" />
+                    </svg>
+                    {date}
+                  </span>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
@@ -310,26 +343,52 @@ function NewsListingPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const categoryFilter = searchParams.get('category') || 'Tất cả'
   const searchQuery = searchParams.get('search') || ''
-  const [sortBy, setSortBy] = React.useState('newest');
+  const [sortBy, setSortBy] = React.useState('newest')
 
-  // Filter logic
-  const filteredArticles = allNewsArticles.filter((article) => {
-    const matchesCategory = categoryFilter === 'Tất cả' || article.tag.toLowerCase() === categoryFilter.toLowerCase()
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+  const [categories, setCategories] = React.useState<any[]>([])
+  const [categoriesLoaded, setCategoriesLoaded] = React.useState(false)
+  const [allPosts, setAllPosts] = React.useState<any[]>([])
+  const [loading, setLoading] = React.useState(true)
 
-  // Sort logic
-  const sortedArticles = [...filteredArticles].sort((a, b) => {
-    const parseDate = (dStr: string) => {
-      const [d, m, y] = dStr.split('/').map(Number)
-      return new Date(y, m - 1, d).getTime()
-    }
-    const timeA = parseDate(a.date)
-    const timeB = parseDate(b.date)
-    return sortBy === 'newest' ? timeB - timeA : timeA - timeB
-  })
+  // 1. Fetch categories
+  React.useEffect(() => {
+    newsCategoriesHttp2.getAllNewsCategories({
+      pagingOption: { pageNumber: 1, pageSize: 50 }
+    }).then(res => {
+      const items = res?.Items || (res as any)?.items || []
+      setCategories([{ Id: null, CateName: 'Tất cả', CateSlug: 'all' }, ...items])
+      setCategoriesLoaded(true)
+    }).catch(err => {
+      console.error("Lỗi khi tải danh mục:", err)
+      setCategories([
+        { Id: null, CateName: 'Tất cả', CateSlug: 'all' },
+        { Id: 1, CateName: 'Mẹo vặt', CateSlug: 'meo-vat' },
+        { Id: 2, CateName: 'Tin tức', CateSlug: 'tin-tuc' }
+      ])
+      setCategoriesLoaded(true)
+    })
+  }, [])
+
+  // 2. Fetch posts when category filter changes
+  React.useEffect(() => {
+    if (!categoriesLoaded) return
+
+    setLoading(true)
+    const selectedCategory = categories.find(c => c.CateName.toLowerCase() === categoryFilter.toLowerCase())
+    const selectedCategoryId = selectedCategory ? selectedCategory.Id : null
+
+    newsPostsHttp2.getAllNewsPosts({
+      categoryId: selectedCategoryId,
+      pagingOption: { pageNumber: 1, pageSize: 1000 }
+    }).then(res => {
+      const items = res?.Items || (res as any)?.items || res || []
+      setAllPosts(items)
+      setLoading(false)
+    }).catch(err => {
+      console.error("Lỗi khi tải tin tức:", err)
+      setLoading(false)
+    })
+  }, [categoryFilter, categoriesLoaded, categories])
 
   const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams(searchParams)
@@ -350,6 +409,22 @@ function NewsListingPage() {
     }
     setSearchParams(params)
   }
+
+  // Client-side search keyword filter
+  const filteredArticles = allPosts.filter((article) => {
+    const title = article.PostTitle || article.postTitle || ""
+    const excerpt = article.PostExcerpt || article.postExcerpt || ""
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesSearch
+  })
+
+  // Client-side sorting
+  const sortedArticles = [...filteredArticles].sort((a, b) => {
+    const timeA = a.UpdatedDate || a.updatedDate || a.CreatedDate || a.createdDate || 0
+    const timeB = b.UpdatedDate || b.updatedDate || b.CreatedDate || b.createdDate || 0
+    return sortBy === 'newest' ? timeB - timeA : timeA - timeB
+  })
 
   return (
     <main className="bg-white text-slate-800">
@@ -375,7 +450,8 @@ function NewsListingPage() {
             
             {/* Left side: Categories scroll list (font 14px) */}
             <div className="flex w-full items-center gap-2 overflow-x-auto no-scrollbar pb-1 md:pb-0" aria-label="Danh mục tin tức">
-              {newsCategories.map((category) => {
+              {categories.map((categoryObj) => {
+                const category = categoryObj.CateName
                 const isActive = categoryFilter.toLowerCase() === category.toLowerCase()
                 return (
                   <button
@@ -459,9 +535,9 @@ function NewsListingPage() {
                   onChange={(e) => handleCategoryClick(e.target.value)}
                   className="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-[14px] font-medium text-slate-700 outline-none focus:border-[#003F3C] focus:ring-1 focus:ring-[#003F3C]/10 cursor-pointer"
                 >
-                  {newsCategories.map((category) => (
-                    <option key={category} value={category}>
-                      Danh mục: {category}
+                  {categories.map((categoryObj) => (
+                    <option key={categoryObj.CateName} value={categoryObj.CateName}>
+                      Danh mục: {categoryObj.CateName}
                     </option>
                   ))}
                 </select>
@@ -491,43 +567,56 @@ function NewsListingPage() {
           {/* Listing Grid */}
           <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-8 max-[1024px]:grid-cols-1">
             <div className="flex flex-col max-[768px]:grid max-[768px]:grid-cols-2 max-[768px]:gap-3">
-              {sortedArticles.length > 0 ? (
-                sortedArticles.map((article) => (
-                  <Link to={`/tin-tuc/${article.slug}`} className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 group hover:no-underline max-[768px]:mb-0 max-[768px]:flex max-[768px]:min-h-[220px] max-[768px]:flex-col max-[768px]:gap-0 max-[768px]:overflow-hidden max-[768px]:rounded-lg max-[768px]:border max-[768px]:border-emerald-950/5 max-[768px]:pb-0" key={article.slug}>
-                    <div className="relative aspect-video overflow-hidden rounded-lg max-[768px]:h-[96px] max-[768px]:rounded-none">
-                      <img className="h-full w-full object-cover transition duration-700 group-hover:scale-102" src={article.img} alt={article.title} />
-                    </div>
-                    <div className="flex min-w-0 flex-col justify-center font-normal max-[768px]:grow max-[768px]:justify-start max-[768px]:p-3">
-                      <span className="mb-2 inline-flex w-fit rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700 max-[768px]:px-2 max-[768px]:text-[0.62rem]">{article.tag}</span>
-                      <h2 className="mb-2 line-clamp-2 font-heading text-[14px] md:text-[18px] font-semibold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C] max-[768px]:text-[14px] max-[768px]:leading-5">
-                        {article.title}
-                      </h2>
-                      <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2 max-[768px]:hidden">{article.excerpt}</p>
-                      <div className="flex items-center justify-between gap-4 max-[768px]:mt-auto max-[640px]:flex-col max-[640px]:items-start">
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 max-[768px]:text-[12px]">
-                          <span className="flex items-center gap-2">
-                            <svg className="max-[768px]:size-3" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M8 2v4" />
-                              <path d="M16 2v4" />
-                              <rect width="18" height="18" x="3" y="4" rx="2" />
-                              <path d="M3 10h18" />
+              {loading ? (
+                <div className="py-20 text-center text-slate-400">
+                  Đang tải danh sách bài viết...
+                </div>
+              ) : sortedArticles.length > 0 ? (
+                sortedArticles.map((article, index) => {
+                  const slug = article.PostSlug || article.postSlug
+                  const title = article.PostTitle || article.postTitle
+                  const img = article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400'
+                  const date = formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate)
+                  const tag = article.NewsCategory?.CateName || article.newsCategory?.cateName || (article.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')
+                  const excerpt = article.PostExcerpt || article.postExcerpt
+
+                  return (
+                    <Link to={`/tin-tuc/${slug}`} className="mb-6 grid grid-cols-[300px_minmax(0,1fr)] gap-6 border-b border-slate-200 pb-6 group hover:no-underline max-[768px]:mb-0 max-[768px]:flex max-[768px]:min-h-[220px] max-[768px]:flex-col max-[768px]:gap-0 max-[768px]:overflow-hidden max-[768px]:rounded-lg max-[768px]:border max-[768px]:border-emerald-950/5 max-[768px]:pb-0" key={index}>
+                      <div className="relative aspect-video overflow-hidden rounded-lg max-[768px]:h-[96px] max-[768px]:rounded-none">
+                        <img className="h-full w-full object-cover transition duration-700 group-hover:scale-102" src={img} alt={title} />
+                      </div>
+                      <div className="flex min-w-0 flex-col justify-center font-normal max-[768px]:grow max-[768px]:justify-start max-[768px]:p-3">
+                        <span className="mb-2 inline-flex w-fit rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700 max-[768px]:px-2 max-[768px]:text-[0.62rem]">{tag}</span>
+                        <h2 className="mb-2 line-clamp-2 font-heading text-[14px] md:text-[18px] font-semibold leading-snug text-slate-800 transition duration-300 group-hover:text-[#003F3C] max-[768px]:text-[14px] max-[768px]:leading-5">
+                          {title}
+                        </h2>
+                        <p className="mb-4 text-[14px] leading-relaxed text-slate-500 line-clamp-2 max-[768px]:hidden">{excerpt}</p>
+                        <div className="flex items-center justify-between gap-4 max-[768px]:mt-auto max-[640px]:flex-col max-[640px]:items-start">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 max-[768px]:text-[12px]">
+                            <span className="flex items-center gap-2">
+                              <svg className="max-[768px]:size-3" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M8 2v4" />
+                                <path d="M16 2v4" />
+                                <rect width="18" height="18" x="3" y="4" rx="2" />
+                                <path d="M3 10h18" />
+                              </svg>
+                              {date}
+                            </span>
+                          </div>
+                          <span
+                            className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-extrabold text-[#003F3C] transition group-hover:text-emerald-700 hover:translate-x-1 max-[768px]:hidden"
+                          >
+                            Đọc ngay
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="5" y1="12" x2="19" y2="12" />
+                              <polyline points="12 5 19 12 12 19" />
                             </svg>
-                            {article.date}
                           </span>
                         </div>
-                        <span
-                          className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-extrabold text-[#003F3C] transition group-hover:text-emerald-700 hover:translate-x-1 max-[768px]:hidden"
-                        >
-                          Đọc ngay
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                            <polyline points="12 5 19 12 12 19" />
-                          </svg>
-                        </span>
                       </div>
-                    </div>
-                  </Link>
-                ))
+                    </Link>
+                  )
+                })
               ) : (
                 <div className="py-12 text-center text-slate-500">
                   Không tìm thấy bài viết nào phù hợp với bộ lọc hoặc từ khóa tìm kiếm của bạn.
@@ -546,12 +635,100 @@ function NewsListingPage() {
 function NewsDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const article = allNewsArticles.find((item) => item.slug === slug)
+  const [post, setPost] = React.useState<any>(null)
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState<string | null>(null)
+  const [relatedArticles, setRelatedArticles] = React.useState<any[]>([])
 
-  if (!article) {
+  React.useEffect(() => {
+    let active = true
+    setLoading(true)
+    setError(null)
+    setPost(null)
+
+    // 1. Fetch all posts to match slug to ID
+    newsPostsHttp2.getAllNewsPosts({
+      pagingOption: { pageNumber: 1, pageSize: 1000 }
+    }).then(async (res) => {
+      if (!active) return
+      const items = res?.Items || (res as any)?.items || res || []
+      const matched = items.find((item: any) => (item.PostSlug || item.postSlug) === slug)
+      
+      if (!matched) {
+        // Fallback to mock data
+        const mockMatched = allNewsArticles.find(item => item.slug === slug)
+        if (mockMatched) {
+          setPost(mockMatched)
+          const mockRelated = allNewsArticles
+            .filter(item => item.slug !== mockMatched.slug && item.tag === mockMatched.tag)
+            .slice(0, 2)
+          setRelatedArticles(mockRelated)
+          setLoading(false)
+        } else {
+          setError("Không tìm thấy bài viết.")
+          setLoading(false)
+        }
+        return
+      }
+
+      // 2. Fetch full post content
+      try {
+        const detailRes = await newsPostsHttp2.getDetailNewsPost({ id: matched.Id })
+        if (!active) return
+        if (detailRes) {
+          setPost(detailRes)
+          // Related articles (same category)
+          const related = items
+            .filter((item) => item.Id !== matched.Id && item.CategoryId === matched.CategoryId)
+            .slice(0, 2)
+          setRelatedArticles(related)
+        } else {
+          setPost(matched)
+          const related = items
+            .filter((item) => item.Id !== matched.Id && item.CategoryId === matched.CategoryId)
+            .slice(0, 2)
+          setRelatedArticles(related)
+        }
+        setLoading(false)
+      } catch (err) {
+        console.error("Lỗi khi tải chi tiết bài viết:", err)
+        if (!active) return
+        setPost(matched)
+        setLoading(false)
+      }
+    }).catch((err) => {
+      console.error("Lỗi khi tải danh sách bài viết:", err)
+      if (!active) return
+      const mockMatched = allNewsArticles.find(item => item.slug === slug)
+      if (mockMatched) {
+        setPost(mockMatched)
+        const mockRelated = allNewsArticles
+          .filter(item => item.slug !== mockMatched.slug && item.tag === mockMatched.tag)
+          .slice(0, 2)
+        setRelatedArticles(mockRelated)
+      } else {
+        setError("Lỗi kết nối máy chủ. Vui lòng thử lại sau.")
+      }
+      setLoading(false)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="py-32 text-center text-slate-500 animate-pulse">
+        Đang tải bài viết...
+      </div>
+    )
+  }
+
+  if (error || !post) {
     return (
       <div className="py-32 text-center">
-        <h2 className="text-2xl font-bold text-slate-800">Không tìm thấy bài viết</h2>
+        <h2 className="text-2xl font-bold text-slate-800">{error || "Không tìm thấy bài viết"}</h2>
         <p className="mt-2 text-slate-500">Bài viết bạn đang tìm kiếm có thể đã bị xóa hoặc thay đổi liên kết.</p>
         <button
           onClick={() => navigate('/tin-tuc')}
@@ -563,11 +740,13 @@ function NewsDetailPage() {
     )
   }
 
-
-
-  const relatedArticles = allNewsArticles
-    .filter((item) => item.slug !== article.slug && item.tag === article.tag)
-    .slice(0, 2)
+  const isReal = 'Id' in post || 'id' in post
+  const title = isReal ? (post.PostTitle || post.postTitle) : post.title
+  const img = isReal ? (post.PostThumbnail || post.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : post.img
+  const excerpt = isReal ? (post.PostExcerpt || post.postExcerpt) : post.excerpt
+  const date = isReal ? formatDate(post.UpdatedDate || post.updatedDate || post.CreatedDate || post.createdDate) : post.date
+  const tag = isReal ? (post.NewsCategory?.CateName || post.newsCategory?.cateName || (post.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')) : post.tag
+  const content = isReal ? (post.PostContent || post.postContent) : post.content
 
   return (
     <main className="bg-white text-slate-800 pt-[58px] max-[768px]:pt-[52px]" id="news-detail">
@@ -589,52 +768,72 @@ function NewsDetailPage() {
           <svg className="text-slate-300 shrink-0" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
           </svg>
-          <span className="line-clamp-1 text-slate-400 font-normal leading-none">{article.title}</span>
+          <span className="line-clamp-1 text-slate-400 font-normal leading-none">{title}</span>
         </div>
       </div>
 
       <section className="py-8 pb-14">
         <div className={cn(ui.container, 'grid grid-cols-[minmax(0,1fr)_330px] items-start gap-8 max-[1024px]:grid-cols-1')}>
           <article className="min-w-0">
-            <span className="mb-4 inline-flex rounded-lg bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-emerald-700">{article.tag}</span>
-            <h1 className="mb-4 font-heading text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight text-slate-900">{article.title}</h1>
+            <span className="mb-4 inline-flex rounded-lg bg-emerald-50 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-emerald-700">{tag}</span>
+            <h1 className="mb-4 font-heading text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight text-slate-900">{title}</h1>
 
             <div className="mb-7 flex items-center justify-between gap-5 border-y border-slate-200 py-4 max-[768px]:flex-col max-[768px]:items-start">
               <div className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-full bg-[#003F3C] text-sm font-extrabold text-white">HB</span>
                 <div>
                   <strong className="block text-sm font-extrabold text-slate-800">HomeBooking Team</strong>
-                  <small className="text-xs text-slate-500">{article.date}</small>
+                  <small className="text-xs text-slate-500">{date}</small>
                 </div>
               </div>
             </div>
 
-            <img className="mb-7 aspect-video w-full rounded-lg object-cover shadow-sm" src={article.img} alt={article.title} />
+            <img className="mb-7 aspect-video w-full rounded-lg object-cover shadow-sm" src={img} alt={title} />
 
-            <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50/60 p-5 text-sm font-semibold leading-7 text-[#003F3C]">
-              {article.excerpt}
-            </div>
+            {excerpt && (
+              <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50/60 p-5 text-sm font-semibold leading-7 text-[#003F3C]">
+                {excerpt}
+              </div>
+            )}
 
-            <div className="space-y-6 text-base leading-8 text-slate-600">
-              {article.content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </div>
+            {isReal ? (
+              <div
+                className="prose prose-slate max-w-full text-base leading-8 text-slate-600 space-y-4
+                  [&_h2]:text-[20px] [&_h2]:font-bold [&_h2]:text-slate-800 [&_h2]:pt-2
+                  [&_h3]:text-[17px] [&_h3]:font-bold [&_h3]:text-[#003F3C] [&_h3]:pt-1
+                  [&_p]:text-slate-600 [&_p]:leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+            ) : (
+              <div className="space-y-6 text-base leading-8 text-slate-600">
+                {(content as string[]).map((paragraph: string, index: number) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </div>
+            )}
 
             {/* Related articles section */}
             {relatedArticles.length > 0 && (
               <section className="mt-12 border-t border-slate-200 pt-8">
                 <h3 className="mb-6 font-heading text-lg font-extrabold text-slate-800">Bài viết cùng danh mục</h3>
                 <div className="grid grid-cols-2 gap-6 max-[640px]:grid-cols-1">
-                  {relatedArticles.map((rel) => (
-                    <Link to={`/tin-tuc/${rel.slug}`} key={rel.slug} className="group block">
-                      <div className="aspect-video overflow-hidden rounded-lg bg-slate-100">
-                        <img className="h-full w-full object-cover transition duration-300 group-hover:scale-103" src={rel.img} alt={rel.title} />
-                      </div>
-                      <h4 className="mt-3 line-clamp-2 font-heading text-sm font-bold text-slate-800 group-hover:text-emerald-700">{rel.title}</h4>
-                      <small className="mt-1 block text-xs text-slate-400">{rel.date}</small>
-                    </Link>
-                  ))}
+                  {relatedArticles.map((rel, index) => {
+                    const isRelReal = 'Id' in rel || 'id' in rel
+                    const relSlug = isRelReal ? (rel.PostSlug || rel.postSlug) : rel.slug
+                    const relTitle = isRelReal ? (rel.PostTitle || rel.postTitle) : rel.title
+                    const relImg = isRelReal ? (rel.PostThumbnail || rel.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : rel.img
+                    const relDate = isRelReal ? formatDate(rel.UpdatedDate || rel.updatedDate || rel.CreatedDate || rel.createdDate) : rel.date
+
+                    return (
+                      <Link to={`/tin-tuc/${relSlug}`} key={index} className="group block">
+                        <div className="aspect-video overflow-hidden rounded-lg bg-slate-100">
+                          <img className="h-full w-full object-cover transition duration-300 group-hover:scale-103" src={relImg} alt={relTitle} />
+                        </div>
+                        <h4 className="mt-3 line-clamp-2 font-heading text-sm font-bold text-slate-800 group-hover:text-emerald-700">{relTitle}</h4>
+                        <small className="mt-1 block text-xs text-slate-400">{relDate}</small>
+                      </Link>
+                    )
+                  })}
                 </div>
               </section>
             )}
@@ -666,7 +865,27 @@ function NewsDetailPage() {
 }
 
 function HomePage() {
-  const articles = allNewsArticles.slice(0, 4)
+  const [articles, setArticles] = React.useState<any[]>([])
+
+  React.useEffect(() => {
+    let active = true
+    newsPostsHttp2.getAllNewsPosts({
+      pagingOption: { pageNumber: 1, pageSize: 4 }
+    }).then(res => {
+      if (!active) return
+      const items = res?.Items || (res as any)?.items || res || []
+      if (items && items.length > 0) {
+        setArticles(items)
+      }
+    }).catch(err => {
+      console.error("Lỗi khi tải tin tức trang chủ:", err)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const displayArticles = articles.length > 0 ? articles : allNewsArticles.slice(0, 4)
   const { featuredServices, allServicesList } = useLandingServices()
 
   const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -850,22 +1069,31 @@ function HomePage() {
           </div>
 
           <div className="grid grid-cols-4 gap-6 max-[1024px]:grid-cols-2 max-[520px]:gap-3">
-            {articles.map((article, index) => (
-              <Link key={index} to={`/tin-tuc/${article.slug}`} className={cn(ui.card, 'group flex flex-col overflow-hidden rounded-lg border border-emerald-950/5')} data-aos="fade-up" data-aos-delay={index * 150}>
-                <div className="relative h-40 overflow-hidden">
-                  <img className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" src={article.img} alt={article.title} />
-                </div>
-                <div className="flex grow flex-col p-5 max-[520px]:p-3">
-                  <p className="line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-relaxed text-slate-800 transition duration-300 group-hover:text-emerald-700 max-[520px]:min-h-[2.35rem] max-[520px]:text-sm max-[520px]:leading-5">{article.title}</p>
-                  <div className="mt-auto flex items-center justify-between gap-2 pt-5 text-xs text-slate-500 max-[520px]:pt-3 max-[520px]:text-[0.65rem]">
-                    <span className="shrink-0">{article.date}</span>
-                    <span className="inline-flex min-w-0 shrink rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-emerald-700 max-[520px]:max-w-[66px] max-[520px]:px-2 max-[520px]:text-[0.56rem]">
-                      <span className="truncate">{article.tag}</span>
-                    </span>
+            {displayArticles.map((article, index) => {
+              const isReal = 'Id' in article || 'id' in article
+              const slug = isReal ? (article.PostSlug || article.postSlug) : article.slug
+              const title = isReal ? (article.PostTitle || article.postTitle) : article.title
+              const img = isReal ? (article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : article.img
+              const date = isReal ? formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate) : article.date
+              const tag = isReal ? (article.NewsCategory?.CateName || article.newsCategory?.cateName || (article.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')) : article.tag
+
+              return (
+                <Link key={index} to={`/tin-tuc/${slug}`} className={cn(ui.card, 'group flex flex-col overflow-hidden rounded-lg border border-emerald-950/5')} data-aos="fade-up" data-aos-delay={index * 150}>
+                  <div className="relative h-40 overflow-hidden">
+                    <img className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" src={img} alt={title} />
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div className="flex grow flex-col p-5 max-[520px]:p-3">
+                    <p className="line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-relaxed text-slate-800 transition duration-300 group-hover:text-emerald-700 max-[520px]:min-h-[2.35rem] max-[520px]:text-sm max-[520px]:leading-5">{title}</p>
+                    <div className="mt-auto flex items-center justify-between gap-2 pt-5 text-xs text-slate-500 max-[520px]:pt-3 max-[520px]:text-[0.65rem]">
+                      <span className="shrink-0">{date}</span>
+                      <span className="inline-flex min-w-0 shrink rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-emerald-700 max-[520px]:max-w-[66px] max-[520px]:px-2 max-[520px]:text-[0.56rem]">
+                        <span className="truncate">{tag}</span>
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
