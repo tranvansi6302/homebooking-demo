@@ -3,16 +3,12 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { Routes, Route, Link, useNavigate, useParams, useSearchParams, useLocation, Navigate } from 'react-router-dom'
 import homeCleaningImg from './assets/home_cleaning.png'
-import spaBeautyImg from './assets/spa_beauty.png'
 import applianceRepairImg from './assets/appliance_repair.png'
 import localCommunityImg from './assets/local_community.png'
 import kindnessServiceImg from './assets/kindness_service.png'
 import avatarAnImg from './assets/avatar_an.png'
 import avatarKhangImg from './assets/avatar_khang.png'
 import momBabyCareImg from './assets/mom_baby_care.png'
-import homeHealthcareImg from './assets/home_healthcare.png'
-import petCareImg from './assets/pet_care_service.png'
-import elderlyCareImg from './assets/elderly_care.png'
 import danhmucImg from './assets/danhmuc.png'
 import qrCodeImg from './assets/qr_code.png'
 import appStoreIcon from './assets/app_store.png'
@@ -23,6 +19,9 @@ import bgDichVuImg from './assets/bgdichvu.png'
 import bgLeftImg from './assets/bg-left.jpg'
 import bgRightImg from './assets/bg-right.jpg'
 import bgFooterImg from './assets/bgfooter.png'
+import defaultServiceImg from './assets/default-service.jpg'
+import { serviceCatalogHttp2 } from './modules/services/_apis/queries/http2/service-catalog.http2'
+import type { ServiceResponseType } from './modules/services/_types/service-catalog/service-catalog.res.type'
 
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
 
@@ -47,120 +46,6 @@ type Article = {
   content: string[]
   readTime?: string
 }
-
-const getEcosystemIcon = (key: string) => {
-  switch (key) {
-    case 'mom-baby':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19a1 1 0 0 1-1-1v-1a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5v1a1 1 0 0 1-1 1H4Z" />
-          <circle cx="9.5" cy="6.5" r="2.5" />
-          <path d="M16 19v-2a4 4 0 0 0-4-4h-.5" />
-          <circle cx="15" cy="8.5" r="2" />
-        </svg>
-      );
-    case 'beauty':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-          <line x1="9" x2="9.01" y1="9" y2="9" />
-          <line x1="15" x2="15.01" y1="9" y2="9" />
-        </svg>
-      );
-    case 'home':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      );
-    case 'repair':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-        </svg>
-      );
-    case 'health':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-          <path d="M3.22 12H9.5l1.5-3 2 6 1.5-3h4.28" />
-        </svg>
-      );
-    case 'pets':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-          <path d="M19 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-          <path d="M5 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-          <path d="M8 5c-.8 0-1.5.7-1.5 1.5S7.2 8 8 8s1.5-.7 1.5-1.5S8.8 5 8 5z" />
-          <path d="M16 5c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5S16.8 5 16 5z" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-};
-
-const featuredServices = [
-  {
-    name: 'Mẹ & Bé',
-    desc: 'Chăm sóc mẹ và bé toàn diện.',
-    iconKey: 'mom-baby',
-    iconColor: '#007a63',
-    iconBg: '#e8f7f1',
-    img: momBabyCareImg
-  },
-  {
-    name: 'Làm đẹp & Styling',
-    desc: 'Chăm sóc da, tóc, trang điểm...',
-    iconKey: 'beauty',
-    iconColor: '#0f8a70',
-    iconBg: '#eefbf6',
-    img: spaBeautyImg
-  },
-  {
-    name: 'Vệ sinh & Tiện ích',
-    desc: 'Vệ sinh nhà cửa, giặt là, dọn dẹp...',
-    iconKey: 'home',
-    iconColor: '#006b5d',
-    iconBg: '#e7f6f3',
-    img: homeCleaningImg
-  },
-  {
-    name: 'Kỹ thuật & Điện nước',
-    desc: 'Sửa chữa điện nước, điện lạnh, đồ gia dụng...',
-    iconKey: 'repair',
-    iconColor: '#0a7566',
-    iconBg: '#edf8f5',
-    img: applianceRepairImg
-  },
-  {
-    name: 'Dịch vụ thú cưng',
-    desc: 'Chăm sóc, spa, khách sạn thú cưng...',
-    iconKey: 'pets',
-    iconColor: '#00866d',
-    iconBg: '#ecfaf5',
-    img: petCareImg
-  },
-  {
-    name: 'Y tế & Xét nghiệm',
-    desc: 'Xét nghiệm tại nhà, chăm sóc y tế...',
-    iconKey: 'health',
-    iconColor: '#0f7c67',
-    iconBg: '#eaf8f3',
-    img: homeHealthcareImg
-  },
-  {
-    name: 'Chăm sóc người già',
-    desc: 'Chăm sóc sức khỏe, hỗ trợ sinh hoạt...',
-    iconKey: 'mom-baby',
-    iconColor: '#006f61',
-    iconBg: '#edf8f5',
-    img: elderlyCareImg
-  }
-];
 
 const allNewsArticles: Article[] = [
   {
@@ -782,6 +667,7 @@ function NewsDetailPage() {
 
 function HomePage() {
   const articles = allNewsArticles.slice(0, 4)
+  const { featuredServices, allServicesList } = useLandingServices()
 
   const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -881,11 +767,8 @@ function HomePage() {
           <div className="grid grid-cols-4 gap-5 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:gap-3">
             {featuredServices.map((service, idx) => {
               const getServiceLink = (name: string) => {
-                if (name.includes('Mẹ & Bé')) return '/dich-vu/cham-soc-me-va-be';
-                if (name.includes('Làm đẹp')) return '/dich-vu/cham-soc-da-mat';
-                if (name.includes('Vệ sinh')) return '/dich-vu/ve-sinh-nha-cua';
-                if (name.includes('Kỹ thuật')) return '/dich-vu/ve-sinh-may-lanh';
-                return '/dich-vu';
+                const matched = allServicesList.find((item) => item.name === name);
+                return matched ? `/dich-vu/${matched.slug}` : '/dich-vu';
               };
               return (
                 <Link
@@ -901,7 +784,7 @@ function HomePage() {
                   </div>
                   <div className="flex grow flex-col p-4 max-[520px]:p-3">
                     <div className="mb-3 inline-flex max-w-full self-start items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold max-[520px]:mb-2 max-[520px]:px-2 max-[520px]:text-[0.66rem]" style={{ backgroundColor: service.iconBg, color: service.iconColor }}>
-                      <span className="shrink-0 [&_svg]:size-3 max-[520px]:[&_svg]:size-2.5">{getEcosystemIcon(service.iconKey)}</span>
+                      <img src={service.icon} alt="" className="size-3 shrink-0 rounded object-cover max-[520px]:size-2.5" />
                       <span className="truncate">{service.name}</span>
                     </div>
                     <p className="line-clamp-2 min-h-[2.8rem] text-sm font-medium leading-relaxed text-slate-800 max-[520px]:min-h-[2.35rem] max-[520px]:text-sm max-[520px]:leading-5">{service.desc}</p>
@@ -1117,408 +1000,230 @@ function HomePage() {
 export interface ServiceCategory {
   name: string;
   slug: string;
-  iconKey: string;
+  icon: string;
   iconBg: string;
   iconColor: string;
   desc: string;
 }
 
 export interface ServiceDetail {
+  id: number;
   slug: string;
   name: string;
   categorySlug: string;
   tag: string;
   desc: string;
+  priceLabel: string;
   img: string;
   gallery: string[];
   features: { title: string; desc: string }[];
   includes: string[];
 }
 
-const serviceCategories: ServiceCategory[] = [
-  { name: 'Dọn dẹp & Vệ sinh', slug: 'don-dep-ve-sinh', iconKey: 'home', iconBg: '#E6FFFA', iconColor: '#319795', desc: 'Dọn nhà, vệ sinh văn phòng, giặt sofa, thảm' },
-  { name: 'Bảo trì & Thiết bị', slug: 'bao-tri-dien-lanh', iconKey: 'repair', iconBg: '#FFFAF0', iconColor: '#DD6B20', desc: 'Rửa máy lạnh, sửa tủ lạnh, máy giặt, tivi' },
-  { name: 'Sửa chữa điện nước', slug: 'sua-chua-dien-nuoc', iconKey: 'wrench', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Lắp đặt đèn, sửa ống nước, sửa đường điện' },
-  { name: 'Chăm sóc Mẹ & Bé', slug: 'me-va-be', iconKey: 'mom-baby', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Tắm bé sơ sinh, chăm sóc mẹ sau sinh, thông tắc tia sữa' },
-  { name: 'Y tế & Sức khỏe', slug: 'y-te-suc-khoe', iconKey: 'health', iconBg: '#EBF8FF', iconColor: '#3182CE', desc: 'Khám bệnh tại nhà, truyền dịch, tiêm thuốc, xét nghiệm' },
-  { name: 'Chăm sóc Người già', slug: 'cham-soc-nguoi-gia', iconKey: 'elderly', iconBg: '#F0FDF4', iconColor: '#38A169', desc: 'Chăm sóc người bệnh, bầu bạn, hỗ trợ sinh hoạt' },
-  { name: 'Làm đẹp & Spa', slug: 'lam-dep-spa', iconKey: 'beauty', iconBg: '#FFFDF0', iconColor: '#D69E2E', desc: 'Chăm sóc da mặt, massage trị liệu, làm nail, gội đầu dưỡng sinh' },
-  { name: 'Trông trẻ & Giúp việc', slug: 'trong-tre-giup-viec', iconKey: 'baby-sitting', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Trông trẻ theo giờ, giúp việc định kỳ, nấu ăn gia đình' },
-  { name: 'Chăm sóc Thú cưng', slug: 'cham-soc-thu-cung', iconKey: 'pets', iconBg: '#FFF5F5', iconColor: '#E53E3E', desc: 'Tắm rửa, tỉa lông, khách sạn thú cưng, dắt chó đi dạo' },
-  { name: 'Logistics & Giao vận', slug: 'logistics-giao-van', iconKey: 'truck', iconBg: '#EBF8FF', iconColor: '#3182CE', desc: 'Chuyển nhà trọn gói, chở hàng, giao hàng hỏa tốc' },
-  { name: 'Gia sư & Dạy kèm', slug: 'gia-su-day-kem', iconKey: 'tutor', iconBg: '#F0FDF4', iconColor: '#38A169', desc: 'Gia sư các môn học, dạy tiếng Anh, năng khiếu' },
-  { name: 'Đưa đón & Tài xế', slug: 'dua-don-tai-xe', iconKey: 'driver', iconBg: '#FFFAF0', iconColor: '#DD6B20', desc: 'Tài xế hộ tống, lái xe hộ người say, đưa đón sân bay' },
-  { name: 'Tổ chức & Trang trí', slug: 'to-chuc-trang-tri', iconKey: 'event', iconBg: '#FFFDF0', iconColor: '#D69E2E', desc: 'Trang trí sinh nhật, thôi nôi, tiệc gia đình' }
-];
+type FeaturedService = {
+  name: string
+  desc: string
+  icon: string
+  iconColor: string
+  iconBg: string
+  img: string
+}
 
-const allServicesList: ServiceDetail[] = [
-  {
-    slug: 'don-nha-theo-gio',
-    name: 'Dọn dẹp nhà theo giờ',
-    categorySlug: 'don-dep-ve-sinh',
-    tag: 'DỌN DẸP & VỆ SINH',
-    desc: 'Lau chùi, dọn dẹp nhà cửa định kỳ theo giờ với đội ngũ chuyên nghiệp, an tâm.',
-    img: homeCleaningImg,
-    gallery: [homeCleaningImg, spaBeautyImg, applianceRepairImg],
-    features: [
-      { title: 'Sạch sẽ - Gọn gàng', desc: 'Đảm bảo vệ sinh chuẩn mực' },
-      { title: 'Nhân sự tin cậy', desc: 'Xác thực lý lịch rõ ràng' }
+const stripHtml = (value: string | null | undefined) =>
+  (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+
+const slugifyService = (value: string, id: number) => {
+  const slug = value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  return `${slug || 'dich-vu'}-${id}`
+}
+
+const resolveServiceImage = (service: ServiceResponseType, fallbackImg = defaultServiceImg) => {
+  if (!service.SerIcon) return fallbackImg
+  if (/^https?:\/\//i.test(service.SerIcon) || service.SerIcon.startsWith('/')) return service.SerIcon
+  return fallbackImg
+}
+
+const resolveCatalogIcon = (service: ServiceResponseType) => resolveServiceImage(service, defaultServiceImg)
+
+const getIdFromServiceSlug = (value: string | undefined) => {
+  if (!value) return undefined
+  const match = value.match(/-(\d+)$/)
+  return match ? Number(match[1]) : undefined
+}
+
+const mapServiceDetailResponse = (service: ServiceResponseType, baseService?: ServiceDetail): ServiceDetail => {
+  const desc = stripHtml(service.SerDescription || service.SerContent) || baseService?.desc || 'Thông tin dịch vụ đang được cập nhật trên HomeBooking.'
+  const img = resolveServiceImage(service, baseService?.img || defaultServiceImg)
+
+  return {
+    id: service.Id,
+    slug: baseService?.slug || slugifyService(service.SerName, service.Id),
+    name: service.SerName || baseService?.name || '',
+    categorySlug: baseService?.categorySlug || '',
+    tag: baseService?.tag || 'Dịch vụ',
+    desc,
+    priceLabel: baseService?.priceLabel || 'Đang cập nhật',
+    img,
+    gallery: [img],
+    features: baseService?.features || [
+      { title: 'Đặt lịch nhanh', desc: 'Theo dõi và quản lý lịch hẹn trên ứng dụng' },
+      { title: 'Thông tin minh bạch', desc: 'Chi tiết dịch vụ được cập nhật từ hệ thống HomeBooking' },
     ],
-    includes: ['Quét dọn bụi bẩn các phòng', 'Lau sàn nhà, lau kính cơ bản', 'Thu gom rác sinh hoạt']
-  },
-  {
-    slug: 've-sinh-sau',
-    name: 'Tổng vệ sinh sâu (Deep Clean)',
-    categorySlug: 'don-dep-ve-sinh',
-    tag: 'DỌN DẸP & VỆ SINH',
-    desc: 'Vệ sinh toàn diện nhà cửa đón Tết, nhà mới sửa xong hoặc lâu ngày không dọn dẹp.',
-    img: homeCleaningImg,
-    gallery: [homeCleaningImg, spaBeautyImg],
-    features: [
-      { title: 'Làm sạch sâu', desc: 'Đánh bay mọi vết bám lâu ngày' },
-      { title: 'Thiết bị chuyên nghiệp', desc: 'Sử dụng máy hút bụi công suất lớn' }
-    ],
-    includes: ['Khử khuẩn toàn bộ các phòng', 'Đánh bóng sàn gạch, sàn gỗ', 'Vệ sinh tủ bếp và nhà tắm chuyên sâu']
-  },
-  {
-    slug: 've-sinh-may-lanh',
-    name: 'Vệ sinh & Bảo dưỡng máy lạnh',
-    categorySlug: 'bao-tri-dien-lanh',
-    tag: 'BẢO TRÌ & THIẾT BỊ',
-    desc: 'Xịt rửa dàn nóng, dàn lạnh máy lạnh tại nhà giúp thổi hơi lạnh sâu, tiết kiệm điện.',
-    img: applianceRepairImg,
-    gallery: [applianceRepairImg, homeCleaningImg],
-    features: [
-      { title: 'Tiết kiệm điện', desc: 'Tăng hiệu suất làm lạnh tối đa' },
-      { title: 'Bảo hành rò nước', desc: 'Bảo hành chảy nước sau vệ sinh' }
-    ],
-    includes: ['Rửa lưới lọc và dàn trao đổi nhiệt', 'Kiểm tra đo dòng định mức và lượng gas', 'Thông đường ống nước ngưng']
-  },
-  {
-    slug: 'sua-tu-lanh-tai-nha',
-    name: 'Sửa chữa tủ lạnh chuyên nghiệp',
-    categorySlug: 'bao-tri-dien-lanh',
-    tag: 'BẢO TRÌ & THIẾT BỊ',
-    desc: 'Khắc phục nhanh tình trạng tủ lạnh không đông đá, rò rỉ nước hoặc kêu to.',
-    img: applianceRepairImg,
-    gallery: [applianceRepairImg, homeCleaningImg],
-    features: [
-      { title: 'Thay thế linh kiện chính hãng', desc: 'Linh kiện đạt chuẩn bảo hành' },
-      { title: 'Thợ tay nghề cao', desc: 'Có mặt sau 30 phút' }
-    ],
-    includes: ['Kiểm tra nạp gas lạnh', 'Sửa chữa bo mạch và cảm biến nhiệt', 'Thay block tủ lạnh nếu hỏng']
-  },
-  {
-    slug: 'sua-dien-nuoc-tai-nha',
-    name: 'Sửa chữa điện nước khẩn cấp',
-    categorySlug: 'sua-chua-dien-nuoc',
-    tag: 'SỬA CHỮA ĐIỆN NƯỚC',
-    desc: 'Giải quyết các sự cố chập điện, rò rỉ nước, hỏng máy bơm nước tại nhà nhanh chóng.',
-    img: applianceRepairImg,
-    gallery: [applianceRepairImg],
-    features: [
-      { title: 'Phục vụ 24/7', desc: 'Có mặt bất kể ngày đêm khi khẩn cấp' },
-      { title: 'Giá cả rõ ràng', desc: 'Báo giá trước khi thi công' }
-    ],
-    includes: ['Dò tìm vị trí rò rỉ nước âm tường', 'Thay thế aptomat, ổ cắm chập cháy', 'Thông nghẹt đường ống thoát nước']
-  },
-  {
-    slug: 'tam-be-so-sinh-tai-nha',
-    name: 'Tắm bé sơ sinh & Massage tại nhà',
-    categorySlug: 'me-va-be',
-    tag: 'CHĂM SÓC MẸ & BÉ',
-    desc: 'Tắm bé theo chuẩn y khoa, vệ sinh rốn tránh nhiễm trùng kết hợp massage thư giãn cho bé.',
-    img: momBabyCareImg,
-    gallery: [momBabyCareImg, elderlyCareImg],
-    features: [
-      { title: 'Điều dưỡng chuyên nghiệp', desc: 'Có chứng chỉ y khoa chính quy' },
-      { title: 'Tận tâm, yêu thương', desc: 'Thao tác nhẹ nhàng chu đáo' }
-    ],
-    includes: ['Massage kích thích tuần hoàn cho bé', 'Tắm và chăm sóc rốn đúng chuẩn y tế', 'Hơ lá trầu cho trẻ sơ sinh']
-  },
-  {
-    slug: 'cham-soc-me-sau-sinh',
-    name: 'Chăm sóc & Phục hồi mẹ sau sinh',
-    categorySlug: 'me-va-be',
-    tag: 'CHĂM SÓC MẸ & BÉ',
-    desc: 'Liệu trình xông hơi, massage bụng tống sản dịch, thông tắc tia sữa và hỗ trợ giảm eo.',
-    img: momBabyCareImg,
-    gallery: [momBabyCareImg],
-    features: [
-      { title: 'Liệu trình chuẩn', desc: 'Giúp mẹ nhanh chóng lấy lại vóc dáng' },
-      { title: 'Giảm đau mỏi bả vai', desc: 'Thư giãn cơ khớp sau sinh' }
-    ],
-    includes: ['Xông thảo dược phục hồi cơ thể', 'Massage bụng hóa lỏng mỡ thừa', 'Thông tắc tia sữa ban đầu']
-  },
-  {
-    slug: 'truyen-dich-tai-nha',
-    name: 'Dịch vụ truyền dịch & tiêm thuốc tại nhà',
-    categorySlug: 'y-te-suc-khoe',
-    tag: 'Y TẾ & SỨC KHỎE',
-    desc: 'Truyền nước biển, nước hoa quả nâng cao đề kháng, tiêm thuốc theo y lệnh bác sĩ.',
-    img: homeHealthcareImg,
-    gallery: [homeHealthcareImg],
-    features: [
-      { title: 'Y tá kinh nghiệm', desc: 'Làm việc tại các bệnh viện lớn' },
-      { title: 'Đảm bảo an toàn', desc: 'Theo dõi chỉ số sinh tồn suốt quá trình' }
-    ],
-    includes: ['Cắm kim và theo dõi dịch truyền', 'Tiêm bắp, tiêm tĩnh mạch an toàn', 'Kiểm tra huyết áp và mạch nhiệt độ']
-  },
-  {
-    slug: 'kham-benh-tai-nha',
-    name: 'Thăm khám & Xét nghiệm tại nhà',
-    categorySlug: 'y-te-suc-khoe',
-    tag: 'Y TẾ & SỨC KHỎE',
-    desc: 'Bác sĩ trực tiếp đến nhà thăm khám, lấy mẫu xét nghiệm máu và trả kết quả tận nhà.',
-    img: homeHealthcareImg,
-    gallery: [homeHealthcareImg],
-    features: [
-      { title: 'Bác sĩ chuyên khoa', desc: 'Chẩn đoán chính xác tại nhà' },
-      { title: 'Lấy mẫu tiện lợi', desc: 'Không cần xét hàng mệt mỏi' }
-    ],
-    includes: ['Khám tổng quát tai mũi họng tim phổi', 'Lấy mẫu máu, nước tiểu gửi labo', 'Kê đơn thuốc điều trị chi tiết']
-  },
-  {
-    slug: 'cham-soc-nguoi-gia-ngay',
-    name: 'Chăm sóc & Bầu bạn người cao tuổi',
-    categorySlug: 'cham-soc-nguoi-gia',
-    tag: 'CHĂM SÓC NGƯỜI GIÀ',
-    desc: 'Đồng hành chăm sóc sinh hoạt, đo huyết áp, nhắc nhở uống thuốc và bầu bạn cùng ông bà.',
-    img: elderlyCareImg,
-    gallery: [elderlyCareImg],
-    features: [
-      { title: 'Kiên nhẫn - Thấu hiểu', desc: 'Kính trọng và kiên nhẫn chăm sóc' },
-      { title: 'Hỗ trợ y tế cơ bản', desc: 'Đo huyết áp, nhịp tim hàng ngày' }
-    ],
-    includes: ['Hỗ trợ ăn uống, vệ sinh cá nhân', 'Dìu đi dạo và trò chuyện tâm sự', 'Nhắc nhở dùng thuốc đúng giờ kê đơn']
-  },
-  {
-    slug: 'cham-soc-da-mat',
-    name: 'Chăm sóc da mặt chuẩn Spa',
-    categorySlug: 'lam-dep-spa',
-    tag: 'LÀM ĐẸP & SPA',
-    desc: 'Tẩy trang, xông hơi, hút bã nhờn, massage nâng cơ mặt thải độc tố giúp da mịn màng.',
-    img: spaBeautyImg,
-    gallery: [spaBeautyImg, momBabyCareImg],
-    features: [
-      { title: 'Mỹ phẩm an toàn', desc: 'Chiết xuất từ thiên nhiên lành tính' },
-      { title: 'Kỹ thuật viên chuyên nghiệp', desc: 'Đào tạo bài bản chuẩn spa' }
-    ],
-    includes: ['Rửa mặt làm sạch sâu bụi bẩn', 'Xông hơi nóng làm giãn nở lỗ chân lông', 'Đắp mặt nạ dưỡng chất ngọc trai']
-  },
-  {
-    slug: 'goi-dau-duong-sinh',
-    name: 'Gội đầu dưỡng sinh thảo dược',
-    categorySlug: 'lam-dep-spa',
-    tag: 'LÀM ĐẸP & SPA',
-    desc: 'Gội đầu bằng nước bồ kết thảo dược kết hợp bấm huyệt, massage cổ vai gáy giải tỏa mỏi mệt.',
-    img: spaBeautyImg,
-    gallery: [spaBeautyImg],
-    features: [
-      { title: 'Thảo dược tự nhiên', desc: 'Không hóa chất tạo bọt công nghiệp' },
-      { title: 'Massage bấm huyệt', desc: 'Đả thông kinh lạc vùng đầu cổ' }
-    ],
-    includes: ['Gội đầu 2 lần thảo dược', 'Massage mặt và đắp mặt nạ dưa leo', 'Bấm huyệt đầu, cổ, vai, gáy']
-  },
-  {
-    slug: 'trong-tre-theo-gio',
-    name: 'Trông trẻ theo giờ tại nhà',
-    categorySlug: 'trong-tre-giup-viec',
-    tag: 'TRÔNG TRẺ & GIÚP VIỆC',
-    desc: 'Giữ trẻ, cho trẻ ăn uống, chơi cùng trẻ khi ba mẹ có việc bận đột xuất cần đi ra ngoài.',
-    img: momBabyCareImg,
-    gallery: [momBabyCareImg],
-    features: [
-      { title: 'Yêu trẻ em', desc: 'Bảo mẫu thân thiện, chu đáo' },
-      { title: 'Tương tác thông minh', desc: 'Đọc truyện, vẽ tranh cùng bé' }
-    ],
-    includes: ['Cho bé ăn cháo, uống sữa theo giờ', 'Vệ sinh thay bỉm tã cho bé', 'Đảm bảo an toàn tuyệt đối cho bé']
-  },
-  {
-    slug: 'grooming-thu-cung',
-    name: 'Tắm & Tỉa lông thú cưng tại nhà',
-    categorySlug: 'cham-soc-thu-cung',
-    tag: 'CHĂM SÓC THÚ CƯNG',
-    desc: 'Chăm sóc sắc đẹp cho chó mèo tại nhà: cắt móng, mài móng, vệ sinh tai, tắm sấy thơm tho.',
-    img: petCareImg,
-    gallery: [petCareImg],
-    features: [
-      { title: 'Thợ lành nghề', desc: 'Kỹ năng vuốt ve, xử lý chó mèo nhát' },
-      { title: 'Dụng cụ tiệt trùng', desc: 'Đảm bảo vệ sinh tuyệt đối' }
-    ],
-    includes: ['Cắt tỉa lông tạo kiểu theo yêu cầu', 'Vắt tuyến hôi, tắm sấy thơm tho', 'Cắt và mài móng chân']
-  },
-  {
-    slug: 'chuyen-nha-tron-goi',
-    name: 'Dịch vụ chuyển nhà trọn gói',
-    categorySlug: 'logistics-giao-van',
-    tag: 'LOGISTICS & GIAO VẬN',
-    desc: 'Đóng gói đồ đạc bằng màng pe, thùng carton, bốc xếp xe tải chuyên chở sang nhà mới từ A-Z.',
-    img: localCommunityImg,
-    gallery: [localCommunityImg],
-    features: [
-      { title: 'Cam kết bồi hoàn', desc: 'Đảm bảo không hư hại, thất lạc đồ đạc' },
-      { title: 'Hỗ trợ tháo lắp', desc: 'Tháo lắp tủ giường, máy lạnh chuyên nghiệp' }
-    ],
-    includes: ['Cung cấp thùng carton băng keo', 'Đóng gói bọc lót kỹ lượng đồ dễ vỡ', 'Vận chuyển bốc xếp lên nhà mới']
-  },
-  {
-    slug: 'gia-su-day-kem-tai-nha',
-    name: 'Gia sư dạy kèm tại nhà theo nhóm/cá nhân',
-    categorySlug: 'gia-su-day-kem',
-    tag: 'GIA SƯ & DẠY KÈM',
-    desc: 'Gia sư các môn Toán, Văn, Anh văn cho học sinh tiểu học, trung học lấy lại gốc kiến thức.',
-    img: kindnessServiceImg,
-    gallery: [kindnessServiceImg],
-    features: [
-      { title: 'Gia sư chất lượng', desc: 'Sinh viên trường Top hoặc giáo viên chính quy' },
-      { title: 'Phương pháp khoa học', desc: 'Thiết lập lộ trình học tập riêng biệt' }
-    ],
-    includes: ['Kiểm tra đánh giá năng lực ban đầu', 'Dạy bám sát chương trình sách giáo khoa', 'Hỗ trợ giải bài tập khó hàng tuần']
-  },
-  {
-    slug: 'lai-xe-ho-alcofree',
-    name: 'Tài xế lái xe hộ đưa người say về nhà',
-    categorySlug: 'dua-don-tai-xe',
-    tag: 'ĐƯA ĐÓN & TÀI XẾ',
-    desc: 'Tài xế giàu kinh nghiệm đến tận nơi điều khiển xe của bạn đưa bạn và xe về nhà an toàn.',
-    img: localCommunityImg,
-    gallery: [localCommunityImg],
-    features: [
-      { title: 'An toàn tuyệt đối', desc: 'Đưa cả người và phương tiện về nhà' },
-      { title: 'Tài xế trung thực', desc: 'Lý lịch tư pháp rõ ràng sạch sẽ' }
-    ],
-    includes: ['Có mặt sau 15-20 phút gọi', 'Lái xe ô tô/xe máy của khách an toàn', 'Bảo hiểm trách nhiệm chuyến đi']
-  },
-  {
-    slug: 'trang-tri-sinh-nhat',
-    name: 'Trang trí tiệc sinh nhật & Sự kiện gia đình',
-    categorySlug: 'to-chuc-trang-tri',
-    tag: 'TỔ CHỨC & TRANG TRÍ',
-    desc: 'Lên ý tưởng, dựng sân khấu bong bóng, bàn tiệc gallery trang trí sự kiện sinh nhật, thôi nôi ấm cúng.',
-    img: localCommunityImg,
-    gallery: [localCommunityImg],
-    features: [
-      { title: 'Thiết kế độc đáo', desc: 'Dựng phối cảnh 3D trước khi duyệt' },
-      { title: 'Thi công nhanh gọn', desc: 'Dọn dẹp sạch sẽ sau khi tiệc kết thúc' }
-    ],
-    includes: ['Setup backdrop bong bóng bóng bay', 'Trang trí bàn tiệc gallery bánh kem', 'Bàn giao đúng giờ cam kết']
+    includes: [desc],
   }
-];
+}
 
-function getCategoryIcon(iconKey: string) {
-  switch (iconKey) {
-    case 'mom-baby':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-        </svg>
-      );
-    case 'beauty':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-          <line x1="9" x2="9.01" y1="9" y2="9" />
-          <line x1="15" x2="15.01" y1="9" y2="9" />
-        </svg>
-      );
-    case 'home':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      );
-    case 'repair':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-        </svg>
-      );
-    case 'wrench':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-        </svg>
-      );
-    case 'health':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="M12 8v8M8 12h8" />
-        </svg>
-      );
-    case 'elderly':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        </svg>
-      );
-    case 'pets':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 14c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3s3 1.34 3 3v4c0 1.66-1.34 3-3 3Z" />
-          <path d="M5 14a3 3 0 0 0-3 3v2h20v-2a3 3 0 0 0-3-3H5Z" />
-        </svg>
-      );
-    case 'truck':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="1" y="3" width="15" height="13" rx="2" />
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-          <circle cx="5.5" cy="18.5" r="2.5" />
-          <circle cx="18.5" cy="18.5" r="2.5" />
-        </svg>
-      );
-    case 'baby-sitting':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-        </svg>
-      );
-    case 'tutor':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-      );
-    case 'driver':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-          <path d="M2 12h20" />
-        </svg>
-      );
-    case 'event':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="20 12 20 22 4 22 4 12" />
-          <rect width="20" height="5" x="2" y="7" />
-          <line x1="12" x2="12" y1="22" y2="7" />
-          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
-          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
-        </svg>
-      );
-    case 'grid':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect width="7" height="7" x="3" y="3" rx="1" />
-          <rect width="7" height="7" x="14" y="3" rx="1" />
-          <rect width="7" height="7" x="14" y="14" rx="1" />
-          <rect width="7" height="7" x="3" y="14" rx="1" />
-        </svg>
-      );
-    default:
-      return null;
+const getCatalogItems = (response: { Items?: ServiceResponseType[] } | ServiceResponseType[]) =>
+  Array.isArray(response) ? response : response.Items || []
+
+const getRandomItems = <T,>(items: T[], count: number) => {
+  const shuffled = [...items]
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    ;[shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]]
+  }
+  return shuffled.slice(0, count)
+}
+
+const normalizeServiceCatalog = (categoryItems: ServiceResponseType[], serviceItems: ServiceResponseType[]) => {
+  const parents = categoryItems.filter((item) => item.IsActived !== 0 && item.ServicePid === 0)
+  const children = serviceItems.filter((item) => item.IsActived !== 0 && item.ServicePid > 0)
+
+  if (parents.length === 0 || children.length === 0) return null
+
+  const serviceCategories = parents.map<ServiceCategory>((parent) => ({
+    name: parent.SerName,
+    slug: slugifyService(parent.SerName, parent.Id),
+    icon: resolveCatalogIcon(parent),
+    iconBg: '#F4F9F8',
+    iconColor: '#003F3C',
+    desc: stripHtml(parent.SerDescription || parent.SerContent) || 'Danh m?c d?ch v? HomeBooking',
+  }))
+
+  const categoryById = new Map(
+    parents.map((parent, index) => [
+      parent.Id,
+      { parent, category: serviceCategories[index] },
+    ]),
+  )
+
+  const allServicesList = children.flatMap<ServiceDetail>((service) => {
+    const group = categoryById.get(service.ServicePid)
+    if (!group) return []
+
+    const desc = stripHtml(service.SerDescription || service.SerContent) || 'Thông tin dịch vụ đang được cập nhật trên HomeBooking.'
+    const img = resolveServiceImage(service)
+
+    return [{
+      id: service.Id,
+      slug: slugifyService(service.SerName, service.Id),
+      name: service.SerName,
+      categorySlug: group.category.slug,
+      tag: group.parent.SerName.toUpperCase(),
+      desc,
+      priceLabel: 'Đang cập nhật',
+      img,
+      gallery: [img],
+      features: [
+        { title: 'Đặt lịch nhanh', desc: 'Theo dõi và quản lý lịch hẹn trên ứng dụng' },
+        { title: 'Thông tin minh bạch', desc: 'Chi tiết dịch vụ được cập nhật từ hệ thống HomeBooking' },
+      ],
+      includes: [desc],
+    }]
+  })
+
+  if (allServicesList.length === 0) return null
+
+  const featuredServices = getRandomItems(allServicesList, 7).map<FeaturedService>((service) => {
+    const category = serviceCategories.find((item) => item.slug === service.categorySlug) || serviceCategories[0]
+
+    return {
+      name: service.name,
+      desc: service.desc,
+      icon: category?.icon || defaultServiceImg,
+      iconColor: category?.iconColor || '#007a63',
+      iconBg: category?.iconBg || '#e8f7f1',
+      img: service.img,
+    }
+  })
+
+  return { serviceCategories, allServicesList, featuredServices }
+}
+
+function useLandingServices() {
+  const [remoteCategories, setRemoteCategories] = React.useState<ServiceResponseType[] | null>(null)
+  const [remoteServices, setRemoteServices] = React.useState<ServiceResponseType[] | null>(null)
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    let isMounted = true
+
+    Promise.all([
+      serviceCatalogHttp2.getAllServices({
+        servPid: 0,
+        pagingOption: { pageNumber: 1, pageSize: 200 },
+        orderByOption: [{ field: 'SerName', isDescending: false }],
+      }),
+      serviceCatalogHttp2.getAllServices({
+        isOnlyChildren: true,
+        pagingOption: { pageNumber: 1, pageSize: 200 },
+        orderByOption: [{ field: 'SerName', isDescending: false }],
+      }),
+    ])
+      .then(([categoryResponse, serviceResponse]) => {
+        if (!isMounted) return
+        const categories = getCatalogItems(categoryResponse)
+        const services = getCatalogItems(serviceResponse)
+        if (import.meta.env.DEV) {
+          console.log('[service-catalog] raw categories response:', categoryResponse)
+          console.log('[service-catalog] categories:', categories)
+          console.log('[service-catalog] raw services response:', serviceResponse)
+          console.log('[service-catalog] services:', services)
+        }
+        setRemoteCategories(categories)
+        setRemoteServices(services)
+      })
+      .catch((error) => {
+        console.error('Failed to load service catalog', error)
+        if (isMounted) {
+          setRemoteCategories([])
+          setRemoteServices([])
+        }
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const normalized = React.useMemo(() => {
+    const data = normalizeServiceCatalog(remoteCategories || [], remoteServices || [])
+    if (import.meta.env.DEV) {
+      console.log('[service-catalog] normalized:', data)
+    }
+    return data
+  }, [remoteCategories, remoteServices])
+
+  return {
+    serviceCategories: normalized?.serviceCategories || [],
+    allServicesList: normalized?.allServicesList || [],
+    featuredServices: normalized?.featuredServices || [],
+    isLoading,
   }
 }
 
 export function ServicesListingPage() {
+  const { serviceCategories, allServicesList, isLoading } = useLandingServices();
   const [activeNavCategory, setActiveNavCategory] = React.useState('');
   const isScrollingRef = React.useRef(false);
   const scrollTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -1550,6 +1255,13 @@ export function ServicesListingPage() {
   }, []);
 
   React.useEffect(() => {
+    if (serviceCategories.length > 0 && !activeNavCategory) {
+      setActiveNavCategory(serviceCategories[0].slug);
+    }
+  }, [activeNavCategory, serviceCategories]);
+
+  React.useEffect(() => {
+    if (serviceCategories.length === 0) return;
     const onScroll = () => {
       // Skip scrollspy while programmatic scroll is in progress
       if (isScrollingRef.current) return;
@@ -1569,7 +1281,7 @@ export function ServicesListingPage() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [serviceCategories]);
 
   React.useEffect(() => {
     if (!activeNavCategory) return;
@@ -1630,7 +1342,7 @@ export function ServicesListingPage() {
               className={cn('h-8 px-3 rounded-full text-[13px] font-semibold shrink-0 flex items-center gap-1.5 transition-colors',
                 isActive ? 'bg-[#FEF4ED] text-[#002A28]' : 'bg-white text-slate-600 hover:bg-slate-50'
               )}>
-              <span className="size-4 shrink-0 flex items-center justify-center">{getCategoryIcon(cat.iconKey)}</span>
+              <img src={cat.icon} alt="" className="size-4 shrink-0 rounded object-cover" />
               <span>{cat.name}</span>
             </button>
           );
@@ -1641,18 +1353,18 @@ export function ServicesListingPage() {
       {/* Main layout: sidebar + content */}
       <div className="py-8 max-[520px]:py-4">
         <div className={ui.container}>
-          <div className="relative z-0 bg-white" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+          <div className="relative z-0 bg-white" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
 
             {/* Sidebar — sticky desktop */}
-            <div className="max-[1024px]:hidden shrink-0" style={{ width: '268px', position: 'sticky', top: '70px' }}>
-              <div className="bg-white overflow-hidden rounded-xl border border-slate-100" style={{ maxHeight: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column' }}>
+            <div className="sticky top-[70px] hidden w-[244px] shrink-0 self-start min-[1025px]:block">
+              <div className="flex max-h-[calc(100vh-90px)] flex-col overflow-hidden rounded-xl border border-slate-100 bg-white">
                 <div className="px-4 py-3 shrink-0 border-b border-slate-100">
                   <h2 className="text-[13px] font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                     <span className="h-3 w-1 rounded bg-[#003F3C]"></span>
                     Danh mục dịch vụ
                   </h2>
                 </div>
-                <div style={{ overflowY: 'auto', flex: 1 }} className="p-2 flex flex-col gap-0.5 custom-scrollbar">
+                <div className="custom-scrollbar flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
                   {serviceCategories.map((cat) => {
                     const count = allServicesList.filter(s => s.categorySlug === cat.slug).length;
                     const isActive = activeNavCategory === cat.slug;
@@ -1665,7 +1377,7 @@ export function ServicesListingPage() {
                         <div className="flex items-center gap-2.5 min-w-0">
                           <span className="size-6 shrink-0 rounded-md flex items-center justify-center [&_svg]:w-3.5 [&_svg]:h-3.5"
                             style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
-                            {getCategoryIcon(cat.iconKey)}
+                            <img src={cat.icon} alt="" className="size-full rounded object-cover" />
                           </span>
                           <span className="truncate leading-none">{cat.name}</span>
                         </div>
@@ -1684,6 +1396,18 @@ export function ServicesListingPage() {
 
             {/* Content list */}
             <div className="flex flex-col gap-6 bg-white max-[520px]:gap-7" style={{ flex: 1, minWidth: 0 }}>
+              {isLoading && serviceCategories.length === 0 && (
+                <div className="rounded-xl border border-slate-100 bg-white p-8 text-center text-sm font-semibold text-slate-500">
+                  Đang tải danh mục dịch vụ...
+                </div>
+              )}
+
+              {!isLoading && serviceCategories.length === 0 && (
+                <div className="rounded-xl border border-dashed border-slate-200 bg-white p-8 text-center text-sm font-semibold text-slate-500">
+                  Chưa có danh mục dịch vụ để hiển thị.
+                </div>
+              )}
+
               {serviceCategories.map((cat) => {
                 const subs = allServicesList.filter(s => s.categorySlug === cat.slug);
                 return (
@@ -1693,7 +1417,7 @@ export function ServicesListingPage() {
                     <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-100 max-[520px]:mb-3 max-[520px]:border-b-0 max-[520px]:pb-0">
                       <span className="size-9 rounded-xl flex items-center justify-center [&_svg]:w-5 [&_svg]:h-5 shrink-0 max-[520px]:hidden"
                         style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
-                        {getCategoryIcon(cat.iconKey)}
+                        <img src={cat.icon} alt="" className="size-full rounded object-cover" />
                       </span>
                       <div className="min-w-0">
                         <h2 className="text-[15px] font-bold text-slate-900 leading-snug max-[520px]:text-[14px] max-[520px]:leading-5">
@@ -1723,7 +1447,7 @@ export function ServicesListingPage() {
                               {/* Badge */}
                               <div className="mb-2 inline-flex max-w-full self-start items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-semibold max-[520px]:text-[0.66rem] [&_svg]:w-3 [&_svg]:h-3 max-[520px]:[&_svg]:w-2.5 max-[520px]:[&_svg]:h-2.5"
                                 style={{ backgroundColor: cat.iconBg, color: cat.iconColor }}>
-                                <span className="shrink-0">{getCategoryIcon(cat.iconKey)}</span>
+                                <img src={cat.icon} alt="" className="size-3 shrink-0 rounded object-cover max-[520px]:size-2.5" />
                                 <span className="truncate">{cat.name}</span>
                               </div>
                               {/* Title */}
@@ -1731,10 +1455,10 @@ export function ServicesListingPage() {
                                 {service.name}
                               </p>
                               {/* Footer */}
-                              <div className="mt-auto hidden items-end justify-between border-t border-slate-100 pt-2.5 max-[520px]:flex">
+                              <div className="mt-auto flex items-end justify-between border-t border-slate-100 pt-2.5">
                                 <div className="flex flex-col gap-0.5">
                                   <span className="text-[11px] font-medium uppercase text-slate-400">Giá chỉ từ</span>
-                                  <span className="text-[13px] font-bold text-[#F3A365]">Đang cập nhật</span>
+                                  <span className="text-[13px] font-bold text-[#F3A365]">{service.priceLabel}</span>
                                 </div>
                                 <span className="grid size-7 place-items-center rounded-full bg-emerald-50 text-[#003F3C] transition-colors duration-300 group-hover:bg-[#003F3C] group-hover:text-white">
                                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1770,6 +1494,10 @@ export function ServicesListingPage() {
 export function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { allServicesList, isLoading } = useLandingServices();
+  const [detailService, setDetailService] = React.useState<ServiceDetail | null>(null);
+  const [isDetailLoading, setIsDetailLoading] = React.useState(false);
+  const [sliderIndex, setSliderIndex] = React.useState(0);
 
   const goToDownload = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -1780,18 +1508,59 @@ export function ServiceDetailPage() {
     }, 120);
   };
 
-  const service = allServicesList.find((s) => s.slug === slug);
+  const listService = allServicesList.find((s) => s.slug === slug);
+  const detailId = listService?.id || getIdFromServiceSlug(slug);
+  const service = detailService || listService;
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    setDetailService(null);
+    setSliderIndex(0);
+
+    if (!detailId) {
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    setIsDetailLoading(true);
+    serviceCatalogHttp2.getServiceDetail({ Id: detailId })
+      .then((response) => {
+        if (!isMounted) return;
+        if (import.meta.env.DEV) {
+          console.log('[service-catalog] raw detail response:', response);
+        }
+        setDetailService(mapServiceDetailResponse(response, listService));
+      })
+      .catch((error) => {
+        console.error('Failed to load service detail', error);
+      })
+      .finally(() => {
+        if (isMounted) setIsDetailLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [detailId, listService]);
+
+  if (!service && (isLoading || isDetailLoading)) {
+    return (
+      <main className="grid min-h-[60vh] place-items-center bg-white pt-[58px] text-sm font-semibold text-slate-500">
+        Đang tải dịch vụ...
+      </main>
+    );
+  }
 
   if (!service) {
     return <Navigate to="/dich-vu" replace />;
   }
 
   const slides = [service.img, ...service.gallery];
-  const [sliderIndex, setSliderIndex] = React.useState(0);
 
   const handlePrevSlide = () => {
     setSliderIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -2136,7 +1905,7 @@ export function ServiceDetailPage() {
         </div>
       )}
 
-      <div className={cn('min-h-screen bg-white opacity-0 transition-opacity duration-700', isLoaded && 'opacity-100')} style={{ overflowX: 'clip' }}>
+      <div className={cn('min-h-screen bg-white opacity-0 transition-opacity duration-700', isLoaded && 'opacity-100')}>
         {/* 1. Header (Navbar) */}
         <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/30 bg-white/70 shadow-[0_8px_24px_rgba(0,63,60,0.04)] backdrop-blur-xl" data-aos="fade-down" data-aos-duration="600">
           <nav className={cn(ui.container, 'flex h-14 items-center justify-between gap-4 max-[520px]:h-12 max-[520px]:gap-2')}>
@@ -2191,8 +1960,7 @@ export function ServiceDetailPage() {
 
         <div
           key={location.pathname}
-          className="relative isolate z-0 min-h-screen overflow-hidden bg-white"
-          style={{ transform: 'translateZ(0)' }}
+          className="relative isolate z-0 min-h-screen overflow-visible bg-white"
         >
           <Routes>
             <Route path="/" element={<HomePage />} />
