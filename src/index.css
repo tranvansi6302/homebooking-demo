@@ -20,6 +20,23 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  html,
+  body,
+  #root {
+    min-height: 100%;
+    background: #ffffff;
+  }
+
+  #root {
+    isolation: isolate;
+    overflow-x: hidden;
+  }
+
+  main {
+    position: relative;
+    background: #ffffff;
+  }
+
   * {
     box-sizing: border-box;
   }

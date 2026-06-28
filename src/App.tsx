@@ -855,13 +855,13 @@ function HomePage() {
                 Đáp ứng mọi nhu cầu sinh hoạt hàng ngày của gia đình bạn
               </span>
             </div>
-            <a className={cn(ui.btn, ui.btnOutline)} href="#featured-services" onClick={scrollTo('featured-services')}>
+            <Link className={cn(ui.btn, ui.btnOutline)} to="/dich-vu">
               Khám phá các dịch vụ
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
-            </a>
+            </Link>
           </div>
 
           <div className="flex justify-center max-[768px]:hidden" data-aos="zoom-in" data-aos-delay="200">
@@ -2080,6 +2080,15 @@ export function ServiceDetailPage() {
   };
 
   React.useEffect(() => {
+    setIsMobileMenuOpen(false);
+    document.documentElement.style.backgroundColor = '#fff';
+    document.body.style.backgroundColor = '#fff';
+    window.requestAnimationFrame(() => {
+      AOS.refreshHard();
+    });
+  }, [location.pathname]);
+
+  React.useEffect(() => {
     // Enable smooth scroll for all anchor links
     document.documentElement.style.scrollBehavior = 'smooth';
 
@@ -2180,14 +2189,20 @@ export function ServiceDetailPage() {
           </div>
         </header>
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tin-tuc" element={<NewsListingPage />} />
-          <Route path="/tin-tuc/:slug" element={<NewsDetailPage />} />
-          <Route path="/dich-vu" element={<ServicesListingPage />} />
-          <Route path="/dich-vu/:slug" element={<ServiceDetailPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <div
+          key={location.pathname}
+          className="relative isolate z-0 min-h-screen overflow-hidden bg-white"
+          style={{ transform: 'translateZ(0)' }}
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/tin-tuc" element={<NewsListingPage />} />
+            <Route path="/tin-tuc/:slug" element={<NewsDetailPage />} />
+            <Route path="/dich-vu" element={<ServicesListingPage />} />
+            <Route path="/dich-vu/:slug" element={<ServiceDetailPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
 
         {/* 11. Footer */}
         <footer
