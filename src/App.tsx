@@ -2,30 +2,30 @@ import React from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { Routes, Route, Link, useNavigate, useParams, useSearchParams, useLocation, Navigate } from 'react-router-dom'
-import homeCleaningImg from './assets/home_cleaning.png'
-import applianceRepairImg from './assets/appliance_repair.png'
-import localCommunityImg from './assets/local_community.png'
-import kindnessServiceImg from './assets/kindness_service.png'
-import avatarAnImg from './assets/avatar_an.png'
-import avatarKhangImg from './assets/avatar_khang.png'
-import momBabyCareImg from './assets/mom_baby_care.png'
-import danhmucImg from './assets/danhmuc.png'
-import qrCodeImg from './assets/qr_code.png'
-import appStoreIcon from './assets/app_store.png'
-import chPlayIcon from './assets/chplay.png'
-import bannerImg from './assets/banner.png'
-import bannerTinTucImg from './assets/bannertintuc.png'
-import bgDichVuImg from './assets/bgdichvu.png'
-import bgLeftImg from './assets/bg-left.jpg'
-import bgRightImg from './assets/bg-right.jpg'
-import bgFooterImg from './assets/bgfooter.png'
-import defaultServiceImg from './assets/default-service.jpg'
 import { serviceCatalogHttp2 } from './modules/services/_apis/queries/http2/service-catalog.http2'
 import type { ServiceResponseType } from './modules/services/_types/service-catalog/service-catalog.res.type'
 import { newsPostsHttp2 } from './modules/news/_apis/queries/http2/news-posts.http2'
 import { newsCategoriesHttp2 } from './modules/news/_apis/queries/http2/news-categories.http2'
 
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' ')
+
+const landingAssetBase = 'https://homebooking.global/assets/services'
+
+const bannerImg = `${landingAssetBase}/icon_langding-img-banner.png`
+const danhmucImg = `${landingAssetBase}/icon_langding-img-home-banner-service.jpeg`
+const qrCodeImg = `${landingAssetBase}/icon_langding-img-defaut-qrtest.jpeg`
+const appStoreIcon = `${landingAssetBase}/icon_langding-icon-appstore.png`
+const chPlayIcon = `${landingAssetBase}/icon_langding-icon-chplay.png`
+const bannerTinTucImg = `${landingAssetBase}/icon_langding-img-news-banner.png`
+const bgDichVuImg = `${landingAssetBase}/icon_langding-img-service-banner.png`
+const bgLeftImg = `${landingAssetBase}/icon_langding-img-home-left.jpeg`
+const bgRightImg = `${landingAssetBase}/icon_langding-img-home-right.jpeg`
+const bgFooterImg = `${landingAssetBase}/icon_langding-img-footer.png`
+const defaultNewsImg = `${landingAssetBase}/icon_langding-img-default-news.jpeg`
+const defaultServiceImg = `${landingAssetBase}/icon_langding-img-default-service.jpeg`
+const mockPhoneImg = `${landingAssetBase}/icon_langding-img-mock-phone.png`
+const defaultUserIcon = `${landingAssetBase}/icon_langding-icon-default-user.png`
+const logoIcon = `${landingAssetBase}/icon_langding-icon-logo.png`
 
 const formatDate = (timestamp: number) => {
   if (!timestamp) return ''
@@ -63,7 +63,7 @@ const allNewsArticles: Article[] = [
     date: '20/05/2026',
     author: 'Minh Thư',
     excerpt: 'Áp dụng ngay những mẹo dọn dẹp đơn giản nhưng hiệu quả giúp không gian nhà bạn luôn sạch sẽ, thơm mát và không tốn nhiều thời gian đón năm mới.',
-    img: homeCleaningImg,
+    img: defaultNewsImg,
     content: [
       'Tết Nguyên Đán đang đến gần, và việc dọn dẹp nhà cửa đón năm mới luôn là nỗi ám ảnh của nhiều gia đình vì tốn quá nhiều thời gian và công sức. Tuy nhiên, nếu biết áp dụng những nguyên tắc khoa học dưới đây, bạn hoàn toàn có thể biến ngôi nhà của mình trở nên ngăn nắp và sạch bóng chỉ trong thời gian ngắn.',
       'Đầu tiên, hãy lập kế hoạch dọn dẹp cụ thể cho từng phòng. Đừng cố gắng làm tất cả mọi thứ cùng một lúc. Hãy tập trung giải quyết dứt điểm từng khu vực như phòng khách, nhà bếp rồi mới đến phòng ngủ. Việc này giúp bạn không bị nản chí và kiểm soát được tiến độ hiệu quả hơn.',
@@ -79,7 +79,7 @@ const allNewsArticles: Article[] = [
     date: '18/05/2026',
     author: 'Bác sĩ Mai Anh',
     excerpt: 'Những điều bố mẹ cần biết để chăm bé khỏe mạnh, phát triển tốt ngay từ những ngày đầu đời, từ dinh dưỡng đến giấc ngủ và vệ sinh.',
-    img: momBabyCareImg,
+    img: defaultNewsImg,
     content: [
       'Chào đón một thiên thần nhỏ ra đời là niềm hạnh phúc vô bờ bến, nhưng đi kèm với đó là không ít bỡ ngỡ, đặc biệt là với những người lần đầu làm cha mẹ. Chăm sóc trẻ sơ sinh đòi hỏi sự tỉ mỉ, kiên nhẫn và cả những kiến thức y khoa nền tảng để bé phát triển khỏe mạnh nhất.',
       'Giấc ngủ của trẻ sơ sinh chiếm phần lớn thời gian trong ngày (từ 16 - 18 tiếng). Để bé ngủ ngon và tránh hội chứng đột tử ở trẻ sơ sinh (SIDS), hãy luôn đặt bé nằm ngửa khi ngủ trên một bề mặt phẳng, chắc chắn và không có quá nhiều chăn gối xung quanh. Nhiệt độ phòng lý tưởng nên duy trì ở mức 24 - 26 độ C và phòng cần thông thoáng khí.',
@@ -94,7 +94,7 @@ const allNewsArticles: Article[] = [
     date: '16/05/2026',
     author: 'Trần Văn Hoàng (Kỹ thuật viên)',
     excerpt: 'Máy lạnh bẩn không chỉ gây tốn điện, làm giảm tuổi thọ thiết bị mà còn ảnh hưởng trực tiếp đến hệ hô hấp của gia đình bạn.',
-    img: applianceRepairImg,
+    img: defaultNewsImg,
     content: [
       'Máy lạnh sau một thời gian dài hoạt động sẽ tích tụ rất nhiều bụi bẩn và vi khuẩn ở màng lọc cũng như dàn lạnh. Nếu không được vệ sinh định kỳ, thiết bị sẽ hoạt động kém hiệu quả và tiêu thụ nhiều điện năng hơn.',
       'Dấu hiệu đầu tiên và dễ nhận biết nhất là máy lạnh không lạnh hoặc hơi lạnh tỏa ra rất yếu mặc dù đã hạ nhiệt độ xuống thấp. Nguyên nhân là do lớp bụi dày đặc bám trên lưới lọc ngăn cản luồng gió mát lưu thông ra ngoài.',
@@ -110,7 +110,7 @@ const allNewsArticles: Article[] = [
     date: '15/05/2026',
     author: 'Ban Truyền Thông',
     excerpt: 'Chương trình ý nghĩa thu hút đông đảo tình nguyện viên tham gia, chung tay vì một không gian sống xanh - sạch - đẹp tại địa phương.',
-    img: localCommunityImg,
+    img: defaultNewsImg,
     content: [
       'Nằm trong chuỗi hoạt động hướng tới cộng đồng bền vững, vừa qua HomeBooking đã tổ chức thành công chiến dịch gom rác và làm sạch môi trường tại các khu dân cư và công viên công cộng.',
       'Chương trình đã nhận được sự hưởng ứng nhiệt tình của hơn 200 tình nguyện viên bao gồm nhân viên công ty, đối tác tài xế, đối tác cung cấp dịch vụ dọn dẹp cùng đông đảo người dân địa phương. Kết quả, hơn 1 tấn rác thải nhựa và các loại rác không phân hủy đã được thu gom, phân loại và xử lý đúng quy trình.',
@@ -125,7 +125,7 @@ const allNewsArticles: Article[] = [
     date: '13/05/2026',
     author: 'Khánh Vy (Marketing)',
     excerpt: 'Ưu đãi đặc biệt siêu tiết kiệm dành cho khách hàng đặt lịch dọn dẹp vệ sinh thông qua ứng dụng HomeBooking trong tháng này.',
-    img: danhmucImg,
+    img: defaultNewsImg,
     content: [
       'Để tri ân sự đồng hành của quý khách hàng, HomeBooking triển khai chương trình khuyến mãi lớn nhất mùa hè: Giảm giá trực tiếp 30% cho dịch vụ vệ sinh nhà cửa trọn gói.',
       'Chương trình áp dụng cho tất cả các khách hàng đặt lịch dọn dẹp căn hộ, nhà phố qua ứng dụng HomeBooking. Các gói dịch vụ bao gồm: dọn dẹp định kỳ, tổng vệ sinh sâu, lau kính, giặt nệm, ghế sofa, rèm cửa với đội ngũ nhân viên chuyên nghiệp và trang thiết bị hiện đại.',
@@ -141,7 +141,7 @@ const allNewsArticles: Article[] = [
     readTime: '7 phút đọc',
     author: 'Ban Giám Đốc',
     excerpt: 'Hợp tác chiến lược toàn diện nhằm mang đến nhiều giải pháp thanh toán tiện ích và ưu đãi độc quyền hơn cho khách hàng trên toàn quốc.',
-    img: kindnessServiceImg,
+    img: defaultNewsImg,
     content: [
       'Hôm nay, HomeBooking chính thức công bố ký kết thỏa thuận hợp tác chiến lược toàn diện cùng Tập đoàn Công nghiệp - Viễn thông Quân đội (Viettel). Đây là cột mốc quan trọng đánh dấu sự kết hợp giữa siêu ứng dụng dịch vụ gia đình hàng đầu và nhà mạng viễn thông lớn nhất Việt Nam.',
       'Theo thỏa thuận, hai bên sẽ phối hợp tích hợp cổng thanh toán Viettel Money vào ứng dụng HomeBooking, giúp người dùng thực hiện giao dịch đặt dịch vụ một cách nhanh chóng, an toàn tuyệt đối và nhận được các chương trình hoàn tiền hấp dẫn.',
@@ -222,7 +222,7 @@ function NewsSidebar() {
             const isReal = 'Id' in article || 'id' in article
             const slug = isReal ? (article.PostSlug || article.postSlug) : article.slug
             const title = isReal ? (article.PostTitle || article.postTitle) : article.title
-            const img = isReal ? (article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : article.img
+            const img = isReal ? resolveNewsImage(article.PostThumbnail || article.postThumbnail) : article.img
             const date = isReal ? formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate) : article.date
 
             return (
@@ -330,7 +330,7 @@ function AppDownloadBand({ title, description }: { title: string; description: s
 
           <div className="relative z-30 h-[220px] overflow-visible max-[900px]:h-[190px] max-[768px]:hidden">
             <div className="absolute inset-y-0 left-[-18px] right-[-18px] flex items-center justify-center max-[900px]:left-0 max-[900px]:right-0">
-              <img src="https://homebooking.global/assets/mock-mobile.png" alt="Ứng dụng HomeBooking trên điện thoại" className="relative z-30 w-[260px] rotate-8 object-contain drop-shadow-[0_24px_26px_rgba(0,0,0,0.28)] transition duration-700 hover:-translate-y-1.5 hover:rotate-6 max-[1024px]:w-[235px] max-[900px]:w-[210px]" />
+              <img src={mockPhoneImg} alt="Ứng dụng HomeBooking trên điện thoại" className="relative z-30 w-[260px] rotate-8 object-contain drop-shadow-[0_24px_26px_rgba(0,0,0,0.28)] transition duration-700 hover:-translate-y-1.5 hover:rotate-6 max-[1024px]:w-[235px] max-[900px]:w-[210px]" />
             </div>
           </div>
         </div>
@@ -575,7 +575,7 @@ function NewsListingPage() {
                 sortedArticles.map((article, index) => {
                   const slug = article.PostSlug || article.postSlug
                   const title = article.PostTitle || article.postTitle
-                  const img = article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400'
+                  const img = resolveNewsImage(article.PostThumbnail || article.postThumbnail)
                   const date = formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate)
                   const tag = article.NewsCategory?.CateName || article.newsCategory?.cateName || (article.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')
                   const excerpt = article.PostExcerpt || article.postExcerpt
@@ -742,7 +742,7 @@ function NewsDetailPage() {
 
   const isReal = 'Id' in post || 'id' in post
   const title = isReal ? (post.PostTitle || post.postTitle) : post.title
-  const img = isReal ? (post.PostThumbnail || post.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : post.img
+  const img = isReal ? resolveNewsImage(post.PostThumbnail || post.postThumbnail) : post.img
   const excerpt = isReal ? (post.PostExcerpt || post.postExcerpt) : post.excerpt
   const date = isReal ? formatDate(post.UpdatedDate || post.updatedDate || post.CreatedDate || post.createdDate) : post.date
   const tag = isReal ? (post.NewsCategory?.CateName || post.newsCategory?.cateName || (post.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')) : post.tag
@@ -821,7 +821,7 @@ function NewsDetailPage() {
                     const isRelReal = 'Id' in rel || 'id' in rel
                     const relSlug = isRelReal ? (rel.PostSlug || rel.postSlug) : rel.slug
                     const relTitle = isRelReal ? (rel.PostTitle || rel.postTitle) : rel.title
-                    const relImg = isRelReal ? (rel.PostThumbnail || rel.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : rel.img
+                    const relImg = isRelReal ? resolveNewsImage(rel.PostThumbnail || rel.postThumbnail) : rel.img
                     const relDate = isRelReal ? formatDate(rel.UpdatedDate || rel.updatedDate || rel.CreatedDate || rel.createdDate) : rel.date
 
                     return (
@@ -934,10 +934,14 @@ function HomePage() {
 
             <div className="mt-6 flex items-center gap-3 max-[900px]:justify-center max-[520px]:flex-col" data-aos="fade-up" data-aos-delay="400">
               <div className="flex -space-x-3">
-                <img className="size-10 rounded-full object-cover" src={avatarAnImg} alt="User 1" />
-                <img className="size-10 rounded-full object-cover" src={avatarKhangImg} alt="User 2" />
-                <img className="size-10 rounded-full object-cover" src={avatarAnImg} alt="User 3" />
-                <img className="size-10 rounded-full object-cover" src={avatarKhangImg} alt="User 4" />
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <img
+                    key={index}
+                    className="size-10 rounded-full border-2 border-white bg-white object-cover shadow-sm"
+                    src={defaultUserIcon}
+                    alt=""
+                  />
+                ))}
               </div>
               <span className="text-sm text-slate-600">
                 <strong>50,000+</strong> người đã dùng và đánh giá <strong>4.9/5 sao</strong>
@@ -1073,7 +1077,7 @@ function HomePage() {
               const isReal = 'Id' in article || 'id' in article
               const slug = isReal ? (article.PostSlug || article.postSlug) : article.slug
               const title = isReal ? (article.PostTitle || article.postTitle) : article.title
-              const img = isReal ? (article.PostThumbnail || article.postThumbnail || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=400') : article.img
+              const img = isReal ? resolveNewsImage(article.PostThumbnail || article.postThumbnail) : article.img
               const date = isReal ? formatDate(article.UpdatedDate || article.updatedDate || article.CreatedDate || article.createdDate) : article.date
               const tag = isReal ? (article.NewsCategory?.CateName || article.newsCategory?.cateName || (article.CategoryId === 1 ? 'Mẹo vặt' : 'Tin tức')) : article.tag
 
@@ -1130,7 +1134,7 @@ function HomePage() {
 
             <div className="relative z-30 h-[240px] overflow-visible max-[900px]:h-[210px] max-[768px]:hidden" data-aos="fade-left">
               <div className="absolute inset-y-0 left-[-18px] right-[-18px] flex items-center justify-center max-[900px]:left-0 max-[900px]:right-0">
-                <img src="https://homebooking.global/assets/mock-mobile.png" alt="Ứng dụng HomeBooking trên điện thoại" className="relative z-30 w-[285px] rotate-8 object-contain drop-shadow-[0_24px_26px_rgba(0,0,0,0.28)] transition duration-700 hover:-translate-y-1.5 hover:rotate-6 max-[1024px]:w-[255px] max-[900px]:w-[220px] max-[520px]:w-[178px]" />
+                <img src={mockPhoneImg} alt="Ứng dụng HomeBooking trên điện thoại" className="relative z-30 w-[285px] rotate-8 object-contain drop-shadow-[0_24px_26px_rgba(0,0,0,0.28)] transition duration-700 hover:-translate-y-1.5 hover:rotate-6 max-[1024px]:w-[255px] max-[900px]:w-[220px] max-[520px]:w-[178px]" />
               </div>
             </div>
           </div>
@@ -1259,6 +1263,13 @@ type FeaturedService = {
 
 const stripHtml = (value: string | null | undefined) =>
   (value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+
+const resolveNewsImage = (value: string | null | undefined) => {
+  const image = (value || '').trim()
+  if (!image) return defaultNewsImg
+  if (/^https?:\/\//i.test(image) || image.startsWith('/')) return image
+  return defaultNewsImg
+}
 
 const slugifyService = (value: string, id: number) => {
   const slug = value
@@ -1551,7 +1562,7 @@ export function ServicesListingPage() {
                   </span>
                 </a>
               </div>
-              <img src="https://homebooking.global/assets/mock-mobile.png" alt="Ứng dụng HomeBooking" className="h-[250px] w-auto rotate-6 object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.2)] max-[900px]:h-[205px]" />
+              <img src={mockPhoneImg} alt="Ứng dụng HomeBooking" className="h-[250px] w-auto rotate-6 object-contain drop-shadow-[0_18px_20px_rgba(0,0,0,0.2)] max-[900px]:h-[205px]" />
             </div>
             <div className="hidden">
               <span className="text-[13px] font-semibold text-slate-500">{serviceCategories.length} danh mục</span>
@@ -2023,10 +2034,10 @@ export function ServiceDetailPage() {
               <div className="w-[110px] aspect-[9/18] bg-slate-900 rounded-[30px] p-1.5 shadow-2xl border-2 border-slate-800 relative hidden md:block shrink-0">
                 <div className="size-full bg-white rounded-[22px] overflow-hidden flex flex-col p-2 pt-4 relative">
                   <div className="flex items-center gap-1 mb-1.5">
-                    <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-2.5 w-auto" alt="Logo" />
+                    <img src={logoIcon} className="h-2.5 w-auto" alt="Logo" />
                   </div>
                   <div className="grow bg-slate-50 rounded-lg flex flex-col items-center justify-center p-1 text-[8px] font-bold text-[#003F3C] gap-1">
-                    <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-4 w-auto" alt="App logo" />
+                    <img src={logoIcon} className="h-4 w-auto" alt="App logo" />
                     <span className="text-[6px] tracking-wide text-orange-500 uppercase font-black">HOME BOOKING</span>
                   </div>
                 </div>
@@ -2153,7 +2164,7 @@ export function ServiceDetailPage() {
               </button>
 
               <Link className="flex items-center" to="/" onClick={handleNavClick('top')}>
-                <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-6 w-auto max-[520px]:h-[18px]" alt="HomeBooking Logo" />
+                <img src={logoIcon} className="h-6 w-auto max-[520px]:h-[18px]" alt="HomeBooking Logo" />
               </Link>
             </div>
 
@@ -2210,7 +2221,7 @@ export function ServiceDetailPage() {
             <div className="grid grid-cols-[1fr_1fr] items-center gap-8 max-[768px]:grid-cols-1 max-[768px]:items-start max-[768px]:gap-6">
               <div className="flex flex-col items-start">
                 <Link className="inline-flex" to="/" onClick={handleNavClick('top')}>
-                  <img src="https://homebooking.global/assets/Logo-Hombooking---khong-nen.png" className="h-5 w-auto max-[520px]:h-[18px]" alt="HomeBooking Logo" />
+                  <img src={logoIcon} className="h-5 w-auto max-[520px]:h-[18px]" alt="HomeBooking Logo" />
                 </Link>
                 <h4 className="mt-5 text-xs font-extrabold uppercase tracking-wide text-slate-900">Liên hệ</h4>
                 <div className="mt-3 flex flex-col gap-2.5 text-sm leading-6 text-slate-500">

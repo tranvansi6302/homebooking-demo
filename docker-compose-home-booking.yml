@@ -1,0 +1,16 @@
+# port:
+# home-booking: 30003
+
+services:
+  fe-home-booking:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: well365/registry:homebooking-v20260629
+    container_name: fe-home-booking
+    ports:
+      - "30003:80"
+    restart: always
+
+
+# docker compose -f docker-compose-home-booking.yml build --no-cache --push

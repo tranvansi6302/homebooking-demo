@@ -18,7 +18,7 @@ import { BookingCatalogServiceQueryClient } from '../protos/service-catalog/book
 
 const BOOKINGS_BASE_URL =
   import.meta.env.VITE_BOOKINGS_GRPC_URL ||
-  'https://8a5da52ed126447d359e70c05721a8aa.homebooking.global/home-booking/query/bookings'
+  'https://05a7566cd97ec253ea57b6c32493b5ec.homebooking.global/home-booking/query/bookings'
 
 const transport = new GrpcWebFetchTransport({
   baseUrl: BOOKINGS_BASE_URL,
