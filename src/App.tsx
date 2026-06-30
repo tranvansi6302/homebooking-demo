@@ -886,7 +886,36 @@ function HomePage() {
   }, [])
 
   const displayArticles = articles.length > 0 ? articles : allNewsArticles.slice(0, 4)
-  const { featuredServices, allServicesList } = useLandingServices()
+  const { serviceCategories, allServicesList, isLoading } = useLandingServices()
+
+  const serviceGroupList = React.useMemo(() => {
+    const categoryColors = [
+      { bg: '#EBF5FF', text: '#1E40AF' }, // Blue
+      { bg: '#ECFDF5', text: '#065F46' }, // Emerald
+      { bg: '#FEF3C7', text: '#92400E' }, // Amber
+      { bg: '#FDF2F8', text: '#9D174D' }, // Pink
+      { bg: '#F5F3FF', text: '#5B21B6' }, // Purple
+      { bg: '#FFF1F2', text: '#9F1239' }, // Rose
+      { bg: '#EFF6FF', text: '#1E3A8A' }, // Indigo
+      { bg: '#F0FDF4', text: '#166534' }, // Green
+      { bg: '#FFF7ED', text: '#9A3412' }, // Orange
+      { bg: '#F0FDFA', text: '#0F766E' }, // Teal
+      { bg: '#F5F5F7', text: '#3A3A3C' }, // Gray
+    ];
+
+    return serviceCategories.map((cat, idx) => {
+      const service = allServicesList.find(s => s.categorySlug === cat.slug);
+      const color = categoryColors[idx % categoryColors.length];
+      return {
+        category: {
+          ...cat,
+          iconBg: color.bg,
+          iconColor: color.text
+        },
+        service: service
+      };
+    }).filter(item => item.service !== undefined);
+  }, [serviceCategories, allServicesList]);
 
   const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -983,75 +1012,60 @@ function HomePage() {
       <section className="bg-slate-50 py-10" id="featured-services">
         <div className={ui.container}>
           <div className="mb-6 text-left" data-aos="fade-up">
-            <h2 className={ui.sectionTitle}>Dịch vụ nổi bật</h2>
-            <p className="mt-2 text-slate-500">Những dịch vụ được yêu thích nhất trên HomeBooking</p>
+            <h2 className={ui.sectionTitle}>Hệ sinh thái dịch vụ</h2>
+            <p className="mt-2 text-slate-500">Khám phá các dịch vụ tiêu biểu trong hệ sinh thái của HomeBooking</p>
           </div>
 
-          <div className="grid grid-cols-4 gap-5 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:gap-3">
-            {featuredServices.map((service, idx) => {
-              const getServiceLink = (name: string) => {
-                const matched = allServicesList.find((item) => item.name === name);
-                return matched ? `/dich-vu/${matched.slug}` : '/dich-vu';
-              };
-              return (
-                <Link
-                  key={service.name}
-                  className={cn(ui.card, 'group flex min-h-[245px] flex-col overflow-hidden max-[520px]:min-h-[220px]')}
-                  to={getServiceLink(service.name)}
-                  aria-label={`Chi tiết dịch vụ ${service.name}`}
-                  data-aos="fade-up"
-                  data-aos-delay={idx * 100}
-                >
-                  <div className="relative h-[120px] overflow-hidden max-[520px]:h-[96px]">
-                    <img src={service.img} alt={service.name} className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" />
-                  </div>
-                  <div className="flex grow flex-col p-4 max-[520px]:p-3">
-                    <div className="mb-3 inline-flex max-w-full self-start items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold max-[520px]:mb-2 max-[520px]:px-2 max-[520px]:text-[0.66rem]" style={{ backgroundColor: service.iconBg, color: service.iconColor }}>
-                      <img src={service.icon} alt="" className="size-3 shrink-0 rounded object-cover max-[520px]:size-2.5" />
-                      <span className="truncate">{service.name}</span>
+          {isLoading && serviceGroupList.length === 0 ? (
+            <div className="rounded-xl border border-slate-100 bg-white p-8 text-center text-sm font-semibold text-slate-400">
+              Đang tải danh mục dịch vụ...
+            </div>
+          ) : serviceGroupList.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-slate-200 bg-white p-8 text-center text-sm font-semibold text-slate-400">
+              Chưa có danh mục dịch vụ để hiển thị.
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:grid-cols-1 max-[520px]:gap-3">
+              {serviceGroupList.map(({ category, service }, idx) => {
+                if (!service) return null;
+                return (
+                  <div
+                    key={category.slug}
+                    className="flex items-start gap-3 rounded-xl border border-slate-100 bg-white p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(0,63,60,0.04)]"
+                    data-aos="fade-up"
+                    data-aos-delay={idx * 50}
+                  >
+                    {/* Icon Container */}
+                    <div
+                      className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                      style={{ backgroundColor: category.iconBg, color: category.iconColor }}
+                    >
+                      <img src={category.icon} alt="" className="size-5 rounded object-cover" />
                     </div>
-                    <p className="line-clamp-2 min-h-[2.8rem] text-sm font-medium leading-relaxed text-slate-800 max-[520px]:min-h-[2.35rem] max-[520px]:text-sm max-[520px]:leading-5">{service.desc}</p>
-                    <div className="mt-auto flex items-end justify-between border-t border-emerald-950/5 pt-3">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[0.7rem] font-medium uppercase text-slate-500 max-[520px]:text-[0.6rem]">Giá chỉ từ</span>
-                        <span className="text-sm font-bold text-[#F3A365] max-[520px]:text-xs">Đang cập nhật</span>
-                      </div>
-                      <span className="grid size-8 place-items-center rounded-full bg-emerald-50 text-[#003F3C] transition-colors duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[#003F3C] group-hover:text-white max-[520px]:size-7" aria-hidden="true">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
+
+                    {/* Text Content */}
+                    <div className="min-w-0 flex-1">
+                      {/* Category Label */}
+                      <span
+                        className="inline-flex items-center rounded px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider"
+                        style={{ backgroundColor: category.iconBg, color: category.iconColor }}
+                      >
+                        {category.name}
                       </span>
+                      {/* Service Title */}
+                      <h3 className="mt-1 text-sm font-medium leading-relaxed text-slate-800">
+                        {service.name}
+                      </h3>
+                      {/* Service Description */}
+                      <p className="mt-1 line-clamp-2 text-[13px] font-normal leading-relaxed text-slate-400">
+                        {service.desc}
+                      </p>
                     </div>
                   </div>
-                </Link>
-              );
-            })}
-
-            {/* The 8th Card: Xem tất cả */}
-            <Link to="/dich-vu" className={cn(ui.card, 'flex min-h-[245px] flex-col bg-orange-50 hover:no-underline group')} data-aos="fade-up" data-aos-delay="800">
-              <div className="flex grow flex-col items-center justify-center p-5 text-center">
-                <div className="mb-5 grid size-14 place-items-center rounded-full bg-white text-[#F3A365]">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-heading text-xl font-extrabold text-slate-900">Xem tất cả</h3>
-                  <p className="mt-1 text-sm text-slate-500">13+ Danh mục dịch vụ</p>
-                  <span className="mx-auto mt-5 grid size-9 place-items-center rounded-full bg-[#F3A365] text-white">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -1072,7 +1086,7 @@ function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-4 gap-6 max-[1024px]:grid-cols-2 max-[520px]:gap-3">
+          <div className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[520px]:grid-cols-1 max-[520px]:gap-3">
             {displayArticles.map((article, index) => {
               const isReal = 'Id' in article || 'id' in article
               const slug = isReal ? (article.PostSlug || article.postSlug) : article.slug
@@ -1086,9 +1100,9 @@ function HomePage() {
                   <div className="relative h-40 overflow-hidden">
                     <img className="h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]" src={img} alt={title} />
                   </div>
-                  <div className="flex grow flex-col p-5 max-[520px]:p-3">
+                  <div className="flex grow flex-col p-3.5 max-[520px]:p-3">
                     <p className="line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-relaxed text-slate-800 transition duration-300 group-hover:text-emerald-700 max-[520px]:min-h-[2.35rem] max-[520px]:text-sm max-[520px]:leading-5">{title}</p>
-                    <div className="mt-auto flex items-center justify-between gap-2 pt-5 text-xs text-slate-500 max-[520px]:pt-3 max-[520px]:text-[0.65rem]">
+                    <div className="mt-auto flex items-center justify-between gap-2 pt-3.5 text-xs text-slate-500 max-[520px]:pt-3 max-[520px]:text-[0.65rem]">
                       <span className="shrink-0">{date}</span>
                       <span className="inline-flex min-w-0 shrink rounded-lg bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-emerald-700 max-[520px]:max-w-[66px] max-[520px]:px-2 max-[520px]:text-[0.56rem]">
                         <span className="truncate">{tag}</span>
@@ -2080,12 +2094,6 @@ export function ServiceDetailPage() {
     }
   };
 
-  const goToNewsPage = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setIsMobileMenuOpen(false);
-    navigate('/tin-tuc');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   React.useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -2170,8 +2178,8 @@ export function ServiceDetailPage() {
 
             <div className="flex items-center gap-5 text-sm font-semibold text-slate-700 max-[900px]:hidden">
               <Link className="transition hover:text-[#003F3C]" to="/" onClick={handleNavClick('top')}>Trang chủ</Link>
-              <Link className="transition hover:text-[#003F3C]" to="/dich-vu">Dịch vụ</Link>
-              <Link className="transition hover:text-[#003F3C]" to="/tin-tuc" onClick={goToNewsPage}>Tin tức</Link>
+              <Link className="transition hover:text-[#003F3C]" to="/" onClick={handleNavClick('featured-services')}>Dịch vụ</Link>
+              <Link className="transition hover:text-[#003F3C]" to="/" onClick={handleNavClick('news')}>Tin tức</Link>
               <Link className="transition hover:text-[#003F3C]" to="/" onClick={handleNavClick('footer')}>Liên hệ</Link>
             </div>
 
@@ -2189,8 +2197,8 @@ export function ServiceDetailPage() {
           >
             <div className="grid gap-1 rounded-lg border border-emerald-950/10 bg-white/96 p-2 text-sm font-bold text-slate-700 shadow-[0_18px_36px_rgba(0,63,60,0.14)] backdrop-blur-xl">
               <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/" onClick={handleNavClick('top')}>Trang chủ</Link>
-              <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/dich-vu" onClick={() => setIsMobileMenuOpen(false)}>Dịch vụ</Link>
-              <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/tin-tuc" onClick={goToNewsPage}>Tin tức</Link>
+              <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/" onClick={handleNavClick('featured-services')}>Dịch vụ</Link>
+              <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/" onClick={handleNavClick('news')}>Tin tức</Link>
               <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/" onClick={handleNavClick('partner-banners')}>Đối tác</Link>
               <Link className="rounded-lg px-3 py-2 transition hover:bg-emerald-50 hover:text-[#003F3C]" to="/" onClick={handleNavClick('footer')}>Liên hệ</Link>
             </div>
